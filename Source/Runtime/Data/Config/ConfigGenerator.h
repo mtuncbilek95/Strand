@@ -8,12 +8,14 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Data/Containers/ReadArray.h>
+#include <Runtime/Data/Containers/Singleton.h>
 
 namespace Flax
 {
-    struct DataReader
+    class ConfigGenerator : public Singleton<ConfigGenerator>
     {
-        static ReadArray<c8> ReadData(const String& filePath, b8 emptyOnMissing = false, b8 nullTerminateString = false);
+    public:
+        ConfigGenerator() = default;
+        ~ConfigGenerator() = default;
     };
 }
