@@ -29,6 +29,12 @@ namespace Flax
                 new (&m_data[i]) T();
         }
 
+        ReadArray(const T* data, usize size) : m_data(MakeBuffer(size)), m_size(size)
+        {
+            for (usize i = 0; i < size; ++i)
+                new (&m_data[i]) T(data[i]);
+        }
+
         ReadArray(const InitList<T>& list) : m_data(MakeBuffer(list.size())), m_size(list.size())
         {
             i32 i = 0;
