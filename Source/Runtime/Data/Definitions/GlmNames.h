@@ -18,6 +18,9 @@
 namespace Math
 {
     template<Arithmetic T>
+    using Quat = glm::tquat<T>;
+
+    template<Arithmetic T>
     using Vec2 = glm::tvec2<T>;
 
     template<Arithmetic T>
@@ -34,6 +37,9 @@ namespace Math
 
     template<Arithmetic T>
     using Mat4 = glm::tmat4x4<T>;
+
+    using Quatf = Quat<f32>;
+    using Quatd = Quat<f64>;
 
     using Vec2uc = Vec2<u8>;
     using Vec3uc = Vec3<u8>;

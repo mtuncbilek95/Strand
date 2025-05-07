@@ -23,6 +23,7 @@ namespace Flax
         Render,
         Resource,
         VFS,
+        ECS,
         Reflection,
         Thread,
         Input,

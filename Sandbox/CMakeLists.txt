@@ -10,7 +10,7 @@ add_executable(Sandbox ${SOURCES})
 target_include_directories("Sandbox" PRIVATE "${CMAKE_SOURCE_DIR}/Source")
 target_link_libraries("Sandbox" PRIVATE Runtime)
 
-#target_link_libraries("Sandbox" PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,Runtime>")
+target_link_libraries("Sandbox" PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,Runtime>")
 # ------------------------------------------------------------
 
 # ---------------------- COMPILER FLAGS ----------------------

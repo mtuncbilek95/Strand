@@ -3,6 +3,10 @@
 #include <Runtime/Vulkan/Device/VDevice.h>
 #include <Runtime/Vulkan/Shader/VShader.h>
 
+#include <Runtime/EntityComponent/Scene.h>
+#include <Runtime/EntityComponent/Entity.h>
+#include <Runtime/EntityComponent/Component/TransformComponent.h>
+
 using namespace Flax;
 
 int main()
@@ -19,12 +23,13 @@ int main()
     VInstance vkInstance(instanceProps);
     VDevice vkDevice(DeviceProps(), &vkInstance);
 
-    ShaderProps shaderProps =
-    {
-        .shaderPath = "TestShader.vert",
-        .shaderStage = VK_SHADER_STAGE_VERTEX_BIT,
-    };
-    VShader shader(shaderProps, &vkDevice);
+    Scene scene;
+    Ref<Entity> entt1 = scene.AddEntity();
+    Ref<Entity> entt2 = scene.AddEntity();
+    Ref<Entity> entt3 = scene.AddEntity();
+
+    entt1->AddComponent<TransformComponent>();
+    entt1->AddComponent<TransformComponent>();
 
     window.Show();
     while (window.IsActive())

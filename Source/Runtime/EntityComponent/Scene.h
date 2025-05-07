@@ -8,26 +8,30 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Data/Containers/IObject.h>
 
 #include <entt/entt.hpp>
 
 namespace Flax
 {
+    class ComponentResolver;
     class Entity;
+    class IComponentBase;
 
-    class Scene final : public IObject
+    class Scene
     {
-        typedef entt::registry EnTTRegistry;
+        friend class ComponentResolver;
 
     public:
-        Scene(const String& name = "");
-        ~Scene() override final;
+        Scene();
+        ~Scene();
+
+        Ref<Entity> AddEntity(Ref<Entity> parent = nullptr);
+        void RemoveEntity(Ref<Entity> entity);
+        
+        entt::registry& GetRegistry() { return m_registry; }
 
     private:
-        String m_sceneName;
-
-        Vector<Ref<Entity>> m_entities;
-
+        entt::registry m_registry;
+        Ref<Entity> m_rootEntity;
     };
 }
