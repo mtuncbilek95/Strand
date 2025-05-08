@@ -4,7 +4,7 @@
 
 namespace Flax
 {
-    BasicWindow::BasicWindow() : m_handle(nullptr), m_windowSize(1280, 720), m_windowPos(0, 0),
+    BasicWindow::BasicWindow() : m_handle(nullptr), m_windowSize(1600, 900), m_windowPos(0, 0),
         m_active(true), m_visible(false)
     {
         if (!glfwInit())

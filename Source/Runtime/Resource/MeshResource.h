@@ -19,11 +19,12 @@ namespace Flax
         MeshResource() = default;
         ~MeshResource() = default;
 
+        void Load(const String& path);
+        void Unload();
 
-
-        operator Ref<VBuffer>() { return m_buffer; }
+        operator Ref<VBuffer>() { return m_GpuBuffer; }
 
     private:
-        Ref<VBuffer> m_buffer;
+        Ref<VBuffer> m_GpuBuffer;
     };
 }

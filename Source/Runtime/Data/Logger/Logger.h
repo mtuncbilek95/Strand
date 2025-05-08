@@ -31,6 +31,7 @@ namespace Flax
         ShaderCompiler,
         StandardLib,
         General,
+        Importer,
         Game
     };
 

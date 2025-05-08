@@ -35,6 +35,7 @@ namespace Flax
         m_loggers[LogType::ShaderCompiler] = create_logger("ShaderCompiler");
         m_loggers[LogType::StandardLib] = create_logger("StandardLib");
         m_loggers[LogType::General] = create_logger("General");
+        m_loggers[LogType::Importer] = create_logger("Importer");
         m_loggers[LogType::Game] = create_logger("Game");
     }
 

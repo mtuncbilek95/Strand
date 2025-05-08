@@ -83,6 +83,7 @@ Ref<T> MakeShared(Args&&... args)
 
 #include <thread>
 using Thread = std::thread;
+namespace CurrentThread = std::this_thread;
 
 #include <mutex>
 using Mutex = std::mutex;

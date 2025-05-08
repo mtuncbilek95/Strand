@@ -8,15 +8,12 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Data/Containers/Singleton.h>
+#include <Runtime/Resource/Geometry/Geometry.h>
 
 namespace Flax
 {
-    class VCmdBuffer;
-
-    class MeshStreamer : public Singleton<MeshStreamer>
+    struct MeshImporter
     {
-    public:
-
+        static Geometry ReadGeometry(const String& path);
     };
 }
