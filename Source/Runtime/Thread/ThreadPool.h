@@ -8,22 +8,26 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Thread/JobQueue.h>
 
 namespace Flax
 {
-    class VBuffer;
-
-    class MeshResource
+    class ThreadPool
     {
     public:
-        MeshResource() = default;
-        ~MeshResource() = default;
+        ThreadPool(usize count = 2);
+        ~ThreadPool();
 
-
-
-        operator Ref<VBuffer>() { return m_buffer; }
+        void EnqueueJob(const voidFunc& job);
+        void WaitForIdle();
 
     private:
-        Ref<VBuffer> m_buffer;
+        void WorkerLoop();
+
+    private:
+        Atomic<b8> m_isRunning;
+        Vector<Thread> m_threads;
+
+        JobQueue m_queue;
     };
 }

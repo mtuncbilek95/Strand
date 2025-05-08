@@ -8,22 +8,15 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Data/Containers/Singleton.h>
 
 namespace Flax
 {
-    class VBuffer;
+    class VCmdBuffer;
 
-    class MeshResource
+    class MeshStreamer : public Singleton<MeshStreamer>
     {
     public:
-        MeshResource() = default;
-        ~MeshResource() = default;
 
-
-
-        operator Ref<VBuffer>() { return m_buffer; }
-
-    private:
-        Ref<VBuffer> m_buffer;
     };
 }

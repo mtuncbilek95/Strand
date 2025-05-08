@@ -48,15 +48,6 @@ namespace FileSystem = std::filesystem;
 template<typename K, typename V, typename...Args>
 using HashMap = std::unordered_map<K, V, Args...>;
 
-#include <shared_mutex>
-using SharedMutex = std::shared_mutex;
-
-template<typename T>
-using SharedLock = std::shared_lock<T>;
-
-template<typename T>
-using UniqueLock = std::unique_lock<T>;
-
 template<typename T>
 using Hash = std::hash<T>;
 
@@ -89,6 +80,29 @@ Ref<T> MakeShared(Args&&... args)
 {
     return std::make_shared<T>(std::forward<Args>(args)...);
 }
+
+#include <thread>
+using Thread = std::thread;
+
+#include <mutex>
+using Mutex = std::mutex;
+using CondVar = std::condition_variable;
+
+template<typename T>
+using LockGuard = std::lock_guard<T>;
+
+#include <shared_mutex>
+using SharedMutex = std::shared_mutex;
+
+template<typename T>
+using SharedLock = std::shared_lock<T>;
+
+template<typename T>
+using UniqueLock = std::unique_lock<T>;
+
+#include <atomic>
+template<typename T>
+using Atomic = std::atomic<T>;
 
 #include <functional>
 template<typename T>

@@ -160,13 +160,13 @@ namespace Flax
 		m_computeQueueFamily.FillQueues(m_device);
 		m_transferQueueFamily.FillQueues(m_device);
 
-        //VmaAllocatorCreateInfo allocatorInfo = {};
-        //allocatorInfo.vulkanApiVersion = VK_API_VERSION_1_3;
-        //allocatorInfo.physicalDevice = m_adapter;
-        //allocatorInfo.device = m_device;
-        //allocatorInfo.instance = m_instance;
+        VmaAllocatorCreateInfo allocatorInfo = {};
+        allocatorInfo.vulkanApiVersion = VK_API_VERSION_1_3;
+        allocatorInfo.physicalDevice = m_adapter;
+        allocatorInfo.device = m_device;
+        allocatorInfo.instance = m_instance;
 
-        //VDebug::VkAssert(vmaCreateAllocator(&allocatorInfo, &m_allocator), "VDevice");
+        VDebug::VkAssert(vmaCreateAllocator(&allocatorInfo, &m_allocator), "VDevice");
 	}
 
 	VDevice::~VDevice()
