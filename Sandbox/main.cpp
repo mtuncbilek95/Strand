@@ -3,6 +3,8 @@
 #include <Runtime/Vulkan/Instance/VInstance.h>
 #include <Runtime/Vulkan/Device/VDevice.h>
 #include <Runtime/Vulkan/Shader/VShader.h>
+#include <Runtime/Vulkan/Buffer/VBuffer.h>
+#include <Runtime/Vulkan/Pipeline/VPipeline.h>
 #include <Runtime/Vulkan/Swapchain/VSwapchain.h>
 #include <Runtime/Vulkan/Image/VImage.h>
 #include <Runtime/Vulkan/Image/VImageView.h>
@@ -15,6 +17,7 @@
 #include <Runtime/Vulkan/Framebuffer/VFramebuffer.h>
 
 #include <Runtime/Resource/Importer/MeshImporter.h>
+#include "MeshObject.h"
 
 using namespace Flax;
 
@@ -38,6 +41,7 @@ int main()
 
     // ========== Necessary Queues ========== //
     auto vkGraphQueue = vkDevice.CreateQueue(VK_QUEUE_GRAPHICS_BIT);
+    auto vkTransQueue = vkDevice.CreateQueue(VK_QUEUE_TRANSFER_BIT);
 
     // ========== Swapchain ========== //
     SwapchainProps swcProp =
@@ -108,11 +112,42 @@ int main()
     };
     VFramebuffer vkFramebuffer(fbProp, &vkDevice);
 
+    // ========== Shader ========== //
+    ShaderProps vertProp =
+    {
+        .shaderPath = R"(D:\Projects\Flax\Sandbox\TestObj.vert)",
+        .includePath = "",
+        .entryPoint = "main",
+        .shaderStage = VK_SHADER_STAGE_VERTEX_BIT
+    };
+    auto vkVShader = MakeShared<VShader>(vertProp, &vkDevice);
+
+    ShaderProps fragProp =
+    {
+        .shaderPath = R"(D:\Projects\Flax\Sandbox\TestObj.frag)",
+        .includePath = "",
+        .entryPoint = "main",
+        .shaderStage = VK_SHADER_STAGE_FRAGMENT_BIT
+    };
+    auto vkFShader = MakeShared<VShader>(fragProp, &vkDevice);
+
     window.Show();
 
+    int test = 0;
+    bool yolo = false;
+
+    MeshObject meshObj;
+    
     while (window.IsActive())
     {
         window.ProcessEvents();
+
+        if (test++ > 250 && !yolo)
+        {
+            meshObj.Load(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)", vkTransQueue.get(), &vkDevice);
+            test = 0;
+            yolo = true;
+        }
 
         u32 index = vkSwapchain.AcquireNextImage(nullptr, &*vkFence);
         vkFence->Wait();

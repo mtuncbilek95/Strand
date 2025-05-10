@@ -119,4 +119,14 @@ namespace Flax
 
 		vkCmdExecuteCommands(m_buffer, cmds.size(), cmds.data());
 	}
+
+    void VCmdBuffer::CopyStageToBuffer(VBuffer* src, VBuffer* dst, const CopyBufferProps& copyProps) const
+    {
+        VkBufferCopy copyRegion = {};
+        copyRegion.srcOffset = 0;
+        copyRegion.dstOffset = 0;
+        copyRegion.size = src->GetTotalSize();
+
+        vkCmdCopyBuffer(m_buffer, src->GetVkBuffer(), dst->GetVkBuffer(), 1, &copyRegion);
+    }
 }

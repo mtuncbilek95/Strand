@@ -19,6 +19,11 @@ namespace Flax
 	class VBuffer;
     class VFramebuffer;
 
+    struct CopyBufferProps final
+    {
+
+    };
+
     struct RenderPassBeginParams
     {
         VRenderPass* renderPass;
@@ -57,6 +62,8 @@ namespace Flax
 		void DrawCommon(u32 vertexCount, u32 firstVertex, u32 firstInstance, u32 instanceCount) const;
 		void DrawIndexed(u32 indexCount, u32 indexOffset, u32 vertexOffset, u32 instanceOffset, u32 instanceCount) const;
 		void ExecuteCommands(const Vector<VCmdBuffer*>& buffers) const;
+
+        void CopyStageToBuffer(VBuffer* src, VBuffer* dst, const CopyBufferProps& copyProps) const;
 
 	private:
 		CmdBufferProps m_props;
