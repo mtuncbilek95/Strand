@@ -4,6 +4,7 @@
 #include <Runtime/Vulkan/Device/VDevice.h>
 #include <Runtime/Vulkan/Sync/VFence.h>
 #include <Runtime/Vulkan/Sync/VSemaphore.h>
+#include <Runtime/Vulkan/Command/VCmdBuffer.h>
 
 namespace Flax
 {
@@ -15,7 +16,7 @@ namespace Flax
 	{
 	}
 
-	/*void VQueue::Submit(const Vector<VCmdBuffer*>& cmds, const Vector<VSemaphore*>& waits, const Vector<VSemaphore*>& signals, VFence* fence, VkPipelineStageFlags flags) const
+	void VQueue::Submit(const Vector<VCmdBuffer*>& cmds, const Vector<VSemaphore*>& waits, const Vector<VSemaphore*>& signals, VFence* fence, VkPipelineStageFlags flags) const
 	{
 		Vector<VkCommandBuffer> cmdBuffers(cmds.size());
 		Vector<VkSemaphore> waitSems(waits.size());
@@ -41,5 +42,5 @@ namespace Flax
 		submitInfo.pSignalSemaphores = signalSems.data();
 
 		VDebug::VkAssert(vkQueueSubmit(m_props.m_queue, 1, &submitInfo, fence ? fence->GetVkFence() : VK_NULL_HANDLE), "VQueue");
-	}*/
+	}
 }

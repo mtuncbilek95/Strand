@@ -23,6 +23,7 @@ namespace Flax
     {
         VRenderPass* renderPass;
         VFramebuffer* framebuffer;
+        u32 frameIndex = 0;
         VkRect2D renderArea = {};
         Vector<VkClearValue> clearValues;
         VkSubpassContents contents = VK_SUBPASS_CONTENTS_INLINE;

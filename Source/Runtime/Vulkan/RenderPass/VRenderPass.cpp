@@ -29,35 +29,56 @@ namespace Flax
 
         for (const auto& subpass : desc.subpasses)
         {
-            VkSubpassDescription sp{};
-            sp.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-
-            const usize colorOffset = colorRefs.size();
-            for (u32 index : subpass.colorAttachmentIndices)
-                colorRefs.push_back({ index, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL });
-            sp.colorAttachmentCount = static_cast<u32>(subpass.colorAttachmentIndices.size());
-            sp.pColorAttachments = sp.colorAttachmentCount ? &colorRefs[colorOffset] : nullptr;
-
+            VkSubpassDescription vkSubpass{};
+            vkSubpass.pipelineBindPoint = subpass.bindPoint;
+            if (subpass.colorAttachmentIndices.size() > 0)
+            {
+                colorRefs.resize(subpass.colorAttachmentIndices.size());
+                for (u32 i = 0; i < subpass.colorAttachmentIndices.size(); i++)
+                {
+                    colorRefs[i].attachment = subpass.colorAttachmentIndices[i];
+                    colorRefs[i].layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                }
+                vkSubpass.colorAttachmentCount = static_cast<u32>(colorRefs.size());
+                vkSubpass.pColorAttachments = colorRefs.data();
+            }
             if (subpass.depthAttachmentIndex != u32_max)
             {
-                depthRefs.push_back({ subpass.depthAttachmentIndex, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL });
-                sp.pDepthStencilAttachment = &depthRefs.back();
+                depthRefs.resize(1);
+                depthRefs[0].attachment = subpass.depthAttachmentIndex;
+                depthRefs[0].layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+                vkSubpass.pDepthStencilAttachment = &depthRefs[0];
             }
-
-            const usize inputOffset = inputRefs.size();
-            for (u32 index : subpass.inputAttachmentIndices)
-                inputRefs.push_back({ index, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL });
-            sp.inputAttachmentCount = static_cast<u32>(subpass.inputAttachmentIndices.size());
-            sp.pInputAttachments = sp.inputAttachmentCount ? &inputRefs[inputOffset] : nullptr;
-
-            vkSubpasses.push_back(sp);
+            if (subpass.inputAttachmentIndices.size() > 0)
+            {
+                inputRefs.resize(subpass.inputAttachmentIndices.size());
+                for (u32 i = 0; i < subpass.inputAttachmentIndices.size(); i++)
+                {
+                    inputRefs[i].attachment = subpass.inputAttachmentIndices[i];
+                    inputRefs[i].layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                }
+                vkSubpass.inputAttachmentCount = static_cast<u32>(inputRefs.size());
+                vkSubpass.pInputAttachments = inputRefs.data();
+            }
+            vkSubpasses.push_back(vkSubpass);
         }
+
+        VkSubpassDependency dependency{};
+        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+        dependency.dstSubpass = 0;
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstStageMask = dependency.srcStageMask;
+        dependency.srcAccessMask = 0;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        dependency.dependencyFlags = 0;
 
         VkRenderPassCreateInfo info{ VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO };
         info.attachmentCount = static_cast<u32>(attachmentDescs.size());
         info.pAttachments = attachmentDescs.data();
         info.subpassCount = static_cast<u32>(vkSubpasses.size());
         info.pSubpasses = vkSubpasses.data();
+        info.dependencyCount = 1;
+        info.pDependencies = &dependency;
 
         VDebug::VkAssert(vkCreateRenderPass(m_rootDevice->GetVkDevice(), &info, nullptr, &m_renderPass), "VRenderPass");
     }

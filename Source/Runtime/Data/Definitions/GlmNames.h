@@ -17,6 +17,10 @@
 
 namespace Math
 {
+    constexpr f32 Pi = 3.14159265358979323846f;
+
+    using namespace glm;
+
     template<Arithmetic T>
     using Quat = glm::tquat<T>;
 

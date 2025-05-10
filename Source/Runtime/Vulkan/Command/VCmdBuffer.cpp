@@ -49,7 +49,7 @@ namespace Flax
     {
         VkRenderPassBeginInfo beginInfo = { VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO };
         beginInfo.renderPass = params.renderPass->GetVkRenderPass();
-        beginInfo.framebuffer = params.framebuffer->GetVkFramebuffer();
+        beginInfo.framebuffer = params.framebuffer->GetVkFramebuffer(params.frameIndex);
         beginInfo.renderArea = params.renderArea;
         beginInfo.clearValueCount = static_cast<u32>(params.clearValues.size());
         beginInfo.pClearValues = params.clearValues.data();
