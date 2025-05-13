@@ -129,9 +129,9 @@ namespace Flax
         T* Data() noexcept { return m_data; }
         const T* Data() const noexcept { return m_data; }
 
-        [[nodiscard]] b8 Empty() const noexcept { return m_size == 0; }
-        [[nodiscard]] usize Size() const noexcept { return m_size; }
-        [[nodiscard]] usize SizeInBytes() const noexcept { return m_size * sizeof(T); }
+        b8 Empty() const noexcept { return m_size == 0; }
+        usize Size() const noexcept { return m_size; }
+        usize SizeInBytes() const noexcept { return m_size * sizeof(T); }
 
         operator bool() const noexcept { return m_data; }
 

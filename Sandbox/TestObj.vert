@@ -5,7 +5,8 @@ layout(location = 0) in vec3 vInPos;
 layout(location = 1) in vec3 vInNormal;
 layout(location = 2) in vec3 vInTangent;
 layout(location = 3) in vec3 vInBinormal;
-layout(location = 4) in vec2 vInTexCoord;
+layout(location = 4) in vec4 vInColor;
+layout(location = 5) in vec2 vInTexCoord;
 
 layout(set = 0, binding = 0) uniform ModelMat
 {
@@ -26,7 +27,7 @@ layout(location = 4) out mat3 vOutTBN;
 
 void main()
 {
-	vec3 fragPos = (model.model * vec4(vInPos, 1.0)).xyz;
+	vec3 fragPos = (model.model * vec4(vInPos.x, -vInPos.y, vInPos.z, 1.0)).xyz;
 	vec3 fragNormal = inverse(transpose(mat3(model.model))) * vInNormal;
 	vec4 clipPos = camera.projection * camera.view * vec4(fragPos, 1.0);
 	
@@ -38,6 +39,7 @@ void main()
 	vec3 T = normalize(model.model * vec4(vInTangent, 0.0)).xyz;
 	vec3 B = normalize(model.model * vec4(vInBinormal, 0.0)).xyz;
 	vec3 N = normalize(fragNormal);
-
 	vOutTBN = mat3(T, B, N);
+
+	gl_Position = clipPos;
 }

@@ -18,9 +18,9 @@ namespace Flax
 
 	struct QueueProps final
 	{
-		u32 m_familyIndex;
-		VkQueueFlags m_flags;
-		VkQueue m_queue;
+		u32 familyIndex;
+		VkQueueFlags flags;
+		VkQueue queue;
 	};
 
 	class VQueue final : public VObject
@@ -29,9 +29,9 @@ namespace Flax
 		VQueue(const QueueProps& desc, VDevice* pDevice);
 		~VQueue() override final;
 
-		inline VkQueue GetVkQueue() const { return m_props.m_queue; }
-		inline u32 GetFamilyIndex() const { return m_props.m_familyIndex; }
-		inline VkQueueFlags GetFlags() const { return m_props.m_flags; }
+		inline VkQueue GetVkQueue() const { return m_props.queue; }
+		inline u32 GetFamilyIndex() const { return m_props.familyIndex; }
+		inline VkQueueFlags GetFlags() const { return m_props.flags; }
 
 		void Submit(const Vector<VCmdBuffer*>& cmds, const Vector<VSemaphore*>& waits, const Vector<VSemaphore*>& signals, VFence* fence, VkPipelineStageFlags flags) const;
 

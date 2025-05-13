@@ -24,7 +24,7 @@ namespace Flax
             return;
         }
 
-        glfwHideWindow(m_handle);
+        //glfwHideWindow(m_handle);
     }
 
     BasicWindow::~BasicWindow()

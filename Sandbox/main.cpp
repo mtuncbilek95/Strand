@@ -15,8 +15,11 @@
 #include <Runtime/Vulkan/Command/VCmdBuffer.h>
 #include <Runtime/Vulkan/RenderPass/VRenderPass.h>
 #include <Runtime/Vulkan/Framebuffer/VFramebuffer.h>
-
+#include <Runtime/Vulkan/Descriptor/VDescriptorSet.h>
+#include <Runtime/Vulkan/Descriptor/VDescriptorLayout.h>
+#include <Runtime/Vulkan/Descriptor/VDescriptorPool.h>
 #include <Runtime/Resource/Importer/MeshImporter.h>
+
 #include "MeshObject.h"
 
 using namespace Flax;
@@ -37,7 +40,7 @@ int main()
 
     // ========== Necessary Synchronization ========== //
     auto vkFence = MakeShared<VFence>(false, &vkDevice);
-    Vector<Ref<VSemaphore>> vkRenderSemaphores = { MakeShared<VSemaphore>(&vkDevice), MakeShared<VSemaphore>(&vkDevice) };
+    Vector<Ref<VSemaphore>> vkRenderSemaphores = { MakeShared<VSemaphore>(&vkDevice), MakeShared<VSemaphore>(&vkDevice), MakeShared<VSemaphore>(&vkDevice) };
 
     // ========== Necessary Queues ========== //
     auto vkGraphQueue = vkDevice.CreateQueue(VK_QUEUE_GRAPHICS_BIT);
@@ -46,6 +49,8 @@ int main()
     // ========== Swapchain ========== //
     SwapchainProps swcProp =
     {
+        .imageCount = 3,
+        .presentMode = VK_PRESENT_MODE_FIFO_KHR,
         .graphicsQueue = &*vkGraphQueue,
         .windowHandler = window.GetNativeWindow()
     };
@@ -57,7 +62,8 @@ int main()
         .imageSize = { 1600, 900, 1 },
         .imageFormat = VK_FORMAT_D32_SFLOAT,
         .imageUsage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
-        .memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY
+        .memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY,
+        .createFlags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT
     };
     VImage vkDepth = VImage(dptProp, &vkDevice);
 
@@ -76,12 +82,6 @@ int main()
         .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
     };
     VCmdPool loopPool(poolProp, &vkDevice);
-
-    CmdBufferProps tsfCmdProp =
-    {
-        .cmdLevel = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-        .pool = &loopPool
-    };
     auto loopBuffer = loopPool.CreateCmdBuffer();
 
     // ========== RenderPass ========== //
@@ -93,12 +93,12 @@ int main()
             { VK_FORMAT_R8G8B8A8_UNORM, AttachmentType::Color, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
             VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE },
             // Depth format
-            { VK_FORMAT_D32_SFLOAT, AttachmentType::Depth, VK_IMAGE_LAYOUT_UNDEFINED,
+            { VK_FORMAT_D32_SFLOAT, AttachmentType::Depth, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
             VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE }
         },
         .subpasses =
         {
-            { { 0 }, 1, {}, VK_PIPELINE_BIND_POINT_GRAPHICS }
+            { { 0 }, u32_max, {}, VK_PIPELINE_BIND_POINT_GRAPHICS }
         }
     };
     VRenderPass vkRenderPass = VRenderPass(rpProp, &vkDevice);
@@ -107,7 +107,7 @@ int main()
     FramebufferProps fbProp =
     {
         .passRef = &vkRenderPass,
-        .imageViewsPerFB = { { vkSwapchain.GetImageView(0), &*vkDepthView }, {vkSwapchain.GetImageView(1), &*vkDepthView }},
+        .imageViewsPerFB = { { vkSwapchain.GetImageView(0), &*vkDepthView }, {vkSwapchain.GetImageView(1), &*vkDepthView }, {vkSwapchain.GetImageView(2), &*vkDepthView }},
         .fbSize = { 1600, 900, 1 }
     };
     VFramebuffer vkFramebuffer(fbProp, &vkDevice);
@@ -131,23 +131,60 @@ int main()
     };
     auto vkFShader = MakeShared<VShader>(fragProp, &vkDevice);
 
-    window.Show();
+    // ========== Pipeline Descriptors ========== //
+    DescLayoutProps vkMeshDescLayoutProps =
+    {
+        .bindings =
+        {
+            { 0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT },
+            { 1, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT }
+        },
+        .createFlags = 0
+    };
+    auto vkMeshDescLayout = MakeShared<VDescLayout>(vkMeshDescLayoutProps, &vkDevice);
 
-    int test = 0;
-    bool yolo = false;
+    DescPoolProps vkDescPoolProps =
+    {
+        .poolSizes =
+        {
+            { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 2 }
+        },
+        .maxSets = 2
+    };
+    auto vkDescPool = MakeShared<VDescPool>(vkDescPoolProps, &vkDevice);
+    auto vkDescSet = MakeShared<VDescSet>(DescSetProps({ vkMeshDescLayout.get(), vkDescPool.get() }), &vkDevice);
 
-    MeshObject meshObj;
-    
+    // ========== Pipeline Layout ========== //
+    GraphicsPipelineProps vkMeshGrapProp =
+    {
+        .layouts = {&*vkMeshDescLayout},
+        .shaderStages = {&*vkVShader, &*vkFShader},
+        .inputAssembler = {VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST, false, {{VK_VERTEX_INPUT_RATE_VERTEX, {VK_FORMAT_R32G32B32_SFLOAT, VK_FORMAT_R32G32B32_SFLOAT,
+        VK_FORMAT_R32G32B32_SFLOAT, VK_FORMAT_R32G32B32_SFLOAT, VK_FORMAT_R32G32B32A32_SFLOAT, VK_FORMAT_R32G32_SFLOAT }}}},
+        .viewportState = {false, {0.f, 0.f, (f32)vkSwapchain.GetImageSize()[0], (f32)vkSwapchain.GetImageSize()[1], 0.f, 1.f},
+        false, {{0, 0}, {vkSwapchain.GetImageSize()[0], vkSwapchain.GetImageSize()[1]}}},
+        .rasterizerState = {true, 0.f, 1.f, 0.f, VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_CLOCKWISE},
+        .blendState = {true, VK_LOGIC_OP_COPY, {{false, VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ONE, VK_BLEND_OP_ADD,
+        VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ONE, VK_BLEND_OP_ADD, VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT}}},
+        .depthStencilState = {true, true, VK_COMPARE_OP_LESS, false, false, {}, {}, 0.f, 1.f},
+        .renderPass = &vkRenderPass
+    };
+    auto vkMeshPipeline = MakeShared<VPipeline>(vkMeshGrapProp, &vkDevice);
+
+    MeshObject meshObj(&vkDevice);
+    meshObj.Load(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)", vkTransQueue.get(), &vkDevice);
+
+    // Update Descriptor Set
+    vkDescSet->UpdateData(SetUpdateProps(
+        {
+            { {meshObj.GetModelBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 0},
+            { {meshObj.GetVPBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 1}
+        }));
+
+
     while (window.IsActive())
     {
         window.ProcessEvents();
-
-        if (test++ > 250 && !yolo)
-        {
-            meshObj.Load(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)", vkTransQueue.get(), &vkDevice);
-            test = 0;
-            yolo = true;
-        }
 
         u32 index = vkSwapchain.AcquireNextImage(nullptr, &*vkFence);
         vkFence->Wait();
@@ -164,11 +201,18 @@ int main()
             .contents = VK_SUBPASS_CONTENTS_INLINE
         };
         loopBuffer->BeginRenderPass(beginParams);
+
+        loopBuffer->BindPipeline(&*vkMeshPipeline);
+        loopBuffer->BindDescriptors({ &*vkDescSet });
+        loopBuffer->BindVertexBuffers({ meshObj.GetGpuBuffer() });
+        loopBuffer->DrawCommon(meshObj.GetVertexCount(), 0, 0, 1);
+
         loopBuffer->EndRenderPass();
         loopBuffer->EndRecord();
         vkGraphQueue->Submit({ &*loopBuffer }, {}, { &*vkRenderSemaphores[index] }, nullptr, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
 
         vkSwapchain.Present({ &*vkRenderSemaphores[index] });
+        vkDevice.WaitForIdle();
     }
 
     vkDevice.WaitForIdle();

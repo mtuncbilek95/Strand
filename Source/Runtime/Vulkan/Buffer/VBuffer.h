@@ -32,6 +32,7 @@ namespace Flax
         inline u8* GetMappedData() const { return static_cast<u8*>(m_allocationInfo.pMappedData); }
 
         void Update(const ReadArray<u8>& buffer, usize offset = 0) const;
+        void Update(void* buffer, usize size, usize offset = 0) const;
 
     private:
         BufferProps m_props;

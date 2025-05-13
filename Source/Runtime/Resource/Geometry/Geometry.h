@@ -49,7 +49,7 @@ namespace Flax
 		void AddTexCoord(Math::Vec2f uv, u32 index);
 		void AddIndex(u32 indexVal, u32 vecIndex);
 		void AddIndex(const Vector<u32>& indices);
-
+        
 		ReadArray<u8> GenerateRawVertex(VertexRawDataFlags flags) const;
         ReadArray<u8> GenerateRawIndex() const;
 

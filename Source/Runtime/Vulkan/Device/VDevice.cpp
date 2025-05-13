@@ -185,25 +185,25 @@ namespace Flax
 		case VK_QUEUE_GRAPHICS_BIT:
 		{
 			QueueProps prop = {};
-			prop.m_familyIndex = m_graphicsQueueFamily.m_familyIndex;
-			prop.m_flags = queueType;
-			prop.m_queue = m_graphicsQueueFamily.GetFreeQueue();
+			prop.familyIndex = m_graphicsQueueFamily.m_familyIndex;
+			prop.flags = queueType;
+			prop.queue = m_graphicsQueueFamily.GetFreeQueue();
 			return MakeShared<VQueue>(prop, this);
 		}
 		case VK_QUEUE_COMPUTE_BIT:
 		{
 			QueueProps prop = {};
-			prop.m_familyIndex = m_computeQueueFamily.m_familyIndex;
-			prop.m_flags = queueType;
-			prop.m_queue = m_computeQueueFamily.GetFreeQueue();
+			prop.familyIndex = m_computeQueueFamily.m_familyIndex;
+			prop.flags = queueType;
+			prop.queue = m_computeQueueFamily.GetFreeQueue();
 			return MakeShared<VQueue>(prop, this);
 		}
 		case VK_QUEUE_TRANSFER_BIT:
 		{
 			QueueProps prop = {};
-			prop.m_familyIndex = m_transferQueueFamily.m_familyIndex;
-			prop.m_flags = queueType;
-			prop.m_queue = m_transferQueueFamily.GetFreeQueue();
+			prop.familyIndex = m_transferQueueFamily.m_familyIndex;
+			prop.flags = queueType;
+			prop.queue = m_transferQueueFamily.GetFreeQueue();
 			return MakeShared<VQueue>(prop, this);
 		}
 		default:

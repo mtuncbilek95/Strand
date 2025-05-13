@@ -124,7 +124,7 @@ namespace Flax
 		createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 		createInfo.preTransform = surfaceCap.currentTransform;
 		createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-		createInfo.presentMode = m_props.presentMode;
+		createInfo.presentMode = VK_PRESENT_MODE_FIFO_KHR;
 		createInfo.clipped = VK_FALSE;
 		createInfo.oldSwapchain = VK_NULL_HANDLE;
 		VDebug::VkAssert(vkCreateSwapchainKHR(m_rootDevice->GetVkDevice(), &createInfo, nullptr, &m_swapchain), "VSwapchain");

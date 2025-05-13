@@ -95,8 +95,8 @@ namespace Flax
 
         usize totalSize = vertexStride * m_vertexData.size();
 
-        u8* rawData = new u8[totalSize];
-        u8* writePtr = rawData;
+        ReadArray<u8> returnData(totalSize);
+        u8* writePtr = returnData.Data();
 
         for (const auto& vertex : m_vertexData)
         {
@@ -138,8 +138,6 @@ namespace Flax
             }
         }
 
-        ReadArray<u8> returnData(rawData, totalSize);
-        delete[] rawData;
         return returnData;
 	}
 

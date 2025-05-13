@@ -33,11 +33,31 @@ namespace Flax
 
     void VBuffer::Update(const ReadArray<u8>& buffer, usize offset) const
     {
+        void* mappedData = m_allocationInfo.pMappedData;
+        bool shouldUnmap = false;
+
+        if (mappedData == nullptr)
+        {
+            VDebug::VkAssert(vmaMapMemory(m_rootDevice->GetVkAllocator(), m_allocation, &mappedData), "VBuffer");
+            shouldUnmap = true;
+        }
+
+        std::memcpy(static_cast<u8*>(mappedData) + offset, buffer.Data(), buffer.SizeInBytes());
+
+        if (shouldUnmap)
+        {
+            vmaUnmapMemory(m_rootDevice->GetVkAllocator(), m_allocation);
+        }
+
+        // vmaFlushAllocation(m_rootDevice->GetVkAllocator(), m_allocation, offset, buffer.SizeInBytes());
+    }
+
+    void VBuffer::Update(void* buffer, usize size, usize offset) const
+    {
         if (!m_allocationInfo.pMappedData)
             return;
 
-        std::memcpy(static_cast<u8*>(m_allocationInfo.pMappedData) + offset, buffer.Data(), buffer.SizeInBytes());
-
-        vmaFlushAllocation(m_rootDevice->GetVkAllocator(), m_allocation, offset, buffer.SizeInBytes());
+        std::memcpy(static_cast<u8*>(m_allocationInfo.pMappedData) + offset, buffer, size);
+        //vmaFlushAllocation(m_rootDevice->GetVkAllocator(), m_allocation, offset, size);
     }
 }

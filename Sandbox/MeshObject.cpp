@@ -12,7 +12,7 @@
 
 namespace Flax
 {
-    MeshObject::MeshObject()
+    MeshObject::MeshObject(VDevice* pDevice) : m_isReady(false)
     {
     }
 
@@ -22,51 +22,84 @@ namespace Flax
 
     void MeshObject::Load(const String& path, VQueue* tQueue, VDevice* pDevice)
     {
-        std::thread testThread([this, tQueue, pDevice]()
-            {
-                Geometry data = MeshImporter::ReadGeometry(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)");
+        m_modelMatrix = Math::identity<Math::Mat4f>();
+        m_vpStruct.viewMatrix = Math::identity<Math::Mat4f>();
+        m_vpStruct.projMatrix = Math::identity<Math::Mat4f>();
 
-                BufferProps bufferProps =
-                {
-                    .sizeInBytes = data.GetVertexCount() * sizeof(Vertex) + data.GetIndexCount() * sizeof(u32),
-                    .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-                    .memUsage = VMA_MEMORY_USAGE_CPU_ONLY,
-                    .allocFlags = 0
-                };
-                VBuffer stage(bufferProps, pDevice);
+        m_vpStruct.viewMatrix = Math::lookAt(
+            Math::Vec3f(0.0f, 0.0f, 5.f),
+            Math::Vec3f(0.0f, 0.0f, 0.0f),
+            Math::Vec3f(0.0f, -1.0f, 0.0f)
+        );
+        m_vpStruct.projMatrix = Math::perspective(Math::radians(45.0f), 1600.0f / 900.0f, 0.1f, 100.0f);
 
-                stage.Update(data.GenerateRawVertex(VertexRawDataFlags::All | ~VertexRawDataFlags::Color));
-                stage.Update(data.GenerateRawIndex(), data.GetVertexCount() * sizeof(Vertex));
+        BufferProps modelProp =
+        {
+            .sizeInBytes = sizeof(Math::Mat4f),
+            .usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+            .memUsage = VMA_MEMORY_USAGE_CPU_TO_GPU,
+            .allocFlags = VMA_ALLOCATION_CREATE_MAPPED_BIT
+        };
+        m_modelBuffer = MakeShared<VBuffer>(modelProp, pDevice);
+        m_modelBuffer->Update(&m_modelMatrix, sizeof(Math::Mat4f));
 
-                BufferProps gpuBufferProps =
-                {
-                    .sizeInBytes = stage.GetTotalSize(),
-                    .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-                    .memUsage = VMA_MEMORY_USAGE_GPU_ONLY,
-                    .allocFlags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT
-                };
-                m_GpuBuffer = MakeShared<VBuffer>(gpuBufferProps, pDevice);
+        BufferProps vpProp =
+        {
+            .sizeInBytes = sizeof(VPStruct),
+            .usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+            .memUsage = VMA_MEMORY_USAGE_CPU_TO_GPU,
+            .allocFlags = VMA_ALLOCATION_CREATE_MAPPED_BIT
+        };
+        m_vpBuffer = MakeShared<VBuffer>(vpProp, pDevice);
+        m_vpBuffer->Update(&m_vpStruct, sizeof(VPStruct));
 
-                CmdPoolProps cmdPoolProps =
-                {
-                    .queue = tQueue,
-                    .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
-                };
-                VCmdPool cmdPool(cmdPoolProps, pDevice);
-                auto cmdBuffer = cmdPool.CreateCmdBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+        Geometry data = MeshImporter::ReadGeometry(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)");
 
-                cmdBuffer->BeginRecord(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
-                cmdBuffer->CopyStageToBuffer(&stage, &*m_GpuBuffer, CopyBufferProps());
-                cmdBuffer->EndRecord();
+        m_vertexCount = data.GetVertexCount();
 
-                VFence vkTransferFence(false, pDevice);
-                tQueue->Submit({ &*cmdBuffer }, {}, {}, &vkTransferFence, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+        BufferProps bufferProps =
+        {
+            .sizeInBytes = data.GetVertexCount() * sizeof(Vertex),
+            .usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+            .memUsage = VMA_MEMORY_USAGE_CPU_ONLY,
+            .allocFlags = VMA_ALLOCATION_CREATE_MAPPED_BIT
+        };
 
-                vkTransferFence.Wait();
-                vkTransferFence.Reset();
-            });
+        //LockGuard<Mutex> lock(mutex);
+        VBuffer stage(bufferProps, pDevice);
 
-        testThread.detach();
+        stage.Update(data.GenerateRawVertex(VertexRawDataFlags::All));
+
+        BufferProps gpuBufferProps =
+        {
+            .sizeInBytes = stage.GetTotalSize(),
+            .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+            .memUsage = VMA_MEMORY_USAGE_GPU_ONLY,
+            .allocFlags = 0
+        };
+        m_GpuBuffer = MakeShared<VBuffer>(gpuBufferProps, pDevice);
+
+        CmdPoolProps cmdPoolProps =
+        {
+            .queue = tQueue,
+            .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
+        };
+        VCmdPool cmdPool(cmdPoolProps, pDevice);
+        auto cmdBuffer = cmdPool.CreateCmdBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+
+        cmdBuffer->BeginRecord(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+        cmdBuffer->CopyStageToBuffer(&stage, &*m_GpuBuffer, CopyBufferProps());
+        cmdBuffer->EndRecord();
+
+        VFence vkTransferFence(false, pDevice);
+
+
+        tQueue->Submit({ &*cmdBuffer }, {}, {}, &vkTransferFence, VK_PIPELINE_STAGE_TRANSFER_BIT);
+
+        vkTransferFence.Wait();
+        vkTransferFence.Reset();
+
+        m_isReady = true;
     }
 
     void MeshObject::Unload()
