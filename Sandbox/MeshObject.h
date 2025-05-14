@@ -28,7 +28,7 @@ namespace Flax
         ~MeshObject();
 
         // Test for loading during runtime
-        void Load(const String& path, VQueue* tQueue, VDevice* pDevice);
+        void Load(const String& path, VQueue* tQueue, VDevice* pDevice, Mutex* mutex);
         // Test for killing during runtime
         void Unload();
 

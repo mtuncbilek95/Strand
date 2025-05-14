@@ -26,7 +26,7 @@ using namespace Flax;
 
 int main()
 {
-    BasicWindow window;
+    Ref<BasicWindow> window = MakeShared<BasicWindow>();
 
     InstanceProps instanceProps =
     {
@@ -35,16 +35,16 @@ int main()
         .appVersion = { 1, 0, 0 },
         .engineVersion = { 1, 0, 0 }
     };
-    VInstance vkInstance(instanceProps);
-    VDevice vkDevice(DeviceProps(), &vkInstance);
+    Ref<VInstance> vkInstance = MakeShared<VInstance>(instanceProps);
+    Ref<VDevice> vkDevice = MakeShared<VDevice>(DeviceProps(), &*vkInstance);
 
     // ========== Necessary Synchronization ========== //
-    auto vkFence = MakeShared<VFence>(false, &vkDevice);
-    Vector<Ref<VSemaphore>> vkRenderSemaphores = { MakeShared<VSemaphore>(&vkDevice), MakeShared<VSemaphore>(&vkDevice), MakeShared<VSemaphore>(&vkDevice) };
+    Ref<VFence> vkFence = MakeShared<VFence>(false, &*vkDevice);
+    Vector<Ref<VSemaphore>> vkRenderSemaphores = { MakeShared<VSemaphore>(&*vkDevice), MakeShared<VSemaphore>(&*vkDevice), MakeShared<VSemaphore>(&*vkDevice) };
 
     // ========== Necessary Queues ========== //
-    auto vkGraphQueue = vkDevice.CreateQueue(VK_QUEUE_GRAPHICS_BIT);
-    auto vkTransQueue = vkDevice.CreateQueue(VK_QUEUE_TRANSFER_BIT);
+    auto vkGraphQueue = vkDevice->CreateQueue(VK_QUEUE_GRAPHICS_BIT);
+    auto vkTransQueue = vkDevice->CreateQueue(VK_QUEUE_TRANSFER_BIT);
 
     // ========== Swapchain ========== //
     SwapchainProps swcProp =
@@ -52,9 +52,9 @@ int main()
         .imageCount = 3,
         .presentMode = VK_PRESENT_MODE_FIFO_KHR,
         .graphicsQueue = &*vkGraphQueue,
-        .windowHandler = window.GetNativeWindow()
+        .windowHandler = window->GetNativeWindow()
     };
-    VSwapchain vkSwapchain(swcProp, &vkDevice);
+    Ref<VSwapchain> vkSwapchain = MakeShared<VSwapchain>(swcProp, &*vkDevice);
 
     // ========== Depth Buffer ========== //
     ImageProps dptProp =
@@ -65,7 +65,7 @@ int main()
         .memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY,
         .createFlags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT
     };
-    VImage vkDepth = VImage(dptProp, &vkDevice);
+    Ref<VImage> vkDepth = MakeShared<VImage>(dptProp, &*vkDevice);
 
     ViewProps dptViewProp =
     {
@@ -73,7 +73,7 @@ int main()
         .baseMipLevel = 0,
         .baseArrayLayer = 0
     };
-    auto vkDepthView = vkDepth.CreateView(dptViewProp);
+    Ref<VImageView> vkDepthView = vkDepth->CreateView(dptViewProp);
 
     // ========== Singular Command Buffer ========== //
     CmdPoolProps poolProp =
@@ -81,8 +81,8 @@ int main()
         .queue = &*vkGraphQueue,
         .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
     };
-    VCmdPool loopPool(poolProp, &vkDevice);
-    auto loopBuffer = loopPool.CreateCmdBuffer();
+    Ref<VCmdPool> loopPool = MakeShared<VCmdPool>(poolProp, &*vkDevice);
+    Ref<VCmdBuffer> loopBuffer = loopPool->CreateCmdBuffer();
 
     // ========== RenderPass ========== //
     RenderPassProps rpProp =
@@ -98,19 +98,19 @@ int main()
         },
         .subpasses =
         {
-            { { 0 }, u32_max, {}, VK_PIPELINE_BIND_POINT_GRAPHICS }
+            { { 0 }, 1, {}, VK_PIPELINE_BIND_POINT_GRAPHICS }
         }
     };
-    VRenderPass vkRenderPass = VRenderPass(rpProp, &vkDevice);
+    Ref<VRenderPass> vkRenderPass = MakeShared<VRenderPass>(rpProp, &*vkDevice);
 
     // ========== Framebuffer ========== //
     FramebufferProps fbProp =
     {
-        .passRef = &vkRenderPass,
-        .imageViewsPerFB = { { vkSwapchain.GetImageView(0), &*vkDepthView }, {vkSwapchain.GetImageView(1), &*vkDepthView }, {vkSwapchain.GetImageView(2), &*vkDepthView }},
+        .passRef = &*vkRenderPass,
+        .imageViewsPerFB = { { vkSwapchain->GetImageView(0), &*vkDepthView }, {vkSwapchain->GetImageView(1), &*vkDepthView }, {vkSwapchain->GetImageView(2), &*vkDepthView }},
         .fbSize = { 1600, 900, 1 }
     };
-    VFramebuffer vkFramebuffer(fbProp, &vkDevice);
+    Ref<VFramebuffer> vkFramebuffer = MakeShared<VFramebuffer>(fbProp, &*vkDevice);
 
     // ========== Shader ========== //
     ShaderProps vertProp =
@@ -120,7 +120,7 @@ int main()
         .entryPoint = "main",
         .shaderStage = VK_SHADER_STAGE_VERTEX_BIT
     };
-    auto vkVShader = MakeShared<VShader>(vertProp, &vkDevice);
+    Ref<VShader> vkVShader = MakeShared<VShader>(vertProp, &*vkDevice);
 
     ShaderProps fragProp =
     {
@@ -129,7 +129,7 @@ int main()
         .entryPoint = "main",
         .shaderStage = VK_SHADER_STAGE_FRAGMENT_BIT
     };
-    auto vkFShader = MakeShared<VShader>(fragProp, &vkDevice);
+    Ref<VShader> vkFShader = MakeShared<VShader>(fragProp, &*vkDevice);
 
     // ========== Pipeline Descriptors ========== //
     DescLayoutProps vkMeshDescLayoutProps =
@@ -141,7 +141,7 @@ int main()
         },
         .createFlags = 0
     };
-    auto vkMeshDescLayout = MakeShared<VDescLayout>(vkMeshDescLayoutProps, &vkDevice);
+    Ref<VDescLayout> vkMeshDescLayout = MakeShared<VDescLayout>(vkMeshDescLayoutProps, &*vkDevice);
 
     DescPoolProps vkDescPoolProps =
     {
@@ -151,8 +151,8 @@ int main()
         },
         .maxSets = 2
     };
-    auto vkDescPool = MakeShared<VDescPool>(vkDescPoolProps, &vkDevice);
-    auto vkDescSet = MakeShared<VDescSet>(DescSetProps({ vkMeshDescLayout.get(), vkDescPool.get() }), &vkDevice);
+    Ref<VDescPool> vkDescPool = MakeShared<VDescPool>(vkDescPoolProps, &*vkDevice);
+    Ref<VDescSet> vkDescSet = MakeShared<VDescSet>(DescSetProps({ vkMeshDescLayout.get(), vkDescPool.get() }), &*vkDevice);
 
     // ========== Pipeline Layout ========== //
     GraphicsPipelineProps vkMeshGrapProp =
@@ -161,63 +161,71 @@ int main()
         .shaderStages = {&*vkVShader, &*vkFShader},
         .inputAssembler = {VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST, false, {{VK_VERTEX_INPUT_RATE_VERTEX, {VK_FORMAT_R32G32B32_SFLOAT, VK_FORMAT_R32G32B32_SFLOAT,
         VK_FORMAT_R32G32B32_SFLOAT, VK_FORMAT_R32G32B32_SFLOAT, VK_FORMAT_R32G32B32A32_SFLOAT, VK_FORMAT_R32G32_SFLOAT }}}},
-        .viewportState = {false, {0.f, 0.f, (f32)vkSwapchain.GetImageSize()[0], (f32)vkSwapchain.GetImageSize()[1], 0.f, 1.f},
-        false, {{0, 0}, {vkSwapchain.GetImageSize()[0], vkSwapchain.GetImageSize()[1]}}},
+        .viewportState = {false, {0.f, 0.f, (f32)vkSwapchain->GetImageSize()[0], (f32)vkSwapchain->GetImageSize()[1], 0.f, 1.f},
+        false, {{0, 0}, {vkSwapchain->GetImageSize()[0], vkSwapchain->GetImageSize()[1]}}},
         .rasterizerState = {true, 0.f, 1.f, 0.f, VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_CLOCKWISE},
         .blendState = {true, VK_LOGIC_OP_COPY, {{false, VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ONE, VK_BLEND_OP_ADD,
         VK_BLEND_FACTOR_ZERO, VK_BLEND_FACTOR_ONE, VK_BLEND_OP_ADD, VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT}}},
         .depthStencilState = {true, true, VK_COMPARE_OP_LESS, false, false, {}, {}, 0.f, 1.f},
-        .renderPass = &vkRenderPass
+        .renderPass = &*vkRenderPass
     };
-    auto vkMeshPipeline = MakeShared<VPipeline>(vkMeshGrapProp, &vkDevice);
+    Ref<VPipeline> vkMeshPipeline = MakeShared<VPipeline>(vkMeshGrapProp, &*vkDevice);
 
-    MeshObject meshObj(&vkDevice);
-    meshObj.Load(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)", vkTransQueue.get(), &vkDevice);
+    MeshObject meshObj(&*vkDevice);
+    Mutex vkMutex;
 
-    // Update Descriptor Set
-    vkDescSet->UpdateData(SetUpdateProps(
-        {
-            { {meshObj.GetModelBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 0},
-            { {meshObj.GetVPBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 1}
-        }));
+    int counter = 0;
 
-
-    while (window.IsActive())
+    while (window->IsActive())
     {
-        window.ProcessEvents();
+        if (counter++ > 3000 && !meshObj.IsReady())
+        {
+            meshObj.Load(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)", vkTransQueue.get(), &*vkDevice, &vkMutex);
+            vkDescSet->UpdateData(SetUpdateProps(
+                {
+                    { {meshObj.GetModelBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 0},
+                    { {meshObj.GetVPBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 1}
+                }));
+        }
 
-        u32 index = vkSwapchain.AcquireNextImage(nullptr, &*vkFence);
+        window->ProcessEvents();
+
+        u32 index = vkSwapchain->AcquireNextImage(nullptr, &*vkFence);
         vkFence->Wait();
         vkFence->Reset();
 
         loopBuffer->BeginRecord();
         RenderPassBeginParams beginParams =
         {
-            .renderPass = &vkRenderPass,
-            .framebuffer = &vkFramebuffer,
+            .renderPass = &*vkRenderPass,
+            .framebuffer = &*vkFramebuffer,
             .frameIndex = index,
             .renderArea = { { 0, 0 }, { 1600, 900 } },
             .clearValues = { { 1.0f, 0.0f, 0.0f, 1.0f }, { 1.0f, 0 } },
             .contents = VK_SUBPASS_CONTENTS_INLINE
         };
+        LockGuard<Mutex> lock(vkMutex);
         loopBuffer->BeginRenderPass(beginParams);
 
-        loopBuffer->BindPipeline(&*vkMeshPipeline);
-        loopBuffer->BindDescriptors({ &*vkDescSet });
-        loopBuffer->BindVertexBuffers({ meshObj.GetGpuBuffer() });
-        loopBuffer->DrawCommon(meshObj.GetVertexCount(), 0, 0, 1);
+        if (meshObj.IsReady())
+        {
+            loopBuffer->BindPipeline(&*vkMeshPipeline);
+            loopBuffer->BindDescriptors({ &*vkDescSet });
+            loopBuffer->BindVertexBuffers({ meshObj.GetGpuBuffer() });
+            loopBuffer->DrawCommon(meshObj.GetVertexCount(), 0, 0, 1);
+        }
 
         loopBuffer->EndRenderPass();
         loopBuffer->EndRecord();
         vkGraphQueue->Submit({ &*loopBuffer }, {}, { &*vkRenderSemaphores[index] }, nullptr, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
 
-        vkSwapchain.Present({ &*vkRenderSemaphores[index] });
-        vkDevice.WaitForIdle();
+        vkSwapchain->Present({ &*vkRenderSemaphores[index] });
+        vkDevice->WaitForIdle();
     }
 
-    vkDevice.WaitForIdle();
+    vkDevice->WaitForIdle();
 
-    window.Hide();
+    window->Hide();
 
     return 0;
 }

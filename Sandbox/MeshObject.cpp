@@ -20,7 +20,7 @@ namespace Flax
     {
     }
 
-    void MeshObject::Load(const String& path, VQueue* tQueue, VDevice* pDevice)
+    void MeshObject::Load(const String& path, VQueue* tQueue, VDevice* pDevice, Mutex* mutex)
     {
         m_modelMatrix = Math::identity<Math::Mat4f>();
         m_vpStruct.viewMatrix = Math::identity<Math::Mat4f>();
@@ -40,6 +40,7 @@ namespace Flax
             .memUsage = VMA_MEMORY_USAGE_CPU_TO_GPU,
             .allocFlags = VMA_ALLOCATION_CREATE_MAPPED_BIT
         };
+        LockGuard<Mutex> lock(*mutex);
         m_modelBuffer = MakeShared<VBuffer>(modelProp, pDevice);
         m_modelBuffer->Update(&m_modelMatrix, sizeof(Math::Mat4f));
 
@@ -53,53 +54,57 @@ namespace Flax
         m_vpBuffer = MakeShared<VBuffer>(vpProp, pDevice);
         m_vpBuffer->Update(&m_vpStruct, sizeof(VPStruct));
 
-        Geometry data = MeshImporter::ReadGeometry(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)");
+        Thread t([this, tQueue, pDevice, mutex]()
+            {
+                Geometry data = MeshImporter::ReadGeometry(R"(D:\Projects\glTF-Sample-Models\2.0\SciFiHelmet\glTF\SciFiHelmet.gltf)");
 
-        m_vertexCount = data.GetVertexCount();
+                m_vertexCount = data.GetVertexCount();
 
-        BufferProps bufferProps =
-        {
-            .sizeInBytes = data.GetVertexCount() * sizeof(Vertex),
-            .usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-            .memUsage = VMA_MEMORY_USAGE_CPU_ONLY,
-            .allocFlags = VMA_ALLOCATION_CREATE_MAPPED_BIT
-        };
+                BufferProps bufferProps =
+                {
+                    .sizeInBytes = data.GetVertexCount() * sizeof(Vertex),
+                    .usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+                    .memUsage = VMA_MEMORY_USAGE_CPU_ONLY,
+                    .allocFlags = VMA_ALLOCATION_CREATE_MAPPED_BIT
+                };
 
-        //LockGuard<Mutex> lock(mutex);
-        VBuffer stage(bufferProps, pDevice);
+                //LockGuard<Mutex> lock(mutex);
+                VBuffer stage(bufferProps, pDevice);
 
-        stage.Update(data.GenerateRawVertex(VertexRawDataFlags::All));
+                stage.Update(data.GenerateRawVertex(VertexRawDataFlags::All));
 
-        BufferProps gpuBufferProps =
-        {
-            .sizeInBytes = stage.GetTotalSize(),
-            .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-            .memUsage = VMA_MEMORY_USAGE_GPU_ONLY,
-            .allocFlags = 0
-        };
-        m_GpuBuffer = MakeShared<VBuffer>(gpuBufferProps, pDevice);
+                BufferProps gpuBufferProps =
+                {
+                    .sizeInBytes = stage.GetTotalSize(),
+                    .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+                    .memUsage = VMA_MEMORY_USAGE_GPU_ONLY,
+                    .allocFlags = 0
+                };
+                m_GpuBuffer = MakeShared<VBuffer>(gpuBufferProps, pDevice);
 
-        CmdPoolProps cmdPoolProps =
-        {
-            .queue = tQueue,
-            .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
-        };
-        VCmdPool cmdPool(cmdPoolProps, pDevice);
-        auto cmdBuffer = cmdPool.CreateCmdBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+                CmdPoolProps cmdPoolProps =
+                {
+                    .queue = tQueue,
+                    .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
+                };
+                VCmdPool cmdPool(cmdPoolProps, pDevice);
+                auto cmdBuffer = cmdPool.CreateCmdBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
-        cmdBuffer->BeginRecord(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
-        cmdBuffer->CopyStageToBuffer(&stage, &*m_GpuBuffer, CopyBufferProps());
-        cmdBuffer->EndRecord();
+                cmdBuffer->BeginRecord(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+                cmdBuffer->CopyStageToBuffer(&stage, &*m_GpuBuffer, CopyBufferProps());
+                cmdBuffer->EndRecord();
 
-        VFence vkTransferFence(false, pDevice);
+                VFence vkTransferFence(false, pDevice);
 
+                tQueue->Submit({ &*cmdBuffer }, {}, {}, &vkTransferFence, VK_PIPELINE_STAGE_TRANSFER_BIT);
 
-        tQueue->Submit({ &*cmdBuffer }, {}, {}, &vkTransferFence, VK_PIPELINE_STAGE_TRANSFER_BIT);
+                vkTransferFence.Wait();
+                vkTransferFence.Reset();
 
-        vkTransferFence.Wait();
-        vkTransferFence.Reset();
+                m_isReady = true;
+            });
 
-        m_isReady = true;
+        t.detach();
     }
 
     void MeshObject::Unload()

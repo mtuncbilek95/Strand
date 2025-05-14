@@ -21,9 +21,11 @@ layout(set = 0, binding = 1) uniform CamDetail
 
 layout(location = 0) out vec3 vOutFragPos;
 layout(location = 1) out vec3 vOutClipPos;
-layout(location = 2) out vec3 vOutFragNorm;
-layout(location = 3) out vec2 vOutTexCoord;
-layout(location = 4) out mat3 vOutTBN;
+layout(location = 2) out vec3 vTBN0;
+layout(location = 3) out vec3 vTBN1;
+layout(location = 4) out vec3 vTBN2;
+layout(location = 5) out vec4 vOutColor;
+layout(location = 6) out vec2 vOutTexCoord;
 
 void main()
 {
@@ -33,13 +35,13 @@ void main()
 	
 	vOutFragPos = fragPos;
 	vOutClipPos = clipPos.xyz / clipPos.w;
-	vOutFragNorm = fragNormal;
 	vOutTexCoord = vInTexCoord;
 
-	vec3 T = normalize(model.model * vec4(vInTangent, 0.0)).xyz;
-	vec3 B = normalize(model.model * vec4(vInBinormal, 0.0)).xyz;
-	vec3 N = normalize(fragNormal);
-	vOutTBN = mat3(T, B, N);
+	vTBN0 = normalize(model.model * vec4(vInTangent, 0.0)).xyz;
+	vTBN1 = normalize(model.model * vec4(vInBinormal, 0.0)).xyz;
+	vTBN2 = normalize(fragNormal);
 
 	gl_Position = clipPos;
+
+	vOutColor = vInColor;
 }
