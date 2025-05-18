@@ -52,6 +52,9 @@ namespace Flax
 		inline VkFormat GetFormat() const { return m_props.imgFormat; }
 		inline VkImageUsageFlags GetUsage() const { return m_props.imgUsage; }
 
+		inline usize GetOffset() const { return m_allocationInfo.offset; }
+		inline usize GetSizeInBytes() const { return m_allocationInfo.size; }
+
 		inline VmaMemoryUsage GetMemoryUsage() const { return m_props.memUsage; }
 		inline VmaAllocationCreateFlags GetMemoryFlags() const { return m_props.memFlags; }
 

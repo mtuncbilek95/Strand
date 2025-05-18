@@ -35,6 +35,24 @@ namespace Flax
 	VImage::VImage(const ImageProps& desc, VDevice* pDevice) : VObject(pDevice), m_props(desc),
 		m_isSwapchain(false)
 	{
+        VkImageCreateInfo imageInfo = {};
+        imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+        imageInfo.imageType = desc.imgType;
+        imageInfo.extent = { desc.imgSize.x , desc.imgSize.y, desc.imgSize.z };
+        imageInfo.mipLevels = desc.mipLevels;
+        imageInfo.arrayLayers = desc.arrayLayers;
+        imageInfo.format = desc.imgFormat;
+        imageInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+        imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        imageInfo.usage = desc.imgUsage;
+        imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+        imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+        VmaAllocationCreateInfo allocInfo = {};
+        allocInfo.usage = desc.memUsage;
+        allocInfo.flags = desc.memFlags;
+
+        VDebug::VkAssert(vmaCreateImage(GetRoot()->GetVkAllocator(), &imageInfo, &allocInfo, &m_image, &m_allocation, &m_allocationInfo), "VImage");
 	}
 
 	VImage::VImage(const ImageProps& desc, VkImage handle, VDevice* pDevice) : VObject(pDevice), m_props(desc),

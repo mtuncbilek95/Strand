@@ -28,7 +28,7 @@ set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS OFF CACHE BOOL "CMake Suppresse Developer 
 # ----------------- PREPROCESSOR DEFINITIONS -----------------
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 # ------------------------------------------------------------
-
+ 
 # --------------------- SETUP CONFIG -------------------------
 include(SetupConfig)
 SetupConfig()

@@ -1,11 +1,39 @@
 #include "BasicWindow.h"
 
+#include <Runtime/Input/InputDispatcher.h>
+
 #include <GLFW/glfw3.h>
 #include <glfw/glfw3native.h>
 
 namespace Flax
 {
     GLFWwindow* gWindow = nullptr;
+
+    static void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos)
+    {
+        InputDispatcher* dispatcher = (InputDispatcher*)glfwGetWindowUserPointer(window);
+
+        InputEvent evt;
+        evt.eventType = WindowPollEvent::MouseMoved;
+        evt.payload.mouseX = (int)xpos;
+        evt.payload.mouseY = (int)ypos;
+
+        dispatcher->DispatchEvent(evt);
+    }
+
+    static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+    {
+        InputDispatcher* dispatcher = (InputDispatcher*)glfwGetWindowUserPointer(window);
+
+        InputEvent evt;
+        if (action == GLFW_PRESS)
+            evt.eventType = WindowPollEvent::MousePressed;
+        else if (action == GLFW_RELEASE)
+            evt.eventType = WindowPollEvent::MouseReleased;
+
+        evt.payload.mouseButton = static_cast<MouseButton>(1 << button);
+        dispatcher->DispatchEvent(evt);
+    }
 
     BasicWindow::BasicWindow(const WindowProps &desc) : m_props(desc)
     {
@@ -27,10 +55,13 @@ namespace Flax
             glfwTerminate();
             exit(-1);
         }
-        glfwSetWindowUserPointer(gWindow, this);
+        glfwSetWindowUserPointer(gWindow, &m_dispatcher);
 
         m_windowHandle = (void*)glfwGetWin32Window(gWindow);
         m_windowInstance = nullptr;
+
+        glfwSetCursorPosCallback(gWindow, MouseMoveCallback);
+        glfwSetMouseButtonCallback(gWindow, MouseButtonCallback);
     }
 
     BasicWindow::~BasicWindow()
