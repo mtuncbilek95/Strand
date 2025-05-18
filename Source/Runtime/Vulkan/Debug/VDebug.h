@@ -8,6 +8,7 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+
 #include <vulkan/vulkan.h>
 
 namespace Flax

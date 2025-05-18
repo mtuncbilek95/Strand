@@ -12,22 +12,22 @@
 
 namespace Flax
 {
-    class ThreadPool
-    {
-    public:
-        ThreadPool(usize count = 2);
-        ~ThreadPool();
+	class ThreadPool
+	{
+	public:
+		ThreadPool(usize count = 2);
+		~ThreadPool();
 
-        void EnqueueJob(const voidFunc& job);
-        void WaitForIdle();
+		void EnqueueJob(const voidFunc& job);
+		void WaitForIdle();
 
-    private:
-        void WorkerLoop();
+	private:
+		void WorkerLoop();
 
-    private:
-        Atomic<b8> m_isRunning;
-        Vector<Thread> m_threads;
+	private:
+		Atomic<b8> m_isRunning;
+		Vector<Thread> m_threads;
 
-        JobQueue m_queue;
-    };
+		JobQueue m_queue;
+	};
 }

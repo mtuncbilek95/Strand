@@ -8,38 +8,55 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-
-#include <GLFW/glfw3.h>
+#include <Runtime/Data/Containers/IObject.h>
 
 namespace Flax
 {
-    class BasicWindow
+    enum class WindowMode
+    {
+        Windowed,
+        Fullscreen,
+        Borderless
+    };
+
+    struct WindowProps final
+    {
+        String windowName;
+        Math::Vec2u windowSize;
+        WindowMode windowMode;
+    };
+
+    class BasicWindow : public IObject
     {
     public:
-        BasicWindow();
+        BasicWindow(const WindowProps& desc);
         ~BasicWindow();
-
-        void ProcessEvents();
 
         void Show();
         void Hide();
+        void ProcessEvents();
+
+        void SetTitle(const String& title);
+        void SetSize(const Math::Vec2u& size);
         
-        Math::Vec2u GetSize() const { return m_windowSize; }
-        Math::Vec2u GetPos() const { return m_windowPos; }
+        void SetWindowMode(WindowMode mode);
 
-        b8 IsActive() const { return m_active; }
-        b8 IsVisible() const { return m_visible; }
+        const String& GetTitle() const { return m_props.windowName; }
+        const Math::Vec2u& GetSize() const { return m_props.windowSize; }
+        WindowMode GetWindowMode() const { return m_props.windowMode; }
 
-        void* GetNativeWindow() const;
+        b8 IsHidden() const { return m_hidden; }
+        b8 IsActive() const;
+
+        void* GetHandle() const { return m_windowHandle; }
+        void* GetInstance() const { return m_windowInstance; }
 
     private:
-        GLFWwindow* m_handle;
+        WindowProps m_props;
 
-        Math::Vec2u m_windowSize;
-        Math::Vec2u m_windowPos;
+        void* m_windowHandle = nullptr;
+        void* m_windowInstance = nullptr;
 
-        b8 m_active;
-        b8 m_visible;
+        b8 m_hidden = true;
     };
 }
-

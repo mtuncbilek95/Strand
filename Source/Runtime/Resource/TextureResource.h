@@ -11,12 +11,12 @@
 
 namespace Flax
 {
-    class TextureResource
-    {
-    public:
-        TextureResource() = default;
-        ~TextureResource() = default;
+	class TextureResource
+	{
+	public:
+		TextureResource() = default;
+		~TextureResource() = default;
 
-    private:
-    };
+	private:
+	};
 }

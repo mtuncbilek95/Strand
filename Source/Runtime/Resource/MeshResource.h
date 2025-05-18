@@ -11,20 +11,20 @@
 
 namespace Flax
 {
-    class VBuffer;
+	class VBuffer;
 
-    class MeshResource
-    {
-    public:
-        MeshResource() = default;
-        ~MeshResource() = default;
+	class MeshResource
+	{
+	public:
+		MeshResource() = default;
+		~MeshResource() = default;
 
-        void Load(const String& path);
-        void Unload();
+		void Load(const String& path);
+		void Unload();
 
-        operator Ref<VBuffer>() { return m_GpuBuffer; }
+		operator Ref<VBuffer>() { return m_GpuBuffer; }
 
-    private:
-        Ref<VBuffer> m_GpuBuffer;
-    };
+	private:
+		Ref<VBuffer> m_GpuBuffer;
+	};
 }

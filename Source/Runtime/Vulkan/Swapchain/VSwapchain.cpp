@@ -15,22 +15,22 @@ namespace Flax
 		VkCommandPoolCreateInfo poolInfo = { VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO };
 		poolInfo.queueFamilyIndex = desc.graphicsQueue->GetFamilyIndex();
 		poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-		VDebug::VkAssert(vkCreateCommandPool(m_rootDevice->GetVkDevice(), &poolInfo, nullptr, &m_barrierPool), "VSwapchain");
+		VDebug::VkAssert(vkCreateCommandPool(GetRoot()->GetVkDevice(), &poolInfo, nullptr, &m_barrierPool), "VSwapchain");
 
 		VkCommandBufferAllocateInfo bufferInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO };
 		bufferInfo.commandBufferCount = 1;
 		bufferInfo.commandPool = m_barrierPool;
 		bufferInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-		VDebug::VkAssert(vkAllocateCommandBuffers(m_rootDevice->GetVkDevice(), &bufferInfo, &m_barrierBuffer), "VSwapchain");
+		VDebug::VkAssert(vkAllocateCommandBuffers(GetRoot()->GetVkDevice(), &bufferInfo, &m_barrierBuffer), "VSwapchain");
 
 		VkFenceCreateInfo fenceInfo = { VK_STRUCTURE_TYPE_FENCE_CREATE_INFO };
-		VDebug::VkAssert(vkCreateFence(m_rootDevice->GetVkDevice(), &fenceInfo, nullptr, &m_barrierFence), "VSwapchain");
+		VDebug::VkAssert(vkCreateFence(GetRoot()->GetVkDevice(), &fenceInfo, nullptr, &m_barrierFence), "VSwapchain");
 
 #if defined(FLAX_WINDOWS)
 		VkWin32SurfaceCreateInfoKHR surfaceInfo = { VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR };
 		surfaceInfo.hinstance = GetModuleHandle(nullptr);
-        surfaceInfo.hwnd = (HWND)desc.windowHandler;
-		VDebug::VkAssert(vkCreateWin32SurfaceKHR(m_rootDevice->GetVkInstance(), &surfaceInfo, nullptr, &m_surface), "VSwapchain");
+		surfaceInfo.hwnd = (HWND)desc.windowHandler;
+		VDebug::VkAssert(vkCreateWin32SurfaceKHR(GetRoot()->GetVkInstance(), &surfaceInfo, nullptr, &m_surface), "VSwapchain");
 #endif
 
 		Resize(desc.imageSize);
@@ -38,41 +38,41 @@ namespace Flax
 
 	VSwapchain::~VSwapchain()
 	{
-        if (m_barrierFence != VK_NULL_HANDLE)
-        {
-            vkDestroyFence(m_rootDevice->GetVkDevice(), m_barrierFence, nullptr);
-            m_barrierFence = VK_NULL_HANDLE;
-        }
+		if (m_barrierFence != VK_NULL_HANDLE)
+		{
+			vkDestroyFence(GetRoot()->GetVkDevice(), m_barrierFence, nullptr);
+			m_barrierFence = VK_NULL_HANDLE;
+		}
 
-        if (m_barrierBuffer != VK_NULL_HANDLE)
-        {
-            vkFreeCommandBuffers(m_rootDevice->GetVkDevice(), m_barrierPool, 1, &m_barrierBuffer);
-            m_barrierBuffer = VK_NULL_HANDLE;
-        }
+		if (m_barrierBuffer != VK_NULL_HANDLE)
+		{
+			vkFreeCommandBuffers(GetRoot()->GetVkDevice(), m_barrierPool, 1, &m_barrierBuffer);
+			m_barrierBuffer = VK_NULL_HANDLE;
+		}
 
-        if (m_barrierPool != VK_NULL_HANDLE)
-        {
-            vkDestroyCommandPool(m_rootDevice->GetVkDevice(), m_barrierPool, nullptr);
-            m_barrierPool = VK_NULL_HANDLE;
-        }
+		if (m_barrierPool != VK_NULL_HANDLE)
+		{
+			vkDestroyCommandPool(GetRoot()->GetVkDevice(), m_barrierPool, nullptr);
+			m_barrierPool = VK_NULL_HANDLE;
+		}
 
-        m_images.clear();
-        m_images.shrink_to_fit();
+		m_images.clear();
+		m_images.shrink_to_fit();
 
-        m_views.clear();
-        m_views.shrink_to_fit();
+		m_views.clear();
+		m_views.shrink_to_fit();
 
-        if (m_swapchain != VK_NULL_HANDLE)
-        {
-            vkDestroySwapchainKHR(m_rootDevice->GetVkDevice(), m_swapchain, nullptr);
-            m_swapchain = VK_NULL_HANDLE;
-        }
+		if (m_swapchain != VK_NULL_HANDLE)
+		{
+			vkDestroySwapchainKHR(GetRoot()->GetVkDevice(), m_swapchain, nullptr);
+			m_swapchain = VK_NULL_HANDLE;
+		}
 
-        if (m_surface != VK_NULL_HANDLE)
-        {
-            vkDestroySurfaceKHR(m_rootDevice->GetVkInstance(), m_surface, nullptr);
-            m_surface = VK_NULL_HANDLE;
-        }
+		if (m_surface != VK_NULL_HANDLE)
+		{
+			vkDestroySurfaceKHR(GetRoot()->GetVkInstance(), m_surface, nullptr);
+			m_surface = VK_NULL_HANDLE;
+		}
 	}
 
 	void VSwapchain::Resize(const Math::Vec2u& newSize)
@@ -87,15 +87,15 @@ namespace Flax
 		m_views.shrink_to_fit();
 
 		if (m_swapchain != VK_NULL_HANDLE)
-			vkDestroySwapchainKHR(m_rootDevice->GetVkDevice(), m_swapchain, nullptr);
+			vkDestroySwapchainKHR(GetRoot()->GetVkDevice(), m_swapchain, nullptr);
 
 		VkSurfaceCapabilitiesKHR surfaceCap = {};
-		VDebug::VkAssert(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_rootDevice->GetVkAdapter(), m_surface, &surfaceCap), "VSwapchain");
+		VDebug::VkAssert(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(GetRoot()->GetVkAdapter(), m_surface, &surfaceCap), "VSwapchain");
 
 		u32 formatCount = 0;
-		VDebug::VkAssert(vkGetPhysicalDeviceSurfaceFormatsKHR(m_rootDevice->GetVkAdapter(), m_surface, &formatCount, nullptr), "VSwapchain");
+		VDebug::VkAssert(vkGetPhysicalDeviceSurfaceFormatsKHR(GetRoot()->GetVkAdapter(), m_surface, &formatCount, nullptr), "VSwapchain");
 		Vector<VkSurfaceFormatKHR> formats(formatCount);
-		VDebug::VkAssert(vkGetPhysicalDeviceSurfaceFormatsKHR(m_rootDevice->GetVkAdapter(), m_surface, &formatCount, formats.data()), "VSwapchain");
+		VDebug::VkAssert(vkGetPhysicalDeviceSurfaceFormatsKHR(GetRoot()->GetVkAdapter(), m_surface, &formatCount, formats.data()), "VSwapchain");
 
 		if (surfaceCap.maxImageExtent.width > 0 && surfaceCap.maxImageExtent.height > 0)
 		{
@@ -106,9 +106,9 @@ namespace Flax
 		}
 
 		u32 presentCount = 0;
-		VDebug::VkAssert(vkGetPhysicalDeviceSurfacePresentModesKHR(m_rootDevice->GetVkAdapter(), m_surface, &presentCount, nullptr), "VSwapchain");
+		VDebug::VkAssert(vkGetPhysicalDeviceSurfacePresentModesKHR(GetRoot()->GetVkAdapter(), m_surface, &presentCount, nullptr), "VSwapchain");
 		Vector<VkPresentModeKHR> presentModes(presentCount);
-		VDebug::VkAssert(vkGetPhysicalDeviceSurfacePresentModesKHR(m_rootDevice->GetVkAdapter(), m_surface, &presentCount, presentModes.data()), "VSwapchain");
+		VDebug::VkAssert(vkGetPhysicalDeviceSurfacePresentModesKHR(GetRoot()->GetVkAdapter(), m_surface, &presentCount, presentModes.data()), "VSwapchain");
 
 		if (std::find(presentModes.begin(), presentModes.end(), m_props.presentMode) == presentModes.end())
 			m_props.presentMode = VK_PRESENT_MODE_FIFO_KHR;
@@ -124,28 +124,28 @@ namespace Flax
 		createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 		createInfo.preTransform = surfaceCap.currentTransform;
 		createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-		createInfo.presentMode = VK_PRESENT_MODE_FIFO_KHR;
+		createInfo.presentMode = m_props.presentMode;
 		createInfo.clipped = VK_FALSE;
 		createInfo.oldSwapchain = VK_NULL_HANDLE;
-		VDebug::VkAssert(vkCreateSwapchainKHR(m_rootDevice->GetVkDevice(), &createInfo, nullptr, &m_swapchain), "VSwapchain");
+		VDebug::VkAssert(vkCreateSwapchainKHR(GetRoot()->GetVkDevice(), &createInfo, nullptr, &m_swapchain), "VSwapchain");
 
 		u32 imageCount;
-		VDebug::VkAssert(vkGetSwapchainImagesKHR(m_rootDevice->GetVkDevice(), m_swapchain, &imageCount, nullptr), "VSwapchain");
+		VDebug::VkAssert(vkGetSwapchainImagesKHR(GetRoot()->GetVkDevice(), m_swapchain, &imageCount, nullptr), "VSwapchain");
 
 		Vector<VkImage> images(imageCount);
-		VDebug::VkAssert(vkGetSwapchainImagesKHR(m_rootDevice->GetVkDevice(), m_swapchain, &imageCount, images.data()), "VSwapchain");
+		VDebug::VkAssert(vkGetSwapchainImagesKHR(GetRoot()->GetVkDevice(), m_swapchain, &imageCount, images.data()), "VSwapchain");
 
 		for (u32 i = 0; i < imageCount; ++i)
 		{
 			ImageProps imageProps = {};
-			imageProps.imageType = VK_IMAGE_TYPE_2D;
-			imageProps.imageSize = { m_props.imageSize.x, m_props.imageSize.y, 1 };
+			imageProps.imgType = VK_IMAGE_TYPE_2D;
+			imageProps.imgSize = { m_props.imageSize.x, m_props.imageSize.y, 1 };
 			imageProps.mipLevels = 1;
 			imageProps.arrayLayers = 1;
-			imageProps.imageFormat = m_props.format;
-			imageProps.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+			imageProps.imgFormat = m_props.format;
+			imageProps.imgUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-			m_images.push_back(MakeShared<VImage>(imageProps, images[i], m_rootDevice));
+			m_images.push_back(NewRef<VImage>(imageProps, images[i], GetRoot()));
 
 			ViewProps viewProps = {};
 			m_views.push_back(m_images[i]->CreateView(viewProps));
@@ -183,14 +183,14 @@ namespace Flax
 			VDebug::VkAssert(vkQueueSubmit(m_props.graphicsQueue->GetVkQueue(), 1, &submitInfo, m_barrierFence), "VSwapchain");
 			VDebug::VkAssert(vkQueueWaitIdle(m_props.graphicsQueue->GetVkQueue()), "VSwapchain");
 
-			vkWaitForFences(m_rootDevice->GetVkDevice(), 1, &m_barrierFence, VK_TRUE, u64_max);
-			vkResetFences(m_rootDevice->GetVkDevice(), 1, &m_barrierFence);
+			vkWaitForFences(GetRoot()->GetVkDevice(), 1, &m_barrierFence, VK_TRUE, u64_max);
+			vkResetFences(GetRoot()->GetVkDevice(), 1, &m_barrierFence);
 		}
 	}
 
 	u32 VSwapchain::AcquireNextImage(VSemaphore* semaphore, VFence* fence)
 	{
-		VDebug::VkAssert(vkAcquireNextImageKHR(m_rootDevice->GetVkDevice(), m_swapchain,
+		VDebug::VkAssert(vkAcquireNextImageKHR(GetRoot()->GetVkDevice(), m_swapchain,
 			UINT64_MAX, semaphore ? semaphore->GetVkSemaphore() : VK_NULL_HANDLE, fence ? fence->GetVkFence() : VK_NULL_HANDLE, &m_requestedIndex), "VulkanSwapchain");
 
 		return m_requestedIndex;

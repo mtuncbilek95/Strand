@@ -14,25 +14,17 @@ namespace Flax
 {
 	class VCmdPool;
 	class VRenderPass;
-	class VPipeline;
-	class VDescSet;
-	class VBuffer;
-    class VFramebuffer;
+	class VFramebuffer;
 
-    struct CopyBufferProps final
-    {
-
-    };
-
-    struct RenderPassBeginParams
-    {
-        VRenderPass* renderPass;
-        VFramebuffer* framebuffer;
-        u32 frameIndex = 0;
-        VkRect2D renderArea = {};
-        Vector<VkClearValue> clearValues;
-        VkSubpassContents contents = VK_SUBPASS_CONTENTS_INLINE;
-    };
+	struct RenderPassBeginParams
+	{
+		VRenderPass* renderPass;
+		VFramebuffer* framebuffer;
+		u32 frameIndex = 0;
+		Math::Vec2u renderArea = {};
+		Vector<VkClearValue> clearValues;
+		VkSubpassContents contents = VK_SUBPASS_CONTENTS_INLINE;
+	};
 
 	struct CmdBufferProps final
 	{
@@ -54,24 +46,12 @@ namespace Flax
 		void BeginRenderPass(const RenderPassBeginParams& params);
 		void EndRenderPass();
 
-		void BindPipeline(VPipeline* pPipeline);
-		void BindDescriptors(const Vector<VDescSet*>& descriptors) const;
-		void BindVertexBuffers(const Vector<VBuffer*>& buffers) const;
-		void BindIndexBuffer(VBuffer* buffer, usize offset) const;
-
-		void DrawCommon(u32 vertexCount, u32 firstVertex, u32 firstInstance, u32 instanceCount) const;
-		void DrawIndexed(u32 indexCount, u32 indexOffset, u32 vertexOffset, u32 instanceOffset, u32 instanceCount) const;
-		void ExecuteCommands(const Vector<VCmdBuffer*>& buffers) const;
-
-        void CopyStageToBuffer(VBuffer* src, VBuffer* dst, const CopyBufferProps& copyProps) const;
-
 	private:
 		CmdBufferProps m_props;
 
 		VkCommandBuffer m_buffer;
 
 		VRenderPass* m_boundRenderPass;
-        VFramebuffer* m_boundFramebuffer;
-		VPipeline* m_boundPipeline;
+		VFramebuffer* m_boundFramebuffer;
 	};
 }

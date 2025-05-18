@@ -8,22 +8,28 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Data/Containers/IObject.h>
+
 #include <vulkan/vulkan.h>
 #include <vma/vk_mem_alloc.h>
+#include <Volk/volk.h>
 
 namespace Flax
 {
 	class VDevice;
+	class VCmdBuffer;
+	class VSemaphore;
+	class VFence;
 
-	class VObject
+	class VObject : public IObject
 	{
 	public:
-		VObject(VDevice* pDevice);
-		virtual ~VObject() = default;
+		VObject(VDevice* pDevice) : m_rootDevice(pDevice) {}
+		virtual ~VObject() override = default;
 
-		VDevice* GetVkDevice() const { return m_rootDevice; }
+		inline VDevice* GetRoot() const { return m_rootDevice; }
 
-	protected:
+	private:
 		VDevice* m_rootDevice;
 	};
 }

@@ -70,13 +70,13 @@ template<typename T>
 using InitList = std::initializer_list<T>;
 
 template<typename T, typename... Args>
-Owned<T> MakeOwned(Args&&... args)
+Owned<T> NewOwn(Args&&... args)
 {
     return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
 template<typename T, typename... Args>
-Ref<T> MakeShared(Args&&... args)
+Ref<T> NewRef(Args&&... args)
 {
     return std::make_shared<T>(std::forward<Args>(args)...);
 }

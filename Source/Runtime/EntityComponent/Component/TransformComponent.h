@@ -12,10 +12,10 @@
 
 namespace Flax
 {
-    struct TransformComponent : Component<TransformComponent>
-    {
-        Math::Vec3f position = { 0.f, 0.f, 0.f };
-        Math::Quatf rotation = { 0.f, 0.f, 0.f, 1.f };
-        Math::Vec3f scale = { 1.f, 1.f, 1.f };
-    };
+	struct TransformComponent : Component<TransformComponent>
+	{
+		Math::Vec3f position = { 0.f, 0.f, 0.f };
+		Math::Quatf rotation = { 0.f, 0.f, 0.f, 1.f };
+		Math::Vec3f scale = { 1.f, 1.f, 1.f };
+	};
 }

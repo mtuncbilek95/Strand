@@ -4,15 +4,15 @@
 
 namespace Flax
 {
-    Owned<IComponentBase> CreateTransformComponent()
-    {
-        return MakeOwned<TransformComponent>();
-    }
+	Owned<IComponentBase> CreateTransformComponent()
+	{
+		return NewOwn<TransformComponent>();
+	}
 
-    struct TransformComponentRegister
-    {
-        TransformComponentRegister() { GlobalComponentResolver::RegisterComponent("TransformComponent", CreateTransformComponent); }
-    };
+	struct TransformComponentRegister
+	{
+		TransformComponentRegister() { GlobalComponentResolver::RegisterComponent("TransformComponent", CreateTransformComponent); }
+	};
 
-    static TransformComponentRegister gbTransformComponentRegistration;
+	static TransformComponentRegister gbTransformComponentRegistration;
 }

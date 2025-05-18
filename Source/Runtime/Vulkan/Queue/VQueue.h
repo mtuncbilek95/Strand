@@ -12,10 +12,6 @@
 
 namespace Flax
 {
-	class VCmdBuffer;
-	class VSemaphore;
-	class VFence;
-
 	struct QueueProps final
 	{
 		u32 familyIndex;
@@ -29,11 +25,12 @@ namespace Flax
 		VQueue(const QueueProps& desc, VDevice* pDevice);
 		~VQueue() override final;
 
+		void WaitQueueIdle() const;
+		void Submit(const Vector<VCmdBuffer*>& cmds, const Vector<VSemaphore*>& waits, const Vector<VSemaphore*>& signals, VFence* fence, VkPipelineStageFlags flags) const;
+
 		inline VkQueue GetVkQueue() const { return m_props.queue; }
 		inline u32 GetFamilyIndex() const { return m_props.familyIndex; }
 		inline VkQueueFlags GetFlags() const { return m_props.flags; }
-
-		void Submit(const Vector<VCmdBuffer*>& cmds, const Vector<VSemaphore*>& waits, const Vector<VSemaphore*>& signals, VFence* fence, VkPipelineStageFlags flags) const;
 
 	private:
 		QueueProps m_props;

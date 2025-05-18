@@ -14,54 +14,54 @@
 
 namespace Flax
 {
-    struct IComponentBase
-    {
-        virtual ~IComponentBase() = default;
+	struct IComponentBase
+	{
+		virtual ~IComponentBase() = default;
 
-        virtual String GetName() const = 0;
-        virtual entt::id_type GetTypeId() const = 0;
-    };
+		virtual String GetName() const = 0;
+		virtual entt::id_type GetTypeId() const = 0;
+	};
 
-    template<typename T>
-    struct Component : IComponentBase
-    {
-        static String StaticName() 
-        {
-            StringView fullName = entt::type_name<T>().value();
+	template<typename T>
+	struct Component : IComponentBase
+	{
+		static String StaticName()
+		{
+			StringView fullName = entt::type_name<T>().value();
 
-            usize pos = fullName.rfind("::");
-            if (pos != StringView::npos)
-                return String(fullName.substr(pos + 2));
-            else
-                return String(fullName);
-        }
+			usize pos = fullName.rfind("::");
+			if (pos != StringView::npos)
+				return String(fullName.substr(pos + 2));
+			else
+				return String(fullName);
+		}
 
-        static entt::id_type StaticTypeId() { return entt::type_id<T>().hash(); }
+		static entt::id_type StaticTypeId() { return entt::type_id<T>().hash(); }
 
-        String GetName() const override { return StaticName(); }
-        entt::id_type GetTypeId() const override { return StaticTypeId(); }
-    };
+		String GetName() const override { return StaticName(); }
+		entt::id_type GetTypeId() const override { return StaticTypeId(); }
+	};
 
-    class GlobalComponentResolver
-    {
-    public:
-        using RegisterFunc = function<Owned<IComponentBase>()>;
+	class GlobalComponentResolver
+	{
+	public:
+		using RegisterFunc = function<Owned<IComponentBase>()>;
 
-        static void RegisterComponent(const String& compName, RegisterFunc fn) { GetList().insert({ compName, fn }); }
-        static Owned<IComponentBase> CreateComponent(const String& compName)
-        {
-            auto it = GetList().find(compName);
-            if (it != GetList().end())
-                return it->second();
+		static void RegisterComponent(const String& compName, RegisterFunc fn) { GetList().insert({ compName, fn }); }
+		static Owned<IComponentBase> CreateComponent(const String& compName)
+		{
+			auto it = GetList().find(compName);
+			if (it != GetList().end())
+				return it->second();
 
-            Log::Error(LogType::ECS, "Component {} not found", compName);
-            return nullptr;
-        }
-    private:
-        static HashMap<String, RegisterFunc>& GetList() 
-        {
-            static HashMap<String, RegisterFunc> list;
-            return list;
-        }
-    };
+			Log::Error(LogType::ECS, "Component {} not found", compName);
+			return nullptr;
+		}
+	private:
+		static HashMap<String, RegisterFunc>& GetList()
+		{
+			static HashMap<String, RegisterFunc> list;
+			return list;
+		}
+	};
 }

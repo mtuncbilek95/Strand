@@ -9,25 +9,25 @@ namespace Flax
 	{
 		VkFenceCreateInfo fenceInfo = { VK_STRUCTURE_TYPE_FENCE_CREATE_INFO };
 		fenceInfo.flags = signalled ? VK_FENCE_CREATE_SIGNALED_BIT : 0;
-		VDebug::VkAssert(vkCreateFence(m_rootDevice->GetVkDevice(), &fenceInfo, nullptr, &m_fence), "VFence");
+		VDebug::VkAssert(vkCreateFence(GetRoot()->GetVkDevice(), &fenceInfo, nullptr, &m_fence), "VFence");
 	}
 
 	VFence::~VFence()
 	{
         if (m_fence != VK_NULL_HANDLE)
         {
-            vkDestroyFence(m_rootDevice->GetVkDevice(), m_fence, nullptr);
+            vkDestroyFence(GetRoot()->GetVkDevice(), m_fence, nullptr);
             m_fence = VK_NULL_HANDLE;
         }
 	}
 
 	void VFence::Wait() const
 	{
-		vkWaitForFences(m_rootDevice->GetVkDevice(), 1, &m_fence, VK_TRUE, u64_max);
+		VDebug::VkAssert(vkWaitForFences(GetRoot()->GetVkDevice(), 1, &m_fence, VK_TRUE, u64_max), "VFence");
 	}
 
 	void VFence::Reset() const
 	{
-		vkResetFences(m_rootDevice->GetVkDevice(), 1, &m_fence);
+		VDebug::VkAssert(vkResetFences(GetRoot()->GetVkDevice(), 1, &m_fence), "VFence");
 	}
 }

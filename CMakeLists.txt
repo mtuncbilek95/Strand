@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
 
 # ----------------------- PROJECT NAME -----------------------
 project("Flax")
@@ -11,6 +11,10 @@ endif()
 
 if(POLICY CMP0077)
 	cmake_policy(SET CMP0077 NEW)
+endif()
+
+if(POLICY CMP0175)
+	cmake_policy(SET CMP0175 NEW)
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
@@ -40,5 +44,5 @@ endif()
 add_subdirectory("External")
 add_subdirectory("Source/Runtime")
 
-add_subdirectory("Sandbox")
+add_subdirectory("Flaxbox")
 # ------------------------------------------------------------

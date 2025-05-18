@@ -13,25 +13,25 @@
 
 namespace Flax
 {
-    class ComponentResolver;
-    class Entity;
-    class IComponentBase;
+	class ComponentResolver;
+	class Entity;
+	class IComponentBase;
 
-    class Scene
-    {
-        friend class ComponentResolver;
+	class Scene
+	{
+		friend class ComponentResolver;
 
-    public:
-        Scene();
-        ~Scene();
+	public:
+		Scene();
+		~Scene();
 
-        Ref<Entity> AddEntity(Ref<Entity> parent = nullptr);
-        void RemoveEntity(Ref<Entity> entity);
-        
-        entt::registry& GetRegistry() { return m_registry; }
+		Ref<Entity> AddEntity(Ref<Entity> parent = nullptr);
+		void RemoveEntity(Ref<Entity> entity);
 
-    private:
-        entt::registry m_registry;
-        Ref<Entity> m_rootEntity;
-    };
+		entt::registry& GetRegistry() { return m_registry; }
+
+	private:
+		entt::registry m_registry;
+		Ref<Entity> m_rootEntity;
+	};
 }

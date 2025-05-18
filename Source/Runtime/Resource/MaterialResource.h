@@ -11,12 +11,12 @@
 
 namespace Flax
 {
-    class MaterialResource
-    {
-    public:
-        MaterialResource() = default;
-        ~MaterialResource() = default;
+	class MaterialResource
+	{
+	public:
+		MaterialResource() = default;
+		~MaterialResource() = default;
 
-    private:
-    };
+	private:
+	};
 }

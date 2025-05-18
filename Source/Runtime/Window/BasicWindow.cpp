@@ -1,71 +1,108 @@
 #include "BasicWindow.h"
 
-#include <GLFW/glfw3native.h>
+#include <GLFW/glfw3.h>
+#include <glfw/glfw3native.h>
 
 namespace Flax
 {
-    BasicWindow::BasicWindow() : m_handle(nullptr), m_windowSize(1600, 900), m_windowPos(0, 0),
-        m_active(true), m_visible(false)
+    GLFWwindow* gWindow = nullptr;
+
+    BasicWindow::BasicWindow(const WindowProps &desc) : m_props(desc)
     {
         if (!glfwInit())
         {
-            LoggerWorker::Get().LogError(LogType::Window, "Failed to initialize GLFW");
-            return;
+            Log::Critical(LogType::Window, "Failed to initialize GLFW");
+            exit(-1);
         }
 
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
 
-        m_handle = glfwCreateWindow(m_windowSize.x, m_windowSize.y, "Flax", nullptr, nullptr);
-        if (!m_handle)
+        gWindow = glfwCreateWindow(m_props.windowSize.x, m_props.windowSize.y, m_props.windowName.c_str(), nullptr, nullptr);
+        if (!gWindow)
         {
-            LoggerWorker::Get().LogError(LogType::Window, "Failed to create GLFW window");
+            Log::Critical(LogType::Window, "Failed to create GLFW window");
             glfwTerminate();
-            return;
+            exit(-1);
         }
+        glfwSetWindowUserPointer(gWindow, this);
 
-        //glfwHideWindow(m_handle);
+        m_windowHandle = (void*)glfwGetWin32Window(gWindow);
+        m_windowInstance = nullptr;
     }
 
     BasicWindow::~BasicWindow()
     {
-        if (m_handle)
+        if (gWindow)
         {
-            glfwDestroyWindow(m_handle);
+            glfwSetWindowShouldClose(gWindow, GLFW_TRUE);
+            glfwDestroyWindow(gWindow);
             glfwTerminate();
-        }
-    }
-
-    void BasicWindow::ProcessEvents()
-    {
-        if (m_handle)
-        {
-            glfwPollEvents();
-            m_active = glfwWindowShouldClose(m_handle) == GLFW_FALSE;
-            m_visible = glfwGetWindowAttrib(m_handle, GLFW_VISIBLE) == GLFW_TRUE;
+            gWindow = nullptr;
         }
     }
 
     void BasicWindow::Show()
     {
-        if (m_handle)
-        {
-            glfwShowWindow(m_handle);
-            m_visible = true;
-        }
+        if (gWindow)
+            glfwShowWindow(gWindow);
+
+        m_hidden = false;
     }
 
     void BasicWindow::Hide()
     {
-        if (m_handle)
-        {
-            glfwHideWindow(m_handle);
-            m_visible = false;
-        }
+        if (gWindow)
+            glfwHideWindow(gWindow);
+
+        m_hidden = true;
     }
 
-    void* BasicWindow::GetNativeWindow() const
+    void BasicWindow::ProcessEvents()
     {
-        return (void*)glfwGetWin32Window(m_handle);
+        glfwPollEvents();
+    }
+
+    void BasicWindow::SetTitle(const String &title)
+    {
+        if (gWindow)
+            glfwSetWindowTitle(gWindow, title.c_str());
+        m_props.windowName = title;
+    }
+
+    void BasicWindow::SetSize(const Math::Vec2u &size)
+    {
+        if (gWindow)
+            glfwSetWindowSize(gWindow, size.x, size.y);
+
+        m_props.windowSize = size;
+    }
+
+    void BasicWindow::SetWindowMode(WindowMode mode)
+    {
+        if (gWindow)
+        {
+            switch (mode)
+            {
+            case WindowMode::Windowed:
+                glfwSetWindowMonitor(gWindow, nullptr, 0, 0, m_props.windowSize.x, m_props.windowSize.y, 0);
+                break;
+            case WindowMode::Fullscreen:
+                glfwSetWindowMonitor(gWindow, glfwGetPrimaryMonitor(), 0, 0, m_props.windowSize.x, m_props.windowSize.y, 0);
+                break;
+            case WindowMode::Borderless:
+                glfwSetWindowMonitor(gWindow, nullptr, 0, 0, m_props.windowSize.x, m_props.windowSize.y, 0);
+                break;
+            }
+        }
+
+        m_props.windowMode = mode;
+    }
+
+    b8 BasicWindow::IsActive() const
+    {
+        return !glfwWindowShouldClose(gWindow);
     }
 }

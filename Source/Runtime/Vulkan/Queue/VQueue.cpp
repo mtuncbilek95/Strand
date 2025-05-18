@@ -8,17 +8,19 @@
 
 namespace Flax
 {
-    String GetQueueTypeName(VkQueueFlags flags)
-    {
-        if (flags & VK_QUEUE_GRAPHICS_BIT)
-            return "VGraphicsQueue";
-        else if (flags & VK_QUEUE_COMPUTE_BIT)
-            return "VComputeQueue";
-        else if (flags & VK_QUEUE_TRANSFER_BIT)
-            return "VTransferQueue";
-        else
-            return "UnknownQueueType";
-    }
+	static String GetQName(VkQueueFlags flags)
+	{
+		if (flags & VK_QUEUE_GRAPHICS_BIT)
+			return "VGraphicsQueue";
+		else if (flags & VK_QUEUE_COMPUTE_BIT)
+			return "VComputeQueue";
+		else if (flags & VK_QUEUE_TRANSFER_BIT)
+			return "VTransferQueue";
+		else if (flags & VK_QUEUE_SPARSE_BINDING_BIT)
+			return "VSparseQueue";
+		else
+			return "UnknownQueueType";
+	}
 
 	VQueue::VQueue(const QueueProps& desc, VDevice* pDevice) : VObject(pDevice), m_props(desc)
 	{
@@ -26,6 +28,11 @@ namespace Flax
 
 	VQueue::~VQueue()
 	{
+	}
+
+	void VQueue::WaitQueueIdle() const
+	{
+		VDebug::VkAssert(vkQueueWaitIdle(m_props.queue), GetQName(m_props.flags));
 	}
 
 	void VQueue::Submit(const Vector<VCmdBuffer*>& cmds, const Vector<VSemaphore*>& waits, const Vector<VSemaphore*>& signals, VFence* fence, VkPipelineStageFlags flags) const
@@ -53,6 +60,6 @@ namespace Flax
 		submitInfo.signalSemaphoreCount = signalSems.size();
 		submitInfo.pSignalSemaphores = signalSems.data();
 
-		VDebug::VkAssert(vkQueueSubmit(m_props.queue, 1, &submitInfo, fence ? fence->GetVkFence() : VK_NULL_HANDLE), GetQueueTypeName(m_props.flags));
+		VDebug::VkAssert(vkQueueSubmit(m_props.queue, 1, &submitInfo, fence ? fence->GetVkFence() : VK_NULL_HANDLE), GetQName(m_props.flags));
 	}
 }

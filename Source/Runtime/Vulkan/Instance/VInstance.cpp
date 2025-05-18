@@ -1,62 +1,49 @@
 #include "VInstance.h"
 
 #include <Runtime/Vulkan/Debug/VDebug.h>
-#include <Runtime/Vulkan/Loader/VLoader.h>
 
-#if defined(FLAX_WINDOWS)
-#include <Windows.h>
-#include <vulkan/vulkan_win32.h>
-#endif
+#include <Volk/volk.h>
 
 namespace Flax
 {
-    static VkBool32 DebugCallback(
-        VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-        VkDebugUtilsMessageTypeFlagsEXT messageType,
-        const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-        void* pUserData)
-    {
-        String prefix;
-        if (messageType & VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT)
-            prefix = "Performance";
-        else if (messageType & VK_DEBUG_UTILS_MESSAGE_TYPE_DEVICE_ADDRESS_BINDING_BIT_EXT)
-            prefix = "Address Binding";
-        else if (messageType & VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT)
-            prefix = "Validation";
-        else if (messageType & VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT)
-            prefix = "General";
-
+	static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+		VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+		void* pUserData)
+	{
         switch (messageSeverity)
         {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
-            Log::Info(LogType::Render, "[{0}] {1}", prefix, pCallbackData->pMessage);
+            Log::Info(LogType::GraphicsAPI, "{}", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            Log::Debug(LogType::Render, "[{0}] {1}", prefix, pCallbackData->pMessage);
+            Log::Debug(LogType::GraphicsAPI, "{}", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            Log::Warn(LogType::Render, "[{0}] {1}", prefix, pCallbackData->pMessage);
+            Log::Warn(LogType::GraphicsAPI, "{}", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            Log::Error(LogType::Render, "[{0}] {1}", prefix, pCallbackData->pMessage);
+            Log::Error(LogType::GraphicsAPI, "{}", pCallbackData->pMessage);
             break;
         default:
             break;
         }
 
         return false;
-    }
+	}
 
-    VInstance::VInstance(const InstanceProps& desc) : m_props(desc), m_instance(VK_NULL_HANDLE), m_adapter(VK_NULL_HANDLE)
-    {
+	VInstance::VInstance(const InstanceProps& desc) : m_props(desc), m_instance(VK_NULL_HANDLE), 
+        m_physicalDevice(VK_NULL_HANDLE)
+	{
+        VDebug::VkAssert(volkInitialize(), "VInstance");
+
 #if defined(FLAX_DEBUG)
         m_debugMessenger = VK_NULL_HANDLE;
 #endif
 
         struct ExtensionEntry
         {
-            const char* m_name;
-            bool m_support;
+            const char* name;
+            b8 supported;
         };
 
         Vector<ExtensionEntry> extensions;
@@ -80,20 +67,24 @@ namespace Flax
         Vector<VkExtensionProperties> allExtensions(extensionCount);
         VDebug::VkAssert(vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, allExtensions.data()), "VInstance");
 
-        for (usize i = 0; i < extensions.size(); ++i) {
-            for (auto& extension : allExtensions) {
-                if (strcmp(extensions[i].m_name, extension.extensionName) == 0) {
-                    extensions[i].m_support = true;
-                    workingExtensions.push_back(extensions[i].m_name);
+        for (usize i = 0; i < extensions.size(); ++i) 
+        {
+            for (auto& extension : allExtensions) 
+            {
+                if (strcmp(extensions[i].name, extension.extensionName) == 0) 
+                {
+                    extensions[i].supported = true;
+                    workingExtensions.push_back(extensions[i].name);
                     break;
                 }
             }
         }
 
         // Print unsupported extensions
-        for (auto& extension : extensions) {
-            if (!extension.m_support)
-                Log::Warn(LogType::Render, "Extension not supported: {}", extension.m_name);
+        for (auto& extension : extensions) 
+        {
+            if (!extension.supported)
+                Log::Warn(LogType::Render, "Extension not supported: {}", extension.name);
         }
 
         u32 layerCount = 0;
@@ -113,10 +104,10 @@ namespace Flax
         {
             for (auto& layer : allLayers)
             {
-                if (strcmp(wantedLayers[i].m_name, layer.layerName) == 0)
+                if (strcmp(wantedLayers[i].name, layer.layerName) == 0)
                 {
-                    wantedLayers[i].m_support = true;
-                    workingLayers.push_back(wantedLayers[i].m_name);
+                    wantedLayers[i].supported = true;
+                    workingLayers.push_back(wantedLayers[i].name);
                     break;
                 }
             }
@@ -125,8 +116,8 @@ namespace Flax
         // Print unsupported layers
         for (auto& layer : wantedLayers)
         {
-            if (!layer.m_support)
-                Log::Warn(LogType::Render, "Layer not supported: {}", layer.m_name);
+            if (!layer.supported)
+                Log::Warn(LogType::Render, "Layer not supported: {}", layer.name);
         }
 
         VkApplicationInfo appInfo = {};
@@ -146,7 +137,8 @@ namespace Flax
         createInfo.ppEnabledLayerNames = workingLayers.data();
 
         VDebug::VkAssert(vkCreateInstance(&createInfo, nullptr, &m_instance), "VInstance");
-        LoadInstanceFunctions(m_instance);
+        
+        volkLoadInstance(m_instance);
 
 #if defined(FLAX_DEBUG)
         VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
@@ -155,12 +147,12 @@ namespace Flax
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-        debugCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_DEVICE_ADDRESS_BINDING_BIT_EXT
-            | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+        debugCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | 
+            VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
         debugCreateInfo.pfnUserCallback = DebugCallback;
         debugCreateInfo.pUserData = nullptr;
 
-        VDebug::VkAssert(debugMessengerCreateProc(m_instance, &debugCreateInfo, nullptr, &m_debugMessenger), "VInstance");
+        VDebug::VkAssert(vkCreateDebugUtilsMessengerEXT(m_instance, &debugCreateInfo, nullptr, &m_debugMessenger), "VInstance");
 #endif
 
         u32 deviceCount = 0;
@@ -198,9 +190,7 @@ namespace Flax
             allDevices[deviceProperties.deviceName] = { device, 0 };
 
             for (auto& queueFamily : queueFamilyProperties)
-            {
                 allDevices[deviceProperties.deviceName].second += queueFamily.queueCount;
-            }
 
             // Check if the device is discrete
             if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
@@ -221,23 +211,23 @@ namespace Flax
             });
 
         Log::Debug(LogType::Render, "Best device found: {}", bestDevice->first.c_str());
-        m_adapter = bestDevice->second.first;
-    }
+        m_physicalDevice = bestDevice->second.first;
+	}
 
-    VInstance::~VInstance()
-    {
+	VInstance::~VInstance()
+	{
 #if defined(FLAX_DEBUG)
         if (m_debugMessenger != VK_NULL_HANDLE)
         {
-            debugMessengerDestroyProc(m_instance, m_debugMessenger, nullptr);
+            vkDestroyDebugUtilsMessengerEXT(m_instance, m_debugMessenger, nullptr);
             m_debugMessenger = VK_NULL_HANDLE;
         }
 #endif
 
-        if (m_instance != VK_NULL_HANDLE)
+        if (m_instance)
         {
             vkDestroyInstance(m_instance, nullptr);
             m_instance = VK_NULL_HANDLE;
         }
-    }
+	}
 }

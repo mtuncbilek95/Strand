@@ -20,13 +20,13 @@ namespace Flax
 
 	struct SwapchainProps final
 	{
-		Math::Vec2u imageSize = { 1600, 900 };
+		Math::Vec2u imageSize = { 1280, 720 };
 		u8 imageCount = 2;
 		VkFormat format = VK_FORMAT_R8G8B8A8_UNORM;
 		VkPresentModeKHR presentMode = VK_PRESENT_MODE_FIFO_KHR;
 		VQueue* graphicsQueue = nullptr;
 #if defined(FLAX_WINDOWS)
-        void* windowHandler = nullptr;
+		void* windowHandler = nullptr;
 #endif
 	};
 

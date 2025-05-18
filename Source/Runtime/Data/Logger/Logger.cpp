@@ -24,6 +24,7 @@ namespace Flax
         m_loggers[LogType::IO] = create_logger("IO");
         m_loggers[LogType::Window] = create_logger("Window");
         m_loggers[LogType::Editor] = create_logger("Editor");
+        m_loggers[LogType::GraphicsAPI] = create_logger("GraphicsAPI");
         m_loggers[LogType::Render] = create_logger("Render");
         m_loggers[LogType::Resource] = create_logger("Resource");
         m_loggers[LogType::VFS] = create_logger("VFS");

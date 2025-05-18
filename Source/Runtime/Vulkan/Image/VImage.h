@@ -12,53 +12,57 @@
 
 namespace Flax
 {
-    class VImageView;
+	class VImageView;
 
-    struct ImageProps final
-    {
-        VkExtent3D imageSize = { 512, 512, 1 };
-        u32 mipLevels = 1;
-        u32 arrayLayers = 1;
-        VkImageType imageType = VK_IMAGE_TYPE_2D;
-        VkFormat imageFormat = VK_FORMAT_UNDEFINED;
-        VkImageUsageFlags imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+	struct ImageProps final
+	{
+		Math::Vec3u imgSize = Math::Vec3u(0, 0, 1);
+		u32 mipLevels = 1;
+		u32 arrayLayers = 1;
+		VkImageType imgType = VK_IMAGE_TYPE_2D;
+		VkFormat imgFormat = VK_FORMAT_UNDEFINED;
+		VkImageUsageFlags imgUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-        VmaMemoryUsage memoryUsage = VMA_MEMORY_USAGE_GPU_ONLY;
-        VmaAllocationCreateFlags createFlags = 0;
-    };
+		VmaMemoryUsage memUsage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
+		VmaAllocationCreateFlags memFlags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
+	};
 
-    struct ViewProps final
-    {
-        VkImageAspectFlags aspectFlag = VK_IMAGE_ASPECT_COLOR_BIT;
-        u32 baseMipLevel = 0;
-        u32 baseArrayLayer = 0;
-    };
+	struct ViewProps final
+	{
+		VkImageAspectFlags aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		u32 baseMipLevel = 0;
+		u32 baseArrayLayer = 0;
+	};
 
-    class VImage final : public VObject
-    {
-    public:
-        VImage(const ImageProps& desc, VDevice* pDevice);
-        VImage(const ImageProps& desc, VkImage image, VDevice* pDevice);
-        ~VImage() override final;
+	class VImage final : public VObject
+	{
+	public:
+		VImage(const ImageProps& desc, VDevice* pDevice);
+		VImage(const ImageProps& desc, VkImage handle, VDevice* pDevice);
+		~VImage() override final;
 
-        Ref<VImageView> CreateView(const ViewProps& desc);
+		Ref<VImageView> CreateView(const ViewProps& desc);
 
-        inline VkImage GetVkImage() const { return m_image; }
+		inline VkImage GetVkImage() const { return m_image; }
+		inline Math::Vec3u GetSize() const { return m_props.imgSize; }
+		inline u32 GetMipLevels() const { return m_props.mipLevels; }
+		inline u32 GetArrayLayers() const { return m_props.arrayLayers; }
+		inline u32 GetBufferSize() const { return m_props.imgSize.x * m_props.imgSize.y * m_props.imgSize.z * 4; }
+		inline VkImageType GetType() const { return m_props.imgType; }
+		inline VkFormat GetFormat() const { return m_props.imgFormat; }
+		inline VkImageUsageFlags GetUsage() const { return m_props.imgUsage; }
 
-        inline const VkExtent3D& GetExtent() const { return m_props.imageSize; }
-        inline u32 GetMipLevels() const { return m_props.mipLevels; }
-        inline u32 GetArrayLayers() const { return m_props.arrayLayers; }
-        inline u32 GetBufferSize() const { return m_props.imageSize.width * m_props.imageSize.height * m_props.imageSize.depth * 4; }
-        inline VkImageType GetType() const { return m_props.imageType; }
-        inline VkFormat GetFormat() const { return m_props.imageFormat; }
-        inline VkImageUsageFlags GetUsage() const { return m_props.imageUsage; }
+		inline VmaMemoryUsage GetMemoryUsage() const { return m_props.memUsage; }
+		inline VmaAllocationCreateFlags GetMemoryFlags() const { return m_props.memFlags; }
 
-    private:
-        ImageProps m_props;
-        VkImage m_image;
-        VmaAllocation m_allocation;
-        VmaAllocationInfo m_allocationInfo;
+	private:
+		ImageProps m_props;
 
-        b8 m_swapchainImage;
-    };
+		VkImage m_image;
+
+		VmaAllocation m_allocation;
+		VmaAllocationInfo m_allocationInfo;
+
+		b8 m_isSwapchain;
+	};
 }

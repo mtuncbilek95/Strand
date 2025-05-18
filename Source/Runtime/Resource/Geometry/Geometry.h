@@ -37,7 +37,7 @@ namespace Flax
 	class Geometry final
 	{
 	public:
-        Geometry() = default;
+		Geometry() = default;
 		Geometry(u32 vertexLength, u32 indexLength);
 		~Geometry();
 
@@ -49,14 +49,14 @@ namespace Flax
 		void AddTexCoord(Math::Vec2f uv, u32 index);
 		void AddIndex(u32 indexVal, u32 vecIndex);
 		void AddIndex(const Vector<u32>& indices);
-        
+
 		ReadArray<u8> GenerateRawVertex(VertexRawDataFlags flags) const;
-        ReadArray<u8> GenerateRawIndex() const;
+		ReadArray<u8> GenerateRawIndex() const;
 
 		inline const Vector<Vertex>& GetVertexData() const { return m_vertexData; }
 		inline Vector<u32>& GetIndexData() { return m_indexData; }
 
-        inline usize GetVertexCount() const { return m_vertexData.size(); }
+		inline usize GetVertexCount() const { return m_vertexData.size(); }
 		inline usize GetIndexCount() const { return m_indexData.size(); }
 
 	private:

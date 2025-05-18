@@ -12,8 +12,8 @@
 
 namespace Flax
 {
-    struct MeshImporter
-    {
-        static Geometry ReadGeometry(const String& path);
-    };
+	struct MeshImporter
+	{
+		static Geometry ReadGeometry(const String& path);
+	};
 }

@@ -12,12 +12,12 @@
 
 namespace Flax
 {
-    struct RenderComponent : Component<RenderComponent>
-    {
-        u32 m_meshId = 0;
-        u32 m_materialId = 0;
+	struct RenderComponent : Component<RenderComponent>
+	{
+		u32 m_meshId = 0;
+		u32 m_materialId = 0;
 
-        b8 m_isVisible = true;
-        b8 m_castShadow = true;
-    };
+		b8 m_isVisible = true;
+		b8 m_castShadow = true;
+	};
 }

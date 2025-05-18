@@ -20,14 +20,6 @@ namespace Flax
 	class IObject
 	{
 	public:
-		IObject();
 		virtual ~IObject() = default;
-
-		virtual void Destroy() = 0;
-
-		const Uuid& GetID() const { return m_uuid; }
-
-	private:
-		Uuid m_uuid;
 	};
 }

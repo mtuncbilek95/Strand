@@ -14,16 +14,16 @@ namespace Flax
 		poolInfo.queueFamilyIndex = desc.queue->GetFamilyIndex();
 		poolInfo.flags = desc.flags;
 
-		VDebug::VkAssert(vkCreateCommandPool(m_rootDevice->GetVkDevice(), &poolInfo, nullptr, &m_cmdPool), "VCmdPool");
+		VDebug::VkAssert(vkCreateCommandPool(GetRoot()->GetVkDevice(), &poolInfo, nullptr, &m_cmdPool), "VCmdPool");
 	}
 
 	VCmdPool::~VCmdPool()
 	{
-        if (m_cmdPool != VK_NULL_HANDLE)
-        {
-            vkDestroyCommandPool(m_rootDevice->GetVkDevice(), m_cmdPool, nullptr);
-            m_cmdPool = VK_NULL_HANDLE;
-        }
+		if (m_cmdPool != VK_NULL_HANDLE)
+		{
+			vkDestroyCommandPool(GetRoot()->GetVkDevice(), m_cmdPool, nullptr);
+			m_cmdPool = VK_NULL_HANDLE;
+		}
 	}
 
 	Ref<VCmdBuffer> VCmdPool::CreateCmdBuffer(VkCommandBufferLevel cmdLevel)
@@ -33,6 +33,6 @@ namespace Flax
 			.cmdLevel = cmdLevel,
 			.pool = this
 		};
-		return MakeShared<VCmdBuffer>(prop, m_rootDevice);
+		return NewRef<VCmdBuffer>(prop, GetRoot());
 	}
 }

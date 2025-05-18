@@ -11,57 +11,57 @@
 
 namespace Flax
 {
-    class JobQueue final
-    {
-    public:
-        JobQueue() = default;
-        ~JobQueue() = default;
+	class JobQueue final
+	{
+	public:
+		JobQueue() = default;
+		~JobQueue() = default;
 
-        void PushJob(const voidFunc& func)
-        {
-            {
-                LockGuard<Mutex> lock(m_mutex);
-                m_jobs.push(func);
-            }
-            m_condition.notify_one();
-        }
-        
-        voidFunc PopJob()
-        {
-            UniqueLock<Mutex> lock(m_mutex);
-            m_condition.wait(lock, [this]() { return !m_jobs.empty(); });
+		void PushJob(const voidFunc& func)
+		{
+			{
+				LockGuard<Mutex> lock(m_mutex);
+				m_jobs.push(func);
+			}
+			m_condition.notify_one();
+		}
 
-            voidFunc job = m_jobs.front();
-            m_jobs.pop();
-            return job;
-        }
+		voidFunc PopJob()
+		{
+			UniqueLock<Mutex> lock(m_mutex);
+			m_condition.wait(lock, [this]() { return !m_jobs.empty(); });
 
-        b8 TryPopJob(voidFunc& job)
-        {
-            LockGuard<Mutex> lock(m_mutex);
-            if (m_jobs.empty())
-                return false;
+			voidFunc job = m_jobs.front();
+			m_jobs.pop();
+			return job;
+		}
 
-            job = m_jobs.front();
-            m_jobs.pop();
-            return true;
-        }
+		b8 TryPopJob(voidFunc& job)
+		{
+			LockGuard<Mutex> lock(m_mutex);
+			if (m_jobs.empty())
+				return false;
 
-        b8 Empty() const
-        {
-            LockGuard<Mutex> lock(m_mutex);
-            return m_jobs.empty();
-        }
+			job = m_jobs.front();
+			m_jobs.pop();
+			return true;
+		}
 
-        usize Size() const
-        {
-            LockGuard<Mutex> lock(m_mutex);
-            return m_jobs.size();
-        }
+		b8 Empty() const
+		{
+			LockGuard<Mutex> lock(m_mutex);
+			return m_jobs.empty();
+		}
 
-    private:
-        mutable Mutex m_mutex;
-        CondVar m_condition;
-        Queue<voidFunc> m_jobs;
-    };
+		usize Size() const
+		{
+			LockGuard<Mutex> lock(m_mutex);
+			return m_jobs.size();
+		}
+
+	private:
+		mutable Mutex m_mutex;
+		CondVar m_condition;
+		Queue<voidFunc> m_jobs;
+	};
 }

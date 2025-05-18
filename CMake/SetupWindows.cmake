@@ -4,5 +4,4 @@ endfunction()
 
 function(SetupWin32 TARGET)
 	target_link_libraries(${TARGET} PUBLIC user32.lib gdi32.lib shell32.lib Setupapi.lib windowscodecs.lib)
-    target_compile_options(${TARGET} PRIVATE /wd6386) # Disable warning C6386
 endfunction()

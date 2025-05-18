@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.26)
 
 include(FetchContent)
 
+if(POLICY CMP0175)
+  cmake_policy(SET CMP0175 NEW)
+endif()
+
 # Make URL variable
 if(NOT DEFINED ASSIMP_URL)
 	set(ASSIMP_URL https://github.com/assimp/assimp.git)

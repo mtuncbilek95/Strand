@@ -8,6 +8,8 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Data/Containers/IObject.h>
+
 #include <vulkan/vulkan.h>
 
 namespace Flax
@@ -16,29 +18,24 @@ namespace Flax
     {
         String appName;
         String engineName;
-        Math::Vec3i appVersion;
-        Math::Vec3i engineVersion;
+        Math::Vec3u appVersion;
+        Math::Vec3u engineVersion;
     };
 
-    class VInstance final
+    class VInstance : public IObject
     {
     public:
         VInstance(const InstanceProps& desc);
-        ~VInstance();
+        ~VInstance() override final;
 
         inline VkInstance GetVkInstance() const { return m_instance; }
-        inline VkPhysicalDevice GetVkAdapter() const { return m_adapter; }
-
-        const String& GetAppName() const { return m_props.appName; }
-        const String& GetEngineName() const { return m_props.engineName; }
-        const Math::Vec3i& GetAppVersion() const { return m_props.appVersion; }
-        const Math::Vec3i& GetEngineVersion() const { return m_props.engineVersion; }
+        inline VkPhysicalDevice GetVkAdapter() const { return m_physicalDevice; }
 
     private:
         InstanceProps m_props;
 
         VkInstance m_instance;
-        VkPhysicalDevice m_adapter;
+        VkPhysicalDevice m_physicalDevice;
 
 #if defined(FLAX_DEBUG)
         VkDebugUtilsMessengerEXT m_debugMessenger;
