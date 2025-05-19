@@ -26,8 +26,8 @@ namespace Flax
 		void RegisterMaterial();
 		void UnregisterMaterial();
 
-		u32 GetMeshResource();
-		u32 GetMaterialResource();
+		Ref<MeshResource> GetMeshResource(u32 hashId);
+		Ref<MaterialResource> GetMaterialResource(u32 hashId);
 
 	private:
 		HashMap<u32, Ref<MeshResource>> m_meshes;
