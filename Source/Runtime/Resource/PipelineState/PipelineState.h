@@ -23,7 +23,6 @@ namespace Flax
 		Geometry,
 		TesselationEval,
 		TesselationControl,
-		Geometry,
 		Compute,
 		Fragment,
 		Count
@@ -40,6 +39,11 @@ namespace Flax
 	public:
 		PipelineState(const PipelineStateProps& desc);
 		~PipelineState() override;
+
+		String GetType() override { return "PipelineStateObject"; }
+		void Load() override {}
+		void Unload() override {}
+		b8 IsLoaded() override { return false; }
 
 		VPipeline* GetPipeline() const { return m_pipeline.get(); }
 		VDescLayout* GetLayout() const { return m_layout.get(); }

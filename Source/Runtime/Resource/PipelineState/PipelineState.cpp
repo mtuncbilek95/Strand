@@ -2,9 +2,10 @@
 
 namespace Flax
 {
-	PipelineState::PipelineState(const PipelineStateProps& desc)
+	PipelineState::PipelineState(const PipelineStateProps& desc) : m_props(desc)
 	{
 	}
+
 	PipelineState::~PipelineState()
 	{
 	}

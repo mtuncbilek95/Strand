@@ -6,7 +6,7 @@
 #include <Runtime/Vulkan/Command/VCmdPool.h>
 
 #include <Runtime/Resource/Management/MeshManagement.h>
-#include <Runtime/Resource/MaterialResource.h>
+#include <Runtime/Resource/Material/MaterialResource.h>
 
 #include <Runtime/EntityComponent/Scene.h>
 #include <Runtime/EntityComponent/Component/RenderComponent.h>
