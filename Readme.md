@@ -32,3 +32,6 @@ visualized rendering techniques. The eventual goal is to create one of the games
 - Bugs Bunny: Lost in Time (No tweak but I won't say no to remade meshes)
 - Earthworm Jim 3D (No tweak but I won't say no to remade meshes)
 - Zax: The Alien Hunter (Little tweak but I won't say no to remade meshes)
+
+# Rendering Pipeline Diagram
+![Pipeline](https://github.com/user-attachments/assets/50508e0a-ae71-4d2d-bbe7-e0232ea881ce)
