@@ -11,6 +11,11 @@
 
 namespace Flax
 {
+	class Renderer;
+
+	class VCmdPool;
+	class VCmdBuffer;
+
 	class Scene;
 	class MeshManagement;
 
@@ -36,12 +41,18 @@ namespace Flax
 	class RenderResolver
 	{
 	public:
-		RenderResolver(MeshManagement* manager);
+		RenderResolver(Renderer* usedRenderer);
 		~RenderResolver() = default;
 
 		void Resolve(Scene* scene);
 
+		VCmdBuffer* GetRecordedBuffer() const { return m_secondaryBuffer.get(); }
+
 	private:
+		Renderer* m_renderer;
 		MeshManagement* m_meshManager;
+
+		Ref<VCmdPool> m_secondaryPool;
+		Ref<VCmdBuffer> m_secondaryBuffer;
 	};
 }

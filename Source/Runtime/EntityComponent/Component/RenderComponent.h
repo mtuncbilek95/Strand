@@ -18,6 +18,6 @@ namespace Flax
 		u32 m_materialId = 0;
 
 		b8 m_isVisible = true;
-		b8 m_castShadow = true;
+		b8 m_castShadow = false;
 	};
 }

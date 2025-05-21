@@ -52,11 +52,15 @@ namespace Flax
 		}
 
 		VDebug::VkAssert(vkBeginCommandBuffer(m_buffer, &info), "VCmdBUffer");
+
+		m_status = CommandStatus::Recording;
 	}
 
 	void VCmdBuffer::EndRecord() const
 	{
 		vkEndCommandBuffer(m_buffer);
+
+		m_status = CommandStatus::ReadyToExecute;
 	}
 
 	void VCmdBuffer::BeginRenderPass(const RenderPassBeginParams& params)
@@ -130,11 +134,20 @@ namespace Flax
 		if (buffers.size() <= 0)
 			return;
 
-		Vector<VkCommandBuffer> cmds(buffers.size());
-		for (u32 i = 0; i < cmds.size(); i++)
-			cmds[i] = buffers[i]->GetVkCmdBuffer();
+		Vector<VkCommandBuffer> cmds;
+		for (u32 i = 0; i < buffers.size(); i++)
+		{
+			if (buffers[i]->m_status == CommandStatus::ReadyToExecute)
+				cmds.push_back(buffers[i]->GetVkCmdBuffer());
+			else
+				continue;
+		}
 
-		vkCmdExecuteCommands(m_buffer, cmds.size(), cmds.data());
+		if(cmds.size() > 0)
+			vkCmdExecuteCommands(m_buffer, cmds.size(), cmds.data());
+
+		for (u32 i = 0; i < cmds.size(); i++)
+			buffers[i]->m_status = CommandStatus::Idle;
 	}
 
 	void VCmdBuffer::CopyStageToBuffer(const CopyBufferProps& params) const

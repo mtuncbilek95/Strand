@@ -10,6 +10,11 @@
 #include <Runtime/Vulkan/Command/VCmdPool.h>
 #include <Runtime/Vulkan/Command/VCmdBuffer.h>
 
+#include <Runtime/EntityComponent/Manager/SceneManager.h>
+#include <Runtime/EntityComponent/Scene.h>
+#include <Runtime/EntityComponent/Entity.h>
+#include <Runtime/EntityComponent/Component/RenderComponent.h>
+
 #include "MeshObject.h"
 
 using namespace Flax;
@@ -31,7 +36,13 @@ int main()
 	};
 	Renderer vkRenderer(rendProps);
 
-	DescLayoutProps vkMeshDescLayoutProps =
+	Ref<Scene> testScene = NewRef<Scene>();
+	SceneManager::Get().SetCurrentScene(testScene.get());
+
+	Ref<Entity> gameObject1 = testScene->AddEntity(nullptr);
+	gameObject1->AddComponent<RenderComponent>();
+
+	/*DescLayoutProps vkMeshDescLayoutProps =
 	{
 		.bindings =
 		{
@@ -93,13 +104,13 @@ int main()
 		{
 			{ {meshObj.GetModelBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 0},
 			{ {meshObj.GetVPBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 1}
-		}));
+		}));*/
 
 	window->Show();
 	while (window->IsActive())
 	{
 		window->ProcessEvents();
-		vkRenderer.Run({}); // TODO: Remove the const Vector<VCmdBuffer*> buffers param. No need.
+		vkRenderer.Run();
 	}
 	vkRenderer.Stop();
 

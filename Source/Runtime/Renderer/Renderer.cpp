@@ -18,6 +18,9 @@
 #include <Runtime/Vulkan/Image/VImage.h>
 #include <Runtime/Vulkan/Image/VImageView.h>
 
+#include <Runtime/EntityComponent/Resolver/RenderResolver.h>
+#include <Runtime/EntityComponent/Manager/SceneManager.h>
+
 namespace Flax
 {
 	Renderer::Renderer(const RendererProps& desc)
@@ -40,7 +43,7 @@ namespace Flax
 			.imageSize = { 1280, 720 },
 			.imageCount = 3,
 			.format = VK_FORMAT_R8G8B8A8_UNORM,
-			.presentMode = VK_PRESENT_MODE_IMMEDIATE_KHR,
+			.presentMode = VK_PRESENT_MODE_FIFO_KHR,
 			.graphicsQueue = m_vkGraphicsQueue.get(),
 			.windowHandler = desc.windowHandle
 		};
@@ -86,7 +89,7 @@ namespace Flax
 				// Color format
 				{ VK_FORMAT_R8G8B8A8_UNORM, AttachmentType::Color, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
 				VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE },
-				{ VK_FORMAT_D32_SFLOAT, AttachmentType::Depth, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+				{ VK_FORMAT_D32_SFLOAT, AttachmentType::Depth, VK_IMAGE_LAYOUT_UNDEFINED,
 				VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE }
 			},
 			.subpasses =
@@ -103,13 +106,15 @@ namespace Flax
 			.fbSize = { 1280, 720, 1 }
 		};
 		m_presentFBO = NewRef<VFramebuffer>(fbProp, &*m_vkDevice);
+
+		m_resolver = NewRef<RenderResolver>(this);
 	}
 
 	Renderer::~Renderer()
 	{
 	}
 
-	void Renderer::Run(const Vector<VCmdBuffer*>& buffers)
+	void Renderer::Run()
 	{
 		// Do compute in one thread
 		// Do transfer in another thread
@@ -120,24 +125,7 @@ namespace Flax
 		m_renderFence->Reset();
 
 		// Do the secondary work for renderSystem
-		// Take all of the secondary command buffers
-		CmdPoolProps vkGPoolProp =
-		{
-			.queue = m_vkGraphicsQueue.get()
-		};
-		Ref<VCmdPool> secPool = NewRef<VCmdPool>(vkGPoolProp, m_vkDevice.get());
-		Ref<VCmdBuffer> secBuffer = secPool->CreateCmdBuffer(VK_COMMAND_BUFFER_LEVEL_SECONDARY);
-
-		InheritanceProps inheritProp =
-		{
-			.renderPass = m_presentPass.get(),
-			.framebuffer = nullptr,
-			.subpass = 0
-		};
-		secBuffer->BeginRecord(inheritProp, VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT);
-		secBuffer->EndRecord();
-
-
+		m_resolver->Resolve(SceneManager::Get().GetCurrentScene());
 
 		m_executionCmdBuffers[index]->BeginRecord(InheritanceProps());
 		RenderPassBeginParams beginParams =
@@ -150,7 +138,7 @@ namespace Flax
 			.contents = VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS
 		};
 		m_executionCmdBuffers[index]->BeginRenderPass(beginParams);
-		m_executionCmdBuffers[index]->ExecuteCommands(buffers);
+		m_executionCmdBuffers[index]->ExecuteCommands({ m_resolver->GetRecordedBuffer() });
 		m_executionCmdBuffers[index]->EndRenderPass();
 		m_executionCmdBuffers[index]->EndRecord();
 

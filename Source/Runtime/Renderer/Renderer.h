@@ -24,6 +24,8 @@ namespace Flax
 	class VRenderPass;
 	class VFramebuffer;
 
+	class RenderResolver;
+
 	struct RendererProps final
 	{
 		Math::Vec2u rendererSize;
@@ -36,14 +38,13 @@ namespace Flax
 		Renderer(const RendererProps& desc);
 		~Renderer();
 
-		void Run(const Vector<VCmdBuffer*>& buffers);
+		void Run();
 		void Stop();
 
-		VRenderPass* TempPass() const { return m_presentPass.get(); }
-		VFramebuffer* TempFBO() const { return m_presentFBO.get(); }
-		VQueue* TempGraphics() const { return m_vkGraphicsQueue.get(); }
-		VQueue* TempTransfer() const { return m_vkTransferQueue.get(); }
-		VDevice* TempDevice() const { return m_vkDevice.get(); }
+		VDevice* GetDevice() const { return m_vkDevice.get(); }
+		VRenderPass* GetMainPass() const { return m_presentPass.get(); }
+		VQueue* GetGraphicsQueue() const { return m_vkGraphicsQueue.get(); }
+		VQueue* GetTransferQueue() const { return m_vkTransferQueue.get(); }
 
 	private:
 		Ref<VInstance> m_vkInstance;
@@ -65,5 +66,7 @@ namespace Flax
 
 		Ref<VRenderPass> m_presentPass;
 		Ref<VFramebuffer> m_presentFBO;
+
+		Ref<RenderResolver> m_resolver;
 	};
 }

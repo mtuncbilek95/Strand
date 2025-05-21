@@ -16,6 +16,9 @@ namespace Flax
 
 	Ref<MeshResource> MeshManagement::GetMeshResource(u32 hashId)
 	{
+		if (hashId == 0)
+			return nullptr;
+
 		auto it = m_meshes.find(hashId);
 
 		if (it != m_meshes.end()) [[unlikely]]
@@ -27,6 +30,9 @@ namespace Flax
 
 	Ref<MaterialResource> MeshManagement::GetMaterialResource(u32 hashId)
 	{
+		if (hashId == 0)
+			return nullptr;
+
 		auto it = m_materials.find(hashId);
 
 		if (it != m_materials.end()) [[unlikely]]

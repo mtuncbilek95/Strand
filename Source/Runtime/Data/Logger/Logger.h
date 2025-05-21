@@ -26,6 +26,7 @@ namespace Flax
         VFS,
         ECS,
         Reflection,
+        Executor,
         Thread,
         Input,
         Memory,

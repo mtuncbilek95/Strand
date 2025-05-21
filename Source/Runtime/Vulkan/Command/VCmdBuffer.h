@@ -20,6 +20,13 @@ namespace Flax
 	class VPipeline;
 	class VDescSet;
 
+	enum class CommandStatus
+	{
+		Idle,
+		ReadyToExecute,
+		Recording
+	};
+
 	struct CopyBufferProps final
 	{
 		VBuffer* srcBuffer = nullptr;
@@ -92,5 +99,7 @@ namespace Flax
 		VRenderPass* m_boundRenderPass;
 		VFramebuffer* m_boundFramebuffer;
 		VPipeline* m_boundPipeline;
+
+		mutable CommandStatus m_status;
 	};
 }

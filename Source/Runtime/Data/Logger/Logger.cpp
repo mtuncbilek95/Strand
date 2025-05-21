@@ -30,6 +30,7 @@ namespace Flax
         m_loggers[LogType::VFS] = create_logger("VFS");
         m_loggers[LogType::ECS] = create_logger("ECS");
         m_loggers[LogType::Reflection] = create_logger("AssetManager");
+        m_loggers[LogType::Executor] = create_logger("Executor");
         m_loggers[LogType::Thread] = create_logger("Thread");
         m_loggers[LogType::Input] = create_logger("Input");
         m_loggers[LogType::Memory] = create_logger("Memory");
