@@ -11,6 +11,17 @@
 
 namespace Flax
 {
+	class VPipeline;
+	class VShader;
+	class VRenderpass;
+
+	struct MaterialProps final
+	{
+		String vPath;
+		String fPath;
+		VRenderpass* pass;
+	};
+
 	class MaterialResource
 	{
 	public:
@@ -18,5 +29,8 @@ namespace Flax
 		~MaterialResource() = default;
 
 	private:
+		Ref<VPipeline> m_pipeline;
+		Ref<VShader> m_vertexShader;
+		Ref<VShader> m_fragmentShader;
 	};
 }

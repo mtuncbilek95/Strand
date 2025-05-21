@@ -13,7 +13,7 @@
 
 namespace Flax
 {
-	VCmdBuffer::VCmdBuffer(const CmdBufferProps& desc, VDevice* pDevice) : VObject(pDevice), m_props(desc), 
+	VCmdBuffer::VCmdBuffer(const CmdBufferProps& desc, VDevice* pDevice) : VObject(pDevice), m_props(desc),
 		m_buffer(VK_NULL_HANDLE)
 	{
 		VkCommandBufferAllocateInfo allocInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO };
@@ -33,12 +33,23 @@ namespace Flax
 		}
 	}
 
-	void VCmdBuffer::BeginRecord(VkCommandBufferUsageFlags flags) const
+	void VCmdBuffer::BeginRecord(const InheritanceProps& desc, VkCommandBufferUsageFlags flags) const
 	{
 		vkResetCommandBuffer(m_buffer, VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
 
 		VkCommandBufferBeginInfo info = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };
 		info.flags = flags;
+
+		VkCommandBufferInheritanceInfo inheritInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO };
+		if (flags & VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT || flags & VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT)
+		{
+			inheritInfo.renderPass = desc.renderPass->GetVkRenderPass();
+			inheritInfo.framebuffer = desc.framebuffer ? desc.framebuffer->GetVkFramebuffer() : VK_NULL_HANDLE;
+			inheritInfo.subpass = desc.subpass;
+			inheritInfo.occlusionQueryEnable = false;
+
+			info.pInheritanceInfo = &inheritInfo;
+		}
 
 		VDebug::VkAssert(vkBeginCommandBuffer(m_buffer, &info), "VCmdBUffer");
 	}
@@ -116,6 +127,9 @@ namespace Flax
 
 	void VCmdBuffer::ExecuteCommands(const Vector<VCmdBuffer*>& buffers) const
 	{
+		if (buffers.size() <= 0)
+			return;
+
 		Vector<VkCommandBuffer> cmds(buffers.size());
 		for (u32 i = 0; i < cmds.size(); i++)
 			cmds[i] = buffers[i]->GetVkCmdBuffer();

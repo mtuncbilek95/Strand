@@ -30,8 +30,7 @@ namespace Flax
 
         void Resize(const Math::Vec3u& size);
 
-        inline VkFramebuffer GetVkFramebuffer() const { return m_framebuffers[0]; }
-        inline VkFramebuffer GetVkFramebuffer(usize index) const { return index > m_framebuffers.size() ? nullptr : m_framebuffers[index]; }
+        inline VkFramebuffer GetVkFramebuffer(usize index = 0) const { return index > m_framebuffers.size() ? nullptr : m_framebuffers[index]; }
 
     private:
         FramebufferProps m_props;

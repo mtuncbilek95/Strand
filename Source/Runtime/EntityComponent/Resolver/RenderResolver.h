@@ -43,6 +43,5 @@ namespace Flax
 
 	private:
 		MeshManagement* m_meshManager;
-		RenderGraphManagement* m_dagManager;
 	};
 }

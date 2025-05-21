@@ -29,6 +29,13 @@ namespace Flax
 		u32 size = 0;
 	};
 
+	struct InheritanceProps final
+	{
+		VRenderPass* renderPass;
+		VFramebuffer* framebuffer;
+		u32 subpass;
+	};
+
 	struct CopyImageProps final
 	{
 		VBuffer* srcBuffer = nullptr;
@@ -59,7 +66,7 @@ namespace Flax
 
 		inline VkCommandBuffer GetVkCmdBuffer() const { return m_buffer; }
 
-		void BeginRecord(VkCommandBufferUsageFlags flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT) const;
+		void BeginRecord(const InheritanceProps& desc, VkCommandBufferUsageFlags flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT) const;
 		void EndRecord() const;
 
 		void BeginRenderPass(const RenderPassBeginParams& params);

@@ -86,7 +86,7 @@ namespace Flax
 		VCmdPool cmdPool(cmdPoolProps, pDevice);
 		auto cmdBuffer = cmdPool.CreateCmdBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
-		cmdBuffer->BeginRecord(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
+		cmdBuffer->BeginRecord(InheritanceProps(), VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT);
 		cmdBuffer->CopyStageToBuffer({ &stage, m_GpuBuffer.get(), 0, (u32)m_GpuBuffer->GetOffset(), (u32)stage.GetSizeInBytes() });
 		cmdBuffer->EndRecord();
 

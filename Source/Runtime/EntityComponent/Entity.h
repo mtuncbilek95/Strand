@@ -29,7 +29,7 @@ namespace Flax
 		void RemoveAllChildren();
 
 		template<typename T, typename...Args, typename = std::enable_if<std::is_base_of_v<IComponentBase, T>>>
-		void AddComponent(Args&&...)
+		void AddComponent(Args&&... args)
 		{
 			if (m_components.find(T::StaticName()) == m_components.end())
 			{

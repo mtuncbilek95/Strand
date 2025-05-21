@@ -1,30 +1,27 @@
 #include "RenderResolver.h"
 
+#include <Runtime/Resource/Management/MeshManagement.h>
 #include <Runtime/EntityComponent/Scene.h>
+#include <Runtime/EntityComponent/Component/RenderComponent.h>
 
 namespace Flax
 {
     void RenderResolver::Resolve(Scene* scene)
     {
-        
-        scene->GetRegistry().view<RenderComponent>(); 
+        entt::registry& enttReg = scene->GetRegistry();
 
-        // sorted
-        for(auto entity : scene->GetRegistry().view<RenderComponent>().each())
+        auto view = enttReg.view<RenderComponent>();
+        
+        for (auto& entity : view)
         {
-            auto& renderComponent = scene->GetRegistry().get<RenderComponent>(entity);
-            if (renderComponent.IsVisible())
-            {
-                switch (type)
-                {
-                    case Type::Opaque:
-                        RenderGraph->BeginPass("Opaque");
-                        Doyourthing();
-                        RenderGraph->EndPass();
-						break;
-                }
-                RenderGraph->BeginPass()
-            }
-		}
+            auto& comp = view.get<RenderComponent>(entity);
+
+            auto mesh = m_meshManager->GetMeshResource(comp.m_meshId);
+            auto material = m_meshManager->GetMaterialResource(comp.m_materialId);
+
+            // Start Pass
+            // SomeUnit->DrawIndex(mesh->GetIndexCount(), 0, 0, 0, 1);
+            // End Pass
+        }
     }
 }
