@@ -40,8 +40,8 @@ int main()
 	SceneManager::Get().SetCurrentScene(testScene.get());
 
 	Ref<Entity> gameObject1 = testScene->AddEntity(nullptr);
-	gameObject1->AddComponent<RenderComponent>();
-
+	RenderComponent* rComp1 = gameObject1->AddComponent<RenderComponent>();
+	
 	/*DescLayoutProps vkMeshDescLayoutProps =
 	{
 		.bindings =

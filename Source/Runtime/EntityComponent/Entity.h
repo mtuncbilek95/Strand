@@ -29,7 +29,7 @@ namespace Flax
 		void RemoveAllChildren();
 
 		template<typename T, typename...Args, typename = std::enable_if<std::is_base_of_v<IComponentBase, T>>>
-		void AddComponent(Args&&... args)
+		T* AddComponent(Args&&... args)
 		{
 			if (m_components.find(T::StaticName()) == m_components.end())
 			{
@@ -40,10 +40,17 @@ namespace Flax
 
 					m_components[T::StaticName()] = std::move(component);
 					Log::Debug(LogType::ECS, "Adding component {} to entity", T::StaticName());
+					return dynamic_cast<T*>(m_components[T::StaticName()].get());
 				}
 			}
 			else
+			{
 				Log::Warn(LogType::ECS, "Component {} already exists", T::StaticName());
+				return dynamic_cast<T*>(m_components[T::StaticName()].get());
+			}
+
+			Log::Error(LogType::ECS, "Failed to add component {} to entity", T::StaticName());
+			return nullptr;
 		}
 
 		template<typename T>

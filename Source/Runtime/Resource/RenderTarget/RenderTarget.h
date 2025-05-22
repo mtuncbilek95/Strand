@@ -16,13 +16,22 @@ namespace Flax
 	class VImage;
 	class VImageView;
 
+	struct RenderTargetProps final
+	{
+
+	};
+
 	class RenderTarget
 	{
 	public:
-		RenderTarget();
+		RenderTarget(const RenderTargetProps& desc);
 		~RenderTarget();
 
+		Math::Vec2u GetSize() const;
+
 	private:
+		RenderTargetProps m_props;
+
 		Ref<VRenderPass> m_renderPass;
 		Ref<VFramebuffer> m_framebuffer;
 

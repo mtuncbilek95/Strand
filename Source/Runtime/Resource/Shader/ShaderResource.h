@@ -11,16 +11,18 @@
 
 namespace Flax
 {
-	class IResource
+	struct ShaderResourceProps final
+	{
+
+	};
+
+	class ShaderResource
 	{
 	public:
-		IResource();
-		virtual ~IResource() = default;
-
-		virtual String GetType() = 0;
-		const Uuid& GetId() const { return m_uuid; }
+		ShaderResource(const ShaderResourceProps& desc);
+		~ShaderResource();
 
 	private:
-		Uuid m_uuid;
+		ShaderResourceProps m_props;
 	};
 }
