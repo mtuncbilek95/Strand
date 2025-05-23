@@ -141,23 +141,6 @@ namespace Flax
 
     void BasicWindow::SetWindowMode(WindowMode mode)
     {
-        if (gWindow)
-        {
-            switch (mode)
-            {
-            case WindowMode::Windowed:
-                glfwSetWindowMonitor(gWindow, nullptr, 0, 0, m_props.windowSize.x, m_props.windowSize.y, 0);
-                break;
-            case WindowMode::Fullscreen:
-                glfwSetWindowMonitor(gWindow, glfwGetPrimaryMonitor(), 0, 0, m_props.windowSize.x, m_props.windowSize.y, 0);
-                break;
-            case WindowMode::Borderless:
-                glfwSetWindowMonitor(gWindow, nullptr, 0, 0, m_props.windowSize.x, m_props.windowSize.y, 0);
-                break;
-            }
-        }
-
-        m_props.windowMode = mode;
     }
 
     b8 BasicWindow::IsActive() const
