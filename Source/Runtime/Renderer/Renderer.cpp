@@ -20,7 +20,7 @@
 
 namespace Flax
 {
-	Renderer::Renderer(const RendererProps& desc)
+	void Renderer::Initialize(const RendererProps& desc)
 	{
 		InstanceProps vkInstProp =
 		{
@@ -105,10 +105,6 @@ namespace Flax
 		m_presentFBO = NewRef<VFramebuffer>(fbProp, &*m_vkDevice);
 	}
 
-	Renderer::~Renderer()
-	{
-	}
-
 	void Renderer::Run()
 	{
 		// Do compute in one thread
@@ -146,5 +142,18 @@ namespace Flax
 	void Renderer::Stop()
 	{
 		m_vkDevice->WaitDeviceIdle();
+	}
+
+	namespace
+	{
+		struct RendererRegistry
+		{
+			RendererRegistry()
+			{
+				ServiceLocator::Register<Renderer>(NewRef<Renderer>());
+			}
+		};
+
+		static RendererRegistry rendererRegistry;
 	}
 }

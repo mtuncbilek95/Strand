@@ -33,9 +33,10 @@ namespace Flax
 	class Renderer
 	{
 	public:
-		Renderer(const RendererProps& desc);
-		~Renderer();
+		Renderer() = default;
+		~Renderer() = default;
 
+		void Initialize(const RendererProps& desc);
 		void Run();
 		void Stop();
 

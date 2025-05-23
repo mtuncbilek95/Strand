@@ -8,21 +8,31 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Resource/IResource.h>
+#include <Runtime/Vulkan/Shader/VShader.h>
 
 namespace Flax
 {
 	struct ShaderResourceProps final
 	{
-
+		VkShaderStageFlagBits stageType;
+		String path;
 	};
 
-	class ShaderResource
+	class ShaderResource : public IResource
 	{
 	public:
 		ShaderResource(const ShaderResourceProps& desc);
 		~ShaderResource();
 
+		void Compile();
+
+		VShader* GetShader() const { return m_shader.get(); }
+		String GetType() override { return "ShaderResource"; }
+
 	private:
 		ShaderResourceProps m_props;
+
+		Ref<VShader> m_shader;
 	};
 }

@@ -12,6 +12,6 @@ namespace Flax
 			}
 		};
 
-		static SceneManagerRegister sceneManager;
+		static SceneManagerRegister sceneRegistry;
 	}
 }

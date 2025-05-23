@@ -14,7 +14,7 @@ namespace Flax
 {
 	class InputDispatcher
 	{
-		using EventCallback = std::function<void(const InputEvent&)>;
+		using EventCallback = function<void(const InputEvent&)>;
 
 	public:
 		void RegisterListener(WindowPollEvent type, EventCallback callback);

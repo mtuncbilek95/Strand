@@ -46,7 +46,7 @@ int main()
 		.rendererSize = w11Props.windowSize,
 		.windowHandle = window->GetHandle()
 	};
-	Renderer vkRenderer(rendProps);
+	ServiceLocator::Get<Renderer>()->Initialize(rendProps);
 
 	Ref<Scene> testScene = NewRef<Scene>();
 	ServiceLocator::Get<SceneManager>()->SetCurrentScene(testScene.get());
@@ -122,9 +122,9 @@ int main()
 	while (window->IsActive())
 	{
 		window->ProcessEvents();
-		vkRenderer.Run();
+		ServiceLocator::Get<Renderer>()->Run();
 	}
-	vkRenderer.Stop();
+	ServiceLocator::Get<Renderer>()->Stop();
 
 	window->Hide();
 }
