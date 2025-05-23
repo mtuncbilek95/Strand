@@ -9,13 +9,13 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Resource/IResource.h>
+#include <Runtime/Vulkan/Pipeline/VPipeline.h>
+#include <Runtime/Vulkan/Descriptor/VDescriptorLayout.h>
 
 namespace Flax
 {
 	class ShaderResource;
 	class RenderTarget;
-	class VDescLayout;
-	class VPipeline;
 
 	enum class PipelineStage
 	{
@@ -32,6 +32,8 @@ namespace Flax
 	{
 		HashMap<PipelineStage, ShaderResource*> shaders;
 		RenderTarget* renderTarget;
+		DescLayoutProps layoutProps;
+		GraphicsPipelineProps pipelineProps;
 	};
 
 	class PipelineState : public IResource

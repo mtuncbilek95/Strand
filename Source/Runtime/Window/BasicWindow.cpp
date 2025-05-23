@@ -8,31 +8,58 @@
 namespace Flax
 {
     GLFWwindow* gWindow = nullptr;
+    static InputEvent inputEvent;
 
     static void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos)
     {
-        InputDispatcher* dispatcher = (InputDispatcher*)glfwGetWindowUserPointer(window);
+        InputEventQueue* queue = static_cast<InputEventQueue*>(glfwGetWindowUserPointer(gWindow));
 
-        InputEvent evt;
-        evt.eventType = WindowPollEvent::MouseMoved;
-        evt.payload.mouseX = (int)xpos;
-        evt.payload.mouseY = (int)ypos;
+        inputEvent.eventType = WindowPollEvent::MouseMoved;
+        inputEvent.payload.mouseX = (int)xpos;
+        inputEvent.payload.mouseY = (int)ypos;
 
-        dispatcher->DispatchEvent(evt);
+        queue->PushEvent(inputEvent);
+
+        InputEvent event;
+        while (queue->PopEvent(event))
+            ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
     }
 
     static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
     {
-        InputDispatcher* dispatcher = (InputDispatcher*)glfwGetWindowUserPointer(window);
+        InputEventQueue* queue = static_cast<InputEventQueue*>(glfwGetWindowUserPointer(gWindow));
 
-        InputEvent evt;
         if (action == GLFW_PRESS)
-            evt.eventType = WindowPollEvent::MousePressed;
-        else if (action == GLFW_RELEASE)
-            evt.eventType = WindowPollEvent::MouseReleased;
+        {
+            inputEvent.eventType = WindowPollEvent::MousePressed;
+            inputEvent.payload.mouseButton |= static_cast<MouseButton>(1 << button);
 
-        evt.payload.mouseButton = static_cast<MouseButton>(1 << button);
-        dispatcher->DispatchEvent(evt);
+        }
+        else if (action == GLFW_RELEASE)
+        {
+            inputEvent.eventType = WindowPollEvent::MouseReleased;
+            inputEvent.payload.mouseButton &= ~static_cast<MouseButton>(1 << button);
+        }
+
+        queue->PushEvent(inputEvent);
+
+        InputEvent event;
+        while (queue->PopEvent(event))
+            ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
+    }
+
+    static void MouseWheelScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+    {
+        InputEventQueue* queue = static_cast<InputEventQueue*>(glfwGetWindowUserPointer(gWindow));
+
+        inputEvent.eventType = WindowPollEvent::MouseScrolled;
+        inputEvent.payload.scrollDelta = static_cast<float>(yoffset);
+
+        queue->PushEvent(inputEvent);
+
+        InputEvent event;
+        while (queue->PopEvent(event))
+            ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
     }
 
     BasicWindow::BasicWindow(const WindowProps &desc) : m_props(desc)
@@ -48,20 +75,21 @@ namespace Flax
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
 
-        gWindow = glfwCreateWindow(m_props.windowSize.x, m_props.windowSize.y, m_props.windowName.c_str(), nullptr, nullptr);
+        gWindow = glfwCreateWindow(m_props.windowSize.x, m_props.windowSize.y, m_props.windowName.data(), nullptr, nullptr);
         if (!gWindow)
         {
             Log::Critical(LogType::Window, "Failed to create GLFW window");
             glfwTerminate();
             exit(-1);
         }
-        glfwSetWindowUserPointer(gWindow, &m_dispatcher);
+        glfwSetWindowUserPointer(gWindow, &m_eventQueue);
 
         m_windowHandle = (void*)glfwGetWin32Window(gWindow);
         m_windowInstance = nullptr;
 
         glfwSetCursorPosCallback(gWindow, MouseMoveCallback);
         glfwSetMouseButtonCallback(gWindow, MouseButtonCallback);
+        glfwSetScrollCallback(gWindow, MouseWheelScrollCallback);
     }
 
     BasicWindow::~BasicWindow()
@@ -99,7 +127,7 @@ namespace Flax
     void BasicWindow::SetTitle(const String &title)
     {
         if (gWindow)
-            glfwSetWindowTitle(gWindow, title.c_str());
+            glfwSetWindowTitle(gWindow, title.data());
         m_props.windowName = title;
     }
 

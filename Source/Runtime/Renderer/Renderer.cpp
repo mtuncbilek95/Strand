@@ -18,9 +18,6 @@
 #include <Runtime/Vulkan/Image/VImage.h>
 #include <Runtime/Vulkan/Image/VImageView.h>
 
-#include <Runtime/EntityComponent/Resolver/RenderResolver.h>
-#include <Runtime/EntityComponent/Manager/SceneManager.h>
-
 namespace Flax
 {
 	Renderer::Renderer(const RendererProps& desc)
@@ -56,13 +53,13 @@ namespace Flax
 		m_executionCmdPool = NewRef<VCmdPool>(vkGPoolProp, m_vkDevice.get());
 
 		for (usize i = 0; i < m_vkSwapchain->GetImageCount(); i++)
+		{
 			m_executionCmdBuffers.push_back(m_executionCmdPool->CreateCmdBuffer());
-
-		m_renderFence = NewRef<VFence>(false, m_vkDevice.get());
+			m_inFlightFences.push_back(NewRef<VFence>(false, m_vkDevice.get()));
+			m_imageSemaphores.push_back(NewRef<VSemaphore>(m_vkDevice.get()));
+			m_presentSemaphores.push_back(NewRef<VSemaphore>(m_vkDevice.get()));
+		}
 		m_transferFence = NewRef<VFence>(false, m_vkDevice.get());
-
-		for (usize i = 0; i < m_vkSwapchain->GetImageCount(); i++)
-			m_renderSemaphores.push_back(NewRef<VSemaphore>(m_vkDevice.get()));
 
 		ImageProps dptProp =
 		{
@@ -106,8 +103,6 @@ namespace Flax
 			.fbSize = { 1280, 720, 1 }
 		};
 		m_presentFBO = NewRef<VFramebuffer>(fbProp, &*m_vkDevice);
-
-		m_resolver = NewRef<RenderResolver>(this);
 	}
 
 	Renderer::~Renderer()
@@ -120,12 +115,9 @@ namespace Flax
 		// Do transfer in another thread
 		
 		// Acquire Next Image first then handle secondary buffers
-		u32 index = m_vkSwapchain->AcquireNextImage(nullptr, m_renderFence.get());
-		m_renderFence->Wait();
-		m_renderFence->Reset();
+		u32 index = m_vkSwapchain->AcquireNextImage(m_imageSemaphores[m_currentIndex].get(), nullptr);
 
 		// Do the secondary work for renderSystem
-		m_resolver->Resolve(SceneManager::Get().GetCurrentScene());
 
 		m_executionCmdBuffers[index]->BeginRecord(InheritanceProps());
 		RenderPassBeginParams beginParams =
@@ -138,12 +130,17 @@ namespace Flax
 			.contents = VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS
 		};
 		m_executionCmdBuffers[index]->BeginRenderPass(beginParams);
-		m_executionCmdBuffers[index]->ExecuteCommands({ m_resolver->GetRecordedBuffer() });
+		m_executionCmdBuffers[index]->ExecuteCommands({});
 		m_executionCmdBuffers[index]->EndRenderPass();
 		m_executionCmdBuffers[index]->EndRecord();
 
-		m_vkGraphicsQueue->Submit({ &*m_executionCmdBuffers[index] }, {}, { &*m_renderSemaphores[index] }, nullptr, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
-		m_vkSwapchain->Present({ &*m_renderSemaphores[index] });
+		m_vkGraphicsQueue->Submit({ &*m_executionCmdBuffers[index] }, { &*m_imageSemaphores[m_currentIndex] }, { &*m_presentSemaphores[index] }, &*m_inFlightFences[index], VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
+		m_vkSwapchain->Present({ &*m_presentSemaphores[index] });
+
+		m_currentIndex = (index + 1) % m_vkSwapchain->GetImageCount();
+
+		m_inFlightFences[index]->Wait();
+		m_inFlightFences[index]->Reset();
 	}
 
 	void Renderer::Stop()

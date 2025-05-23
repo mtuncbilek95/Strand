@@ -15,6 +15,8 @@
 #include <Runtime/EntityComponent/Entity.h>
 #include <Runtime/EntityComponent/Component/RenderComponent.h>
 
+#include <Runtime/Input/InputDispatcher.h>
+
 #include "MeshObject.h"
 
 using namespace Flax;
@@ -29,6 +31,16 @@ int main()
 	};
 	Ref<BasicWindow> window = NewRef<BasicWindow>(w11Props);
 
+	ServiceLocator::Get<InputDispatcher>()->RegisterListener(WindowPollEvent::MouseScrolled, [&](const InputEvent& event)
+		{
+			if (HasFlag(event.payload.mouseButton, MouseButton::Right))
+			{
+				f32 scrollDelta = event.payload.scrollDelta;
+				f32 scrollSensitivity = .1f;
+				Log::Debug(LogType::Input, "Delta: {}", scrollDelta);
+			}
+		});
+
 	RendererProps rendProps =
 	{
 		.rendererSize = w11Props.windowSize,
@@ -37,7 +49,7 @@ int main()
 	Renderer vkRenderer(rendProps);
 
 	Ref<Scene> testScene = NewRef<Scene>();
-	SceneManager::Get().SetCurrentScene(testScene.get());
+	ServiceLocator::Get<SceneManager>()->SetCurrentScene(testScene.get());
 
 	Ref<Entity> gameObject1 = testScene->AddEntity(nullptr);
 	RenderComponent* rComp1 = gameObject1->AddComponent<RenderComponent>();

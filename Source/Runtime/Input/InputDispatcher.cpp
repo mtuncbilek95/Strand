@@ -15,4 +15,17 @@ namespace Flax
                 callback(event);
         }
     }
+
+    namespace
+    {
+        struct InputDispactherRegistry
+        {
+            InputDispactherRegistry()
+            {
+                ServiceLocator::Register<InputDispatcher>(NewRef<InputDispatcher>());
+            }
+        };
+
+        static InputDispactherRegistry inputRegistry;
+    }
 }

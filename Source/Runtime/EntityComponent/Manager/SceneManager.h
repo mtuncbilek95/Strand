@@ -12,7 +12,7 @@
 
 namespace Flax
 {
-	class SceneManager final : public Singleton<SceneManager>
+	class SceneManager final
 	{
 	public:
 		SceneManager() = default;

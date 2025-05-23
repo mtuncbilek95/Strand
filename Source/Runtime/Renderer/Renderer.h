@@ -24,8 +24,6 @@ namespace Flax
 	class VRenderPass;
 	class VFramebuffer;
 
-	class RenderResolver;
-
 	struct RendererProps final
 	{
 		Math::Vec2u rendererSize;
@@ -57,8 +55,10 @@ namespace Flax
 		Ref<VCmdPool> m_executionCmdPool;
 		Vector<Ref<VCmdBuffer>> m_executionCmdBuffers;
 
-		Vector<Ref<VSemaphore>> m_renderSemaphores;
-		Ref<VFence> m_renderFence;
+		Vector<Ref<VSemaphore>> m_imageSemaphores;
+		Vector<Ref<VSemaphore>> m_presentSemaphores;
+		Vector<Ref<VFence>> m_inFlightFences;
+
 		Ref<VFence> m_transferFence;
 
 		Ref<VImage> m_depthImage;
@@ -67,6 +67,6 @@ namespace Flax
 		Ref<VRenderPass> m_presentPass;
 		Ref<VFramebuffer> m_presentFBO;
 
-		Ref<RenderResolver> m_resolver;
+		u32 m_currentIndex = 0;
 	};
 }

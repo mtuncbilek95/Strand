@@ -19,7 +19,6 @@ namespace Flax
 	public:
 		void RegisterListener(WindowPollEvent type, EventCallback callback);
 		void DispatchEvent(const InputEvent& event);
-
 	private:
 		HashMap<WindowPollEvent, Vector<EventCallback>> m_listeners;
 	};

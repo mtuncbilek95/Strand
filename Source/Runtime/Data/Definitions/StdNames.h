@@ -65,6 +65,9 @@ using Ref = std::shared_ptr<T>;
 template<typename T>
 using Weak = std::weak_ptr<T>;
 
+#include <typeindex>
+using TypeIndex = std::type_index;
+
 #include <initializer_list>
 template<typename T>
 using InitList = std::initializer_list<T>;

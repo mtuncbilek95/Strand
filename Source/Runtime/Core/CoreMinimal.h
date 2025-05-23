@@ -17,4 +17,6 @@
 #include <Runtime/Data/Definitions/GlmNames.h>
 #include <Runtime/Data/Definitions/BitwiseOperator.h>
 
+#include <Runtime/Data/Service/ServiceLocator.h>
+
 #include <Runtime/Data/Logger/Logger.h>

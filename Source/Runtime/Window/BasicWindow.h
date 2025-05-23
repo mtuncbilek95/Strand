@@ -10,7 +10,6 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Data/Containers/IObject.h>
 #include <Runtime/Input/InputQueue.h>
-#include <Runtime/Input/InputDispatcher.h>
 
 namespace Flax
 {
@@ -47,9 +46,6 @@ namespace Flax
         const Math::Vec2u& GetSize() const { return m_props.windowSize; }
         WindowMode GetWindowMode() const { return m_props.windowMode; }
 
-        InputDispatcher& GetEventHandler() { return m_dispatcher; }
-        InputEventQueue& GetEventQueue() { return m_eventQueue; }
-
         b8 IsHidden() const { return m_hidden; }
         b8 IsActive() const;
 
@@ -65,6 +61,5 @@ namespace Flax
         b8 m_hidden = true;
 
         InputEventQueue m_eventQueue;
-        InputDispatcher m_dispatcher;
     };
 }
