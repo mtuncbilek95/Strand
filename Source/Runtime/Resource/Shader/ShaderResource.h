@@ -19,16 +19,16 @@ namespace Flax
 		String path;
 	};
 
-	class ShaderResource : public IResource
+	class ShaderResource : public ResourceBase<ShaderResource>
 	{
 	public:
-		ShaderResource(const ShaderResourceProps& desc);
+		ShaderResource();
 		~ShaderResource();
 
+		void Load(const ShaderResourceProps& desc);
 		void Compile();
 
 		VShader* GetShader() const { return m_shader.get(); }
-		String GetType() override { return "ShaderResource"; }
 
 	private:
 		ShaderResourceProps m_props;

@@ -12,11 +12,11 @@
 
 namespace Flax
 {
-	class SceneManager final
+	class SceneService final
 	{
 	public:
-		SceneManager() = default;
-		~SceneManager() = default;
+		SceneService() = default;
+		~SceneService() = default;
 
 		void SetCurrentScene(Scene* currentScene) { m_currentScene = currentScene; }
 		Scene* GetCurrentScene() const { return m_currentScene; }

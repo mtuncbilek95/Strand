@@ -36,17 +36,15 @@ namespace Flax
 		GraphicsPipelineProps pipelineProps;
 	};
 
-	class PipelineState : public IResource
+	class PipelineState
 	{
 	public:
 		PipelineState(const PipelineStateProps& desc);
-		~PipelineState() override;
+		~PipelineState();
 
 		VPipeline* GetPipeline() const { return m_pipeline.get(); }
 		VDescLayout* GetLayout() const { return m_layout.get(); }
 		RenderTarget* GetTarget() const { return m_props.renderTarget; }
-
-		String GetType() override { return "PipelineStateObject"; }
 
 	private:
 		PipelineStateProps m_props;

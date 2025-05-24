@@ -4,16 +4,8 @@
 
 namespace Flax
 {
-	ShaderResource::ShaderResource(const ShaderResourceProps& desc) : m_props(desc)
+	ShaderResource::ShaderResource()
 	{
-		ShaderProps shaderProp =
-		{
-			.shaderPath = desc.path,
-			.includePath = "",
-			.entryPoint = "main",
-			.shaderStage = desc.stageType
-		};
-		m_shader = NewRef<VShader>(shaderProp, ServiceLocator::Get<Renderer>()->GetDevice());
 	}
 
 	ShaderResource::~ShaderResource()
@@ -21,7 +13,23 @@ namespace Flax
 		m_shader.reset();
 	}
 
+	void ShaderResource::Load(const ShaderResourceProps& desc)
+	{
+	}
+
 	void ShaderResource::Compile()
 	{
 	}
+
+	Ref<IResource> CreateShaderResource()
+	{
+		return NewRef<ShaderResource>();
+	}
+
+	struct ShaderResourceRegister
+	{
+		ShaderResourceRegister() { GlobalResourceResolver::RegisterResource("ShaderResource", CreateShaderResource); }
+	};
+
+	static ShaderResourceRegister gbShaderResourceRegistry;
 }

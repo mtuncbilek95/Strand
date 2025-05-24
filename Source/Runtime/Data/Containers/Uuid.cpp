@@ -60,6 +60,10 @@ namespace Flax
 
     Uuid UuidHelper::GenerateID()
     {
-        return Uuid();
+#if defined(FLAX_WINDOWS)
+		Uuid guid = {};
+		HRESULT hr = CoCreateGuid((GUID*)(&guid.m_a));
+		return guid;
+#endif
     }
 }

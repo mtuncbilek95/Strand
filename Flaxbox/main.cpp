@@ -10,14 +10,17 @@
 #include <Runtime/Vulkan/Command/VCmdPool.h>
 #include <Runtime/Vulkan/Command/VCmdBuffer.h>
 
-#include <Runtime/EntityComponent/Manager/SceneManager.h>
 #include <Runtime/EntityComponent/Scene.h>
 #include <Runtime/EntityComponent/Entity.h>
 #include <Runtime/EntityComponent/Component/RenderComponent.h>
 
 #include <Runtime/Input/InputDispatcher.h>
+#include <Runtime/Services/SceneService.h>
+
+#include <Runtime/Resource/Shader/ShaderResource.h>
 
 #include "MeshObject.h"
+#include <Runtime/Services/ResourceService.h>
 
 using namespace Flax;
 
@@ -48,12 +51,14 @@ int main()
 	};
 	ServiceLocator::Get<Renderer>()->Initialize(rendProps);
 
+	ServiceLocator::Get<ResourceService>()->RegisterResource<ShaderResource>();
+
 	Ref<Scene> testScene = NewRef<Scene>();
-	ServiceLocator::Get<SceneManager>()->SetCurrentScene(testScene.get());
+	ServiceLocator::Get<SceneService>()->SetCurrentScene(testScene.get());
 
 	Ref<Entity> gameObject1 = testScene->AddEntity(nullptr);
 	RenderComponent* rComp1 = gameObject1->AddComponent<RenderComponent>();
-	
+
 	/*DescLayoutProps vkMeshDescLayoutProps =
 	{
 		.bindings =
