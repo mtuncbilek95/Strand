@@ -22,11 +22,8 @@ namespace Flax
 	class ShaderResource : public ResourceBase<ShaderResource>
 	{
 	public:
-		ShaderResource();
+		ShaderResource(const ShaderResourceProps& desc);
 		~ShaderResource();
-
-		void Load(const ShaderResourceProps& desc);
-		void Compile();
 
 		VShader* GetShader() const { return m_shader.get(); }
 

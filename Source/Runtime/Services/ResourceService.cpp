@@ -14,4 +14,9 @@ namespace Flax
 
 		static ResourceServiceRegister gbResourceService;
 	}
+
+	void ResourceService::ResetServiceField()
+	{
+		m_resources.clear();
+	}
 }

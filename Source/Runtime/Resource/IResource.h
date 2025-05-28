@@ -48,16 +48,17 @@ namespace Flax
 	class GlobalResourceResolver
 	{
 	public:
-		using RegisterFunc = function<Ref<IResource>()>;
+		using RegisterFunc = function<Ref<IResource>(const Any&)>;
 
 		static void RegisterResource(const String& sourceName, RegisterFunc fn) { GetList().insert({ sourceName, fn }); }
-		static Ref<IResource> CreateResource(const String& sourceName)
+
+		static Ref<IResource> CreateResource(const String& sourceName, const Any& args)
 		{
 			auto it = GetList().find(sourceName);
 			if (it != GetList().end())
 			{
 				Log::Debug(LogType::Resource, "Found ResourceType {}", sourceName);
-				return it->second();
+				return it->second(args);
 			}
 
 			Log::Error(LogType::Resource, "Resource {} not found", sourceName);

@@ -124,6 +124,9 @@ namespace Flax
 		Vector<ExtensionEntry> extensions;
 		Vector<const char*> workingExtensions;
 		extensions.push_back({ VK_KHR_SWAPCHAIN_EXTENSION_NAME, false });
+		extensions.push_back({ VK_KHR_MAINTENANCE3_EXTENSION_NAME, false });
+		extensions.push_back({ VK_KHR_MAINTENANCE_5_EXTENSION_NAME, false });
+		extensions.push_back({ VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME, false });
 
 		//Check if the device supports the extensions
 		u32 extensionCount = 0;
@@ -148,6 +151,10 @@ namespace Flax
 			if (extension.supported)
 				workingExtensions.push_back(extension.name);
 
+		VkPhysicalDeviceDynamicRenderingFeaturesKHR dynamicRendering = {};
+		dynamicRendering.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES_KHR;
+		dynamicRendering.dynamicRendering = VK_TRUE;
+
 		VkPhysicalDeviceFeatures deviceFeatures;
 		vkGetPhysicalDeviceFeatures(m_adapter, &deviceFeatures);
 
@@ -158,6 +165,7 @@ namespace Flax
 		deviceCreateInfo.pEnabledFeatures = &deviceFeatures;
 		deviceCreateInfo.enabledExtensionCount = static_cast<u32>(workingExtensions.size());
 		deviceCreateInfo.ppEnabledExtensionNames = workingExtensions.data();
+		deviceCreateInfo.pNext = &dynamicRendering;
 
 		VDebug::VkAssert(vkCreateDevice(m_adapter, &deviceCreateInfo, nullptr, &m_device), "VDevice");
 		volkLoadDevice(m_device);

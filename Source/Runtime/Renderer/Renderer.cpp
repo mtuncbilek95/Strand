@@ -37,7 +37,7 @@ namespace Flax
 
 		SwapchainProps vkSwapProp =
 		{
-			.imageSize = { 1280, 720 },
+			.imageSize = desc.rendererSize,
 			.imageCount = 3,
 			.format = VK_FORMAT_R8G8B8A8_UNORM,
 			.presentMode = VK_PRESENT_MODE_FIFO_KHR,
@@ -63,7 +63,7 @@ namespace Flax
 
 		ImageProps dptProp =
 		{
-			.imgSize = { 1280, 720, 1 },
+			.imgSize = { desc.rendererSize.x, desc.rendererSize.y, 1 },
 			.imgFormat = VK_FORMAT_D32_SFLOAT,
 			.imgUsage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
 			.memUsage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE,
@@ -100,7 +100,7 @@ namespace Flax
 		{
 			.passRef = &*m_presentPass,
 			.imageViewsPerFB = { { m_vkSwapchain->GetImageView(0), &*m_depthView }, { m_vkSwapchain->GetImageView(1), &*m_depthView }, { m_vkSwapchain->GetImageView(2), &*m_depthView }},
-			.fbSize = { 1280, 720, 1 }
+			.fbSize = { desc.rendererSize.x, desc.rendererSize.y, 1 }
 		};
 		m_presentFBO = NewRef<VFramebuffer>(fbProp, &*m_vkDevice);
 	}
@@ -121,7 +121,7 @@ namespace Flax
 			.renderPass = &*m_presentPass,
 			.framebuffer = &*m_presentFBO,
 			.frameIndex = index,
-			.renderArea = { 1280, 720 },
+			.renderArea = { m_presentFBO->GetSize().x, m_presentFBO->GetSize().y },
 			.clearValues = { { 1.0f, 0.0f, 1.0f, 1.0f }, { 1.0f, 0 } },
 			.contents = VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS
 		};
@@ -142,18 +142,5 @@ namespace Flax
 	void Renderer::Stop()
 	{
 		m_vkDevice->WaitDeviceIdle();
-	}
-
-	namespace
-	{
-		struct RendererRegistry
-		{
-			RendererRegistry()
-			{
-				ServiceLocator::Register<Renderer>(NewRef<Renderer>());
-			}
-		};
-
-		static RendererRegistry rendererRegistry;
 	}
 }

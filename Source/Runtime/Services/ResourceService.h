@@ -12,23 +12,27 @@
 
 namespace Flax
 {
-	class ResourceService
+	class ResourceService : public ServiceBase
 	{
 	public:
-		template<typename T, typename...Args, typename = std::enable_if<std::is_base_of_v<IResource, T>>>
-		void RegisterResource(Args&&... args)
+		template<typename T, typename = std::enable_if<std::is_base_of_v<IResource, T>>>
+		T* RegisterResource(const Any& args)
 		{
-			auto resourcePtr = GlobalResourceResolver::CreateResource(T::StaticType());
+			auto resourcePtr = GlobalResourceResolver::CreateResource(T::StaticType(), args);
 
 			if (resourcePtr)
 			{
 				m_resources[T::StaticTypeId()].insert({ resourcePtr->GetId(), resourcePtr });
-				Log::Debug(LogType::Resource, "Adding a resource {} to ResourceService with ID: {}", T::StaticTypeId(), resourcePtr->GetId().ToString());
+				Log::Debug(LogType::Resource, "Adding a resource {} to ResourceService with ID: {}", T::StaticType(), resourcePtr->GetId().ToString());
+				return static_cast<T*>(resourcePtr.get());
 			}
 			else
-				Log::Critical(LogType::Resource, "Could not register the resource typed as {}", T::StaticTypeId());
+				Log::Critical(LogType::Resource, "Could not register the resource typed as {}", T::StaticType());
+
+			return nullptr;
 		}
 		void UnregisterResource(u64 hashId) {}
+		void ResetServiceField() override final;
 
 		template<typename T>
 		T* GetResource(u64 hashId)

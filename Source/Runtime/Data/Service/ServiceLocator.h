@@ -10,13 +10,14 @@
 #include <Runtime/Data/Definitions/Definitions.h>
 #include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Data/Logger/Logger.h>
+#include <Runtime/Data/Service/ServiceBase.h>
 
 namespace Flax
 {
 	class ServiceLocator
 	{
 	public:
-		template<typename T>
+		template<typename T, typename = std::enable_if_t<std::is_base_of_v<ServiceBase, T>>>
 		static void Register(Ref<T> service)
 		{
 			auto typeId = TypeIndex(typeid(T));
@@ -32,17 +33,27 @@ namespace Flax
 
 			if (it == Services().end())
 			{
-				Log::Critical(LogType::IO, "Service '{}' ", typeId.name());
+				Log::Critical(LogType::IO, "Service '{}' could not be found!", typeId.name());
 				return nullptr;
 			}
 
 			return std::static_pointer_cast<T>(it->second);
 		}
 
-	private:
-		static HashMap<TypeIndex, Ref<void>>& Services()
+		static void ClearServices()
 		{
-			static HashMap<TypeIndex, Ref<void>> instanceMap;
+			auto& sVices = Services();
+
+			for (auto& el : sVices)
+				el.second->ResetServiceField();
+
+			sVices.clear();
+		}
+
+	private:
+		static HashMap<TypeIndex, Ref<ServiceBase>>& Services()
+		{
+			static HashMap<TypeIndex, Ref<ServiceBase>> instanceMap;
 			return instanceMap;
 		}
 	};

@@ -33,10 +33,9 @@ namespace Flax
 		HashMap<PipelineStage, ShaderResource*> shaders;
 		RenderTarget* renderTarget;
 		DescLayoutProps layoutProps;
-		GraphicsPipelineProps pipelineProps;
 	};
 
-	class PipelineState
+	class PipelineState : public ResourceBase<PipelineState>
 	{
 	public:
 		PipelineState(const PipelineStateProps& desc);

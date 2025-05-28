@@ -10,7 +10,7 @@ namespace Flax
     GLFWwindow* gWindow = nullptr;
     static InputEvent inputEvent;
 
-    static void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos)
+    static void MouseMoveCallback(GLFWwindow* window, f64 xpos, f64 ypos)
     {
         InputEventQueue* queue = static_cast<InputEventQueue*>(glfwGetWindowUserPointer(gWindow));
 
@@ -25,7 +25,7 @@ namespace Flax
             ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
     }
 
-    static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+    static void MouseButtonCallback(GLFWwindow* window, i32 button, i32 action, i32 mods)
     {
         InputEventQueue* queue = static_cast<InputEventQueue*>(glfwGetWindowUserPointer(gWindow));
 
@@ -48,7 +48,22 @@ namespace Flax
             ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
     }
 
-    static void MouseWheelScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+    static void ResizeCallback(GLFWwindow* window, i32 width, i32 height)
+    {
+        InputEventQueue* queue = static_cast<InputEventQueue*>(glfwGetWindowUserPointer(gWindow));
+
+        inputEvent.eventType = WindowPollEvent::WindowResized;
+        inputEvent.payload.windowWidth = width;
+        inputEvent.payload.windowHeight = height;
+
+        queue->PushEvent(inputEvent);
+
+        InputEvent event;
+        while (queue->PopEvent(event))
+            ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
+    }
+
+    static void MouseWheelScrollCallback(GLFWwindow* window, f64 xoffset, f64 yoffset)
     {
         InputEventQueue* queue = static_cast<InputEventQueue*>(glfwGetWindowUserPointer(gWindow));
 
@@ -60,6 +75,16 @@ namespace Flax
         InputEvent event;
         while (queue->PopEvent(event))
             ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
+    }
+
+    static void KeyboardCallback(GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods)
+    {
+
+    }
+
+    static void CharCallback(GLFWwindow* window, u32 codepoint)
+    {
+
     }
 
     BasicWindow::BasicWindow(const WindowProps &desc) : m_props(desc)
@@ -90,6 +115,9 @@ namespace Flax
         glfwSetCursorPosCallback(gWindow, MouseMoveCallback);
         glfwSetMouseButtonCallback(gWindow, MouseButtonCallback);
         glfwSetScrollCallback(gWindow, MouseWheelScrollCallback);
+        glfwSetWindowSizeCallback(gWindow, ResizeCallback);
+        glfwSetKeyCallback(gWindow, KeyboardCallback);
+        glfwSetCharCallback(gWindow, CharCallback);
     }
 
     BasicWindow::~BasicWindow()

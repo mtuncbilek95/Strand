@@ -8,11 +8,11 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/EntityComponent/Scene.h>
+#include <Runtime/Scene/Scene.h>
 
 namespace Flax
 {
-	class SceneService final
+	class SceneService final : public ServiceBase
 	{
 	public:
 		SceneService() = default;
@@ -20,6 +20,8 @@ namespace Flax
 
 		void SetCurrentScene(Scene* currentScene) { m_currentScene = currentScene; }
 		Scene* GetCurrentScene() const { return m_currentScene; }
+
+		void ResetServiceField() override final {}
 
 	private:
 		Scene* m_currentScene;

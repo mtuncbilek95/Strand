@@ -12,13 +12,16 @@
 
 namespace Flax
 {
-	class InputDispatcher
+	class InputDispatcher : public ServiceBase
 	{
 		using EventCallback = function<void(const InputEvent&)>;
 
 	public:
 		void RegisterListener(WindowPollEvent type, EventCallback callback);
 		void DispatchEvent(const InputEvent& event);
+
+		void ResetServiceField() override final {}
+
 	private:
 		HashMap<WindowPollEvent, Vector<EventCallback>> m_listeners;
 	};

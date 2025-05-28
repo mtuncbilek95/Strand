@@ -44,5 +44,6 @@ endif()
 add_subdirectory("External")
 add_subdirectory("Source/Runtime")
 
+add_subdirectory("Examples")
 add_subdirectory("Flaxbox")
 # ------------------------------------------------------------

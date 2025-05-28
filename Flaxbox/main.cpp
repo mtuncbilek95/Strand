@@ -10,10 +10,6 @@
 #include <Runtime/Vulkan/Command/VCmdPool.h>
 #include <Runtime/Vulkan/Command/VCmdBuffer.h>
 
-#include <Runtime/EntityComponent/Scene.h>
-#include <Runtime/EntityComponent/Entity.h>
-#include <Runtime/EntityComponent/Component/RenderComponent.h>
-
 #include <Runtime/Input/InputDispatcher.h>
 #include <Runtime/Services/SceneService.h>
 
@@ -26,39 +22,6 @@ using namespace Flax;
 
 int main()
 {
-	WindowProps w11Props =
-	{
-		.windowName = "Flax",
-		.windowSize = { 1280, 720 },
-		.windowMode = WindowMode::Windowed
-	};
-	Ref<BasicWindow> window = NewRef<BasicWindow>(w11Props);
-
-	ServiceLocator::Get<InputDispatcher>()->RegisterListener(WindowPollEvent::MouseScrolled, [&](const InputEvent& event)
-		{
-			if (HasFlag(event.payload.mouseButton, MouseButton::Right))
-			{
-				f32 scrollDelta = event.payload.scrollDelta;
-				f32 scrollSensitivity = .1f;
-				Log::Debug(LogType::Input, "Delta: {}", scrollDelta);
-			}
-		});
-
-	RendererProps rendProps =
-	{
-		.rendererSize = w11Props.windowSize,
-		.windowHandle = window->GetHandle()
-	};
-	ServiceLocator::Get<Renderer>()->Initialize(rendProps);
-
-	ServiceLocator::Get<ResourceService>()->RegisterResource<ShaderResource>();
-
-	Ref<Scene> testScene = NewRef<Scene>();
-	ServiceLocator::Get<SceneService>()->SetCurrentScene(testScene.get());
-
-	Ref<Entity> gameObject1 = testScene->AddEntity(nullptr);
-	RenderComponent* rComp1 = gameObject1->AddComponent<RenderComponent>();
-
 	/*DescLayoutProps vkMeshDescLayoutProps =
 	{
 		.bindings =
@@ -122,14 +85,4 @@ int main()
 			{ {meshObj.GetModelBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 0},
 			{ {meshObj.GetVPBuffer()}, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, 0, 0, 1}
 		}));*/
-
-	window->Show();
-	while (window->IsActive())
-	{
-		window->ProcessEvents();
-		ServiceLocator::Get<Renderer>()->Run();
-	}
-	ServiceLocator::Get<Renderer>()->Stop();
-
-	window->Hide();
 }

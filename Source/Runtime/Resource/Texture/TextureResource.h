@@ -8,15 +8,25 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Resource/IResource.h>
+#include <Runtime/Vulkan/Image/VImage.h>
+#include <Runtime/Vulkan/Image/VImageView.h>
 
 namespace Flax
 {
-	class TextureResource
+	struct TextureResourceProps
+	{
+
+	};
+
+	class TextureResource : public ResourceBase<TextureResource>
 	{
 	public:
-		TextureResource() = default;
+		TextureResource(const TextureResourceProps& desc);
 		~TextureResource() = default;
 
 	private:
+		Ref<VImage> m_image;
+		Ref<VImageView> m_imageView;
 	};
 }
