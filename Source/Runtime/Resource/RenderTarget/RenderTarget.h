@@ -39,22 +39,22 @@ namespace Flax
 		Math::Vec2u size;
 		VkFormat format = VK_FORMAT_UNDEFINED;
 
-		AttachmentOps attachment;
-
-		b8 sampled = true;
-		b8 asRenderTarget = true;
+		AttachmentOps colorAttachment;
+		AttachmentOps depthAttachment;
 
 		Ref<VImage> externalImage = nullptr;
 		Ref<VImageView> externalView = nullptr;
 	};
 
-	class RenderTarget
+	class RenderTarget : public ResourceBase<RenderTarget>
 	{
 	public:
 		RenderTarget(const RenderTargetProps& desc);
 		~RenderTarget();
 
 		Math::Vec2u GetSize() const { return m_props.size; }
+		Ref<VImage> GetImage() const { return m_image; }
+		Ref<VImageView> GetView() const { return m_view; }
 
 	private:
 		RenderTargetProps m_props;
