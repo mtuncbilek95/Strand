@@ -7,6 +7,6 @@ add_executable("Flaxbox" main.cpp ${SOURCES})
 # ------------------------------------------------------------
 
 # ---------------------- INCLUDE DIRECTORIES ----------------
-target_include_directories("Flaxbox" PRIVATE "${CMAKE_SOURCE_DIR}/Source")
+target_include_directories("Flaxbox" PRIVATE "${CMAKE_SOURCE_DIR}/Source" "${CMAKE_CURRENT_SOURCE_DIR}")
 target_link_libraries("Flaxbox" PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,Runtime>")
 # ------------------------------------------------------------

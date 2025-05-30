@@ -26,6 +26,10 @@ using Span = std::span<T>;
 template<typename T>
 using Vector = std::vector<T>;
 
+#include <array>
+template<typename T, usize N>
+using Array = std::array<T, N>;
+
 #include <map>
 template<typename K, typename V>
 using Map = std::map<K, V>;

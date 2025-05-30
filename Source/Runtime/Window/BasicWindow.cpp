@@ -5,8 +5,11 @@
 #include <GLFW/glfw3.h>
 #include <glfw/glfw3native.h>
 
+
 namespace Flax
 {
+    using namespace FlagUtil;
+
     GLFWwindow* gWindow = nullptr;
     static InputEvent inputEvent;
 
