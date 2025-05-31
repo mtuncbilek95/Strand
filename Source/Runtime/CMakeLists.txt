@@ -23,5 +23,6 @@ SetupGLFW(Runtime)
 if(WIN32)
     include(SetupWindows)
     SetupWin32(Runtime)
+    SetupD3D(Runtime)
 endif()
 # ------------------------------------------------------------

@@ -8,9 +8,15 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <vulkan/vulkan.h>
+
+#include <d3d11.h>
+#include <dxgi.h>
+#include <wrl/client.h>
 
 namespace Flax
 {
-
+	struct DXDebug
+	{
+		static void DXAssert(HRESULT hr, const String& target);
+	};
 }

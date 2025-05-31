@@ -9,26 +9,25 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 
+#include <d3d11.h>
+#include <dxgi.h>
+#include <wrl/client.h>
+
+using namespace Microsoft::WRL;
+
 namespace Flax
 {
-	class BasicWindow;
-	class ProceduralSkyPipeline;
-	class IrradiancePipeline;
-	class SkyPass;
-
-	class Application
+	class DXInstance
 	{
 	public:
-		Application();
-		~Application();
+		DXInstance();
+		~DXInstance();
 
-		void Run(); 
+		IDXGIFactory* Instance() const { return m_instance.Get(); }
+		IDXGIAdapter* Adapter() const { return m_adapter.Get(); }
 
 	private:
-		Ref<BasicWindow> m_mainWindow;
-
-		Ref<ProceduralSkyPipeline> m_skyPipeline;
-		Ref<IrradiancePipeline> m_irradiancePipeline;
-		Ref<SkyPass> m_skyPass;
+		ComPtr<IDXGIFactory> m_instance;
+		ComPtr<IDXGIAdapter> m_adapter;
 	};
 }

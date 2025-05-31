@@ -17,8 +17,6 @@ namespace Flax
 		friend class Application;
 	public:
 		BasicWindow* CoreWindow() { return m_coreWindow.get(); }
-
-	private:
 		void SetContextWindow(Ref<BasicWindow> window) { m_coreWindow = window; }
 
 	private:
