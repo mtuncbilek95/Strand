@@ -1,6 +1,6 @@
 #include "OrbitCamera.h"
 
-namespace Strand
+namespace Flax
 {
     OrbitCamera::OrbitCamera(f32 fovDeg, f32 aspectRatio, f32 nearZ, f32 farZ) : m_configuration({ 20, -30, 50 }),
         m_viewMatrix(glm::identity<Math::Mat4f>()), m_projMatrix(glm::identity<Math::Mat4f>()), m_targetPosition({ 0, 0, 0 })

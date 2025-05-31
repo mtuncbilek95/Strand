@@ -9,7 +9,7 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 
-namespace Strand
+namespace Flax
 {
 	class OrbitCamera final
 	{
