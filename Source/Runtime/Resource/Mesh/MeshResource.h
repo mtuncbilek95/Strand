@@ -11,8 +11,6 @@
 
 namespace Flax
 {
-	class VBuffer;
-
 	class MeshResource
 	{
 	public:
@@ -22,9 +20,6 @@ namespace Flax
 		void Load(const String& path);
 		void Unload();
 
-		operator Ref<VBuffer>() { return m_GpuBuffer; }
-
 	private:
-		Ref<VBuffer> m_GpuBuffer;
 	};
 }

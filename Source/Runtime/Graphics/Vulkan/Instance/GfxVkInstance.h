@@ -14,15 +14,15 @@
 
 namespace Flax
 {
-    class GfxVkInstance : public GfxInstance
+    class GfxVkInstance final : public GfxInstance
     {
     public:
         GfxVkInstance(const GfxInstanceDesc& desc);
         ~GfxVkInstance() override final;
 
         Ref<GfxDevice> CreateDevice(const GfxDeviceDesc& desc) override final;
-        void* Instance() const override final { return static_cast<void*>(m_instance); }
-        void* Adapter() const override final { return static_cast<void*>(m_physicalDevice); }
+        void* Instance() const override final;
+        void* Adapter() const override final;
         
     private:
         VkInstance m_instance;

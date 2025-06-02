@@ -22,9 +22,13 @@ namespace Flax
 
     struct WindowProps final
     {
-        String windowName;
-        Math::Vec2u windowSize;
-        WindowMode windowMode;
+        String windowName = "Flax";
+        Math::Vec2u windowSize = { 1920, 1080 };
+        WindowMode windowMode = WindowMode::Windowed;
+
+        WindowProps& setWindowName(const String& name) { windowName = name; return *this; }
+        WindowProps& setWindowSize(const Math::Vec2u& size) { windowSize = size; return *this; }
+        WindowProps& setWindowMode(WindowMode mode) { windowMode = mode; return *this; }
     };
 
     class BasicWindow : public IObject

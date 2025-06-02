@@ -8,6 +8,7 @@ namespace Flax
 {
     ReadArray<c8> DataReader::ReadData(const String& filePath, b8 emptyOnMissing, b8 nullTerminateString)
     {
+#if defined(FLAX_WINDOWS)
         std::ifstream file(filePath, std::ios::ate | std::ios::binary);
 
         if (!file.is_open())
@@ -29,5 +30,8 @@ namespace Flax
 
         file.close();
         return data;
+#else
+        return ReadArray<c8>();
+#endif
     }
 }

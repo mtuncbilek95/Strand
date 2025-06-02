@@ -3,9 +3,9 @@
 namespace Strand
 {
     OrbitCamera::OrbitCamera(f32 fovDeg, f32 aspectRatio, f32 nearZ, f32 farZ) : m_configuration({ 20, -30, 50 }),
-        m_viewMatrix(glm::identity<Math::Mat4f>()), m_projMatrix(glm::identity<Math::Mat4f>()), m_targetPosition({ 0, 0, 0 })
+        m_viewMatrix(Math::identity<Math::Mat4f>()), m_projMatrix(Math::identity<Math::Mat4f>()), m_targetPosition({ 0, 0, 0 })
     {
-        m_projMatrix = glm::perspective(glm::radians(fovDeg), aspectRatio, nearZ, farZ);
+        m_projMatrix = Math::perspective(Math::radians(fovDeg), aspectRatio, nearZ, farZ);
     }
 
     OrbitCamera::~OrbitCamera()
@@ -21,22 +21,22 @@ namespace Strand
     { 
         m_configuration.y += elevation;
         f32 epsilon = 0.0001f;
-        m_configuration.y = glm::clamp(m_configuration.y, -90.f + epsilon, 90.f - epsilon);
+        m_configuration.y = Math::clamp(m_configuration.y, -90.f + epsilon, 90.f - epsilon);
     }
 
     void OrbitCamera::SetDistance(f32 distance)
     { 
         m_configuration.z += distance; 
-        m_configuration.z = glm::clamp(m_configuration.z, 5.f, 200.f); 
+        m_configuration.z = Math::clamp(m_configuration.z, 5.f, 200.f); 
     }
 
     void OrbitCamera::Dolly(const Math::Vec2f& delta)
     {
         Math::Vec3f pos = GetPosition();
 
-        Math::Vec3f zaxis = glm::normalize(pos - m_targetPosition);
-        Math::Vec3f xaxis = glm::normalize(glm::cross(Math::Vec3f(0, 1, 0), zaxis));
-        Math::Vec3f yaxis = glm::normalize(glm::cross(zaxis, xaxis));
+        Math::Vec3f zaxis = Math::normalize(pos - m_targetPosition);
+        Math::Vec3f xaxis = Math::normalize(Math::cross(Math::Vec3f(0, 1, 0), zaxis));
+        Math::Vec3f yaxis = Math::normalize(Math::cross(zaxis, xaxis));
 
         m_targetPosition += xaxis * delta.x + yaxis * delta.y;
     }
@@ -53,12 +53,12 @@ namespace Strand
     const Math::Mat4f& OrbitCamera::GetViewMatrix()
     {
         Math::Vec3f pos = GetPosition();
-        m_viewMatrix = glm::lookAt(pos, m_targetPosition, Math::Vec3f(0.f, 1.f, 0.f));
+        m_viewMatrix = Math::lookAt(pos, m_targetPosition, Math::Vec3f(0.f, 1.f, 0.f));
         return m_viewMatrix;
     }
 
     void OrbitCamera::UpdateProjetionMatrix(f32 fovY, f32 aspectRatio, f32 nZ, f32 fZ)
     {
-        m_projMatrix = glm::perspective(glm::radians(fovY), aspectRatio, nZ, fZ);
+        m_projMatrix = Math::perspective(Math::radians(fovY), aspectRatio, nZ, fZ);
     }
 }

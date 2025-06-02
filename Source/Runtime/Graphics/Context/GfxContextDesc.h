@@ -21,12 +21,12 @@ namespace Flax
 		Math::Vec3u appVer = { 1, 0, 0 };
 		GfxType type = GfxType::Vulkan;
 
-		u32 graphicsQueueCount;
-		u32 computeQueueCount;
-		u32 transferQueueCount;
+		u32 graphicsQueueCount = 1;
+		u32 computeQueueCount = 1;
+		u32 transferQueueCount = 1;
 
 		ImageFormat colorFormat = ImageFormat::R8G8B8A8_UNorm;
-		ImageFormat depthFormat = ImageFormat::D32_Float;
+		ImageFormat depthFormat = ImageFormat::D32_SFloat;
 
 		u32 imageCount = 2;
 		PresentMode presentMode = PresentMode::Fifo;
@@ -40,5 +40,6 @@ namespace Flax
 		GfxContextDesc& setColorFormat(ImageFormat format) { colorFormat = format; return *this; }
 		GfxContextDesc& setDepthFormat(ImageFormat format) { depthFormat = format; return *this; }
 		GfxContextDesc& setImageCount(u32 count) { imageCount = count; return *this; }
+		GfxContextDesc& setPresentMode(PresentMode mode) { presentMode = mode; return *this; }
 	};
 }

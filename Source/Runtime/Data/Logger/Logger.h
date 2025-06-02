@@ -20,6 +20,7 @@ namespace Flax
         IO,
         Window,
         Editor,
+        GfxContext,
         GraphicsAPI,
         Render,
         Resource,

@@ -7,7 +7,6 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Data/Containers/ReadArray.h>
 
 namespace Flax

@@ -18,6 +18,6 @@
 #include <Runtime/Data/Definitions/BitwiseOperator.h>
 #include <Runtime/Data/Definitions/TypeTraits.h>
 
+#include <Runtime/Data/Tools/DataReader.h>
 #include <Runtime/Data/Service/ServiceLocator.h>
-
 #include <Runtime/Data/Logger/Logger.h>

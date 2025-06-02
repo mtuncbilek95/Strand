@@ -11,78 +11,105 @@
 
 namespace Flax
 {
-	enum class ImageFormat : usize
-	{
-		Unknown,
+    enum class ImageViewType
+    {
+        View1D,
+        View2D,
+        View3D,
+        ViewCube,
+        View1DArray,
+        View2DArray,
+        View3DArray,
+        ViewCubeArray
+    };
 
-		R8G8B8A8_UNorm_SRGB,
-		R8G8B8A8_UNorm,
-		R8G8B8A8_SNorm,
-		R8G8B8A8_UInt,
-		R8G8B8A8_SInt,
-		R8G8B8A8_Float,
+    enum class ImageAspect
+    {
+        Color,
+        Depth,
+        Stencil,
+        Meta
+    };
 
-		R16G16B16A16_UNorm_SRGB,
-		R16G16B16A16_UNorm,
-		R16G16B16A16_SNorm,
-		R16G16B16A16_UInt,
-		R16G16B16A16_SInt,
-		R16G16B16A16_Float,
+    enum class ImageType
+    {
+        Image1D,
+        Image2D,
+        Image3D
+    };
 
-		R32G32B32A32_UNorm,
-		R32G32B32A32_SNorm,
-		R32G32B32A32_UInt,
-		R32G32B32A32_SInt,
-		R32G32B32A32_Float,
+    enum class SampleCount
+    {
+        Sample1,
+        Sample2,
+        Sample4,
+        Sample8,
+        Sample16,
+        Sample32,
+        Sample64
+    };
 
-		R8G8B8_UNorm,
-		R8G8B8_SNorm,
-		R8G8B8_UInt,
-		R8G8B8_SInt,
-		R8G8B8_Float,
+    enum class ImageUsage
+    {
+        TransferSrc = 1 << 0,
+        TransferDst = 1 << 1,
+        Sampled = 1 << 2,
+        Storage = 1 << 3,
+        ColorAttachment = 1 << 4,
+        DepthStencil = 1 << 5,
+        TransientAttachment = 1 << 6,
+        InputAttachment = 1 << 7,
+        HostTransfer = 1 << 8,
+        VideoEncodeDst = 1 << 9,
+        VideoEncodeSrc = 1 << 10,
+        VideoEncodeDpb = 1 << 11,
+        VideoDecodeDst = 1 << 12,
+        VideoDecodeSrc = 1 << 13,
+        VideoDecodeDpb = 1 << 14
+    };
 
-		R16G16B16_UNorm,
-		R16G16B16_SNorm,
-		R16G16B16_UInt,
-		R16G16B16_SInt,
-		R16G16B16_Float,
+    enum class ImageFormat
+    {
+        Undefined = 0,
 
-		R32G32B32_UInt,
-		R32G32B32_SInt,
-		R32G32B32_Float,
+        R8_UNorm,
+        R8_SNorm,
+        R8_UInt,
+        R8_SInt,
+        R8_SRGB,
 
-		R8G8_UNorm,
-		R8G8_SNorm,
-		R8G8_UInt,
-		R8G8_SInt,
-		R8G8_Float,
-		
-		R16G16_UNorm,
-		R16G16_SNorm,
-		R16G16_UInt,
-		R16G16_SInt,
-		R16G16_Float,
-		
-		R32G32_UInt,
-		R32G32_SInt,
-		R32G32_Float,
+        R8G8_UNorm,
+        R8G8_SNorm,
+        R8G8_UInt,
+        R8G8_SInt,
+        R8G8_SRGB,
 
-		R8_UNorm,
-		R8_SNorm,
-		R8_UInt,
-		R8_SInt,
-		R8_Float,
+        R8G8B8_UNorm,
+        R8G8B8_SNorm,
+        R8G8B8_UInt,
+        R8G8B8_SInt,
+        R8G8B8_SRGB,
 
-		R16_UNorm,
-		R16_SNorm,
-		R16_UInt,
-		R16_SInt,
-		R16_Float,
+        R8G8B8A8_UNorm,
+        R8G8B8A8_SNorm,
+        R8G8B8A8_UInt,
+        R8G8B8A8_SInt,
+        R8G8B8A8_SRGB,
 
-		R32_UInt,
-		R32_SInt,
-		R32_Float,
+        R16_SFloat,
+        R16G16_SFloat,
+        R16G16B16_SFloat,
+        R16G16B16A16_SFloat,
 
-		D32_Float
-	};
+        R32_SFloat,
+        R32G32_SFloat,
+        R32G32B32_SFloat,
+        R32G32B32A32_SFloat,
+
+        D16_UNorm,
+        D32_SFloat,
+        S8_UInt,
+        D24_UNorm_S8_UInt,
+        D32_SFloat_S8_UInt,
+    };
 }

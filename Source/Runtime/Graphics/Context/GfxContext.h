@@ -14,6 +14,8 @@ namespace Flax
 {
 	class GfxInstance;
 	class GfxDevice;
+	class GfxQueue;
+	class GfxSwapchain;
 
 	class GfxContext : public Singleton<GfxContext>
 	{
@@ -22,9 +24,16 @@ namespace Flax
 
 		GfxInstance* Instance() const { return m_instance.get(); }
 		GfxDevice* Device() const { return m_device.get(); }
+		GfxQueue* GraphicsQueue() const { return m_graphicsQueue.get(); }
+		GfxQueue* TransferQueue() const { return m_transferQueue.get(); }
+		GfxQueue* ComputeQueue() const { return m_computeQueue.get(); }
 
 	private:
 		Ref<GfxInstance> m_instance;
 		Ref<GfxDevice> m_device;
+		Ref<GfxQueue> m_graphicsQueue;
+		Ref<GfxQueue> m_computeQueue;
+		Ref<GfxQueue> m_transferQueue;
+		Ref<GfxSwapchain> m_swapchain;
 	};
 }

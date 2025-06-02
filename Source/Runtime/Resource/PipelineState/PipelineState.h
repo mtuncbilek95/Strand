@@ -9,8 +9,6 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Resource/IResource.h>
-#include <Runtime/Vulkan/Pipeline/VPipeline.h>
-#include <Runtime/Vulkan/Descriptor/VDescriptorLayout.h>
 
 namespace Flax
 {
@@ -32,7 +30,6 @@ namespace Flax
 	{
 		HashMap<PipelineStage, ShaderResource*> shaders;
 		RenderTarget* renderTarget;
-		DescLayoutProps layoutProps;
 	};
 
 	class PipelineState : public ResourceBase<PipelineState>
@@ -41,14 +38,6 @@ namespace Flax
 		PipelineState(const PipelineStateProps& desc);
 		~PipelineState();
 
-		VPipeline* GetPipeline() const { return m_pipeline.get(); }
-		VDescLayout* GetLayout() const { return m_layout.get(); }
-		RenderTarget* GetTarget() const { return m_props.renderTarget; }
-
 	private:
-		PipelineStateProps m_props;
-
-		Ref<VDescLayout> m_layout;
-		Ref<VPipeline> m_pipeline;
 	};
 }

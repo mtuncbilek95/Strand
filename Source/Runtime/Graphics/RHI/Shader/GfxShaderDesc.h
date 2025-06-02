@@ -8,10 +8,16 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Graphics/RHI/Util/ShaderStage.h>
 
 namespace Flax
 {
 	struct GfxShaderDesc
 	{
+		ShaderStage stage;
+		ReadArray<u32> byteCode;
+
+		GfxShaderDesc& setStage(ShaderStage s) { stage = s; return *this; }
+		GfxShaderDesc& setByteCode(const ReadArray<u32>& code) { byteCode = code; return *this; }
 	};
 }

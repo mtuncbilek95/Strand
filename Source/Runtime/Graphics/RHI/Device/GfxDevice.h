@@ -13,6 +13,7 @@
 #include <Runtime/Graphics/RHI/Queue/GfxQueueDesc.h>
 #include <Runtime/Graphics/RHI/Image/GfxImageDesc.h>
 #include <Runtime/Graphics/RHI/Image/GfxImageViewDesc.h>
+#include <Runtime/Graphics/RHI/Swapchain/GfxSwapchainDesc.h>
 #include <Runtime/Graphics/RHI/Buffer/GfxBufferDesc.h>
 #include <Runtime/Graphics/RHI/Pipeline/GfxPipelineDesc.h>
 #include <Runtime/Graphics/RHI/Sync/GfxFenceDesc.h>
@@ -59,8 +60,9 @@ namespace Flax
 		virtual void* Adapter() const = 0;
 		virtual void* Allocator() const = 0;
 
-		virtual Ref<GfxQueue> CreateQueue(const GfxQueueDesc& desc) = 0;
+		virtual Ref<GfxQueue> CreateQueue(QueueType type) = 0;
 		virtual Ref<GfxImage> CreateImage(const GfxImageDesc& desc) = 0;
+		virtual Ref<GfxSwapchain> CreateSwapchain(const GfxSwapchainDesc& desc) = 0;
 		virtual Ref<GfxImageView> CreateView(const GfxImageViewDesc& desc) = 0;
 		virtual Ref<GfxBuffer> CreateBuffer(const GfxBufferDesc& desc) = 0;
 		virtual Ref<GfxPipeline> CreateGraphicsPipeline(const GfxGraphicsPipelineDesc& desc) = 0;

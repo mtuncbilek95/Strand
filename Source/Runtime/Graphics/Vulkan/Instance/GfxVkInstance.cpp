@@ -1,6 +1,7 @@
 #include "GfxVkInstance.h"
 
-#include <Runtime/Vulkan/Debug/VDebug.h>
+#include <Runtime/Graphics/Vulkan/Debug/VDebug.h>
+#include <Runtime/Graphics/Vulkan/Device/GfxVkDevice.h>
 
 #include <Volk/volk.h>
 
@@ -84,7 +85,7 @@ namespace Flax
         for (auto& extension : extensions) 
         {
             if (!extension.supported)
-                Log::Warn(LogType::Render, "Extension not supported: {}", extension.name);
+                Log::Warn(LogType::GraphicsAPI, "Extension not supported: {}", extension.name);
         }
 
         u32 layerCount = 0;
@@ -117,7 +118,7 @@ namespace Flax
         for (auto& layer : wantedLayers)
         {
             if (!layer.supported)
-                Log::Warn(LogType::Render, "Layer not supported: {}", layer.name);
+                Log::Warn(LogType::GraphicsAPI, "Layer not supported: {}", layer.name);
         }
 
         VkApplicationInfo appInfo = {};
@@ -210,7 +211,7 @@ namespace Flax
                 return a.second.second < b.second.second;
             });
 
-        Log::Debug(LogType::Render, "Best device found: {}", bestDevice->first.c_str());
+        Log::Info(LogType::GraphicsAPI, "Best device found: {}", bestDevice->first.c_str());
         m_physicalDevice = bestDevice->second.first;
 	}
 
@@ -233,6 +234,9 @@ namespace Flax
 
     Ref<GfxDevice> GfxVkInstance::CreateDevice(const GfxDeviceDesc& desc)
     {
-        return nullptr;
+        return NewRef<GfxVkDevice>(desc, this);
     }
+
+    void* GfxVkInstance::Instance() const { return static_cast<void*>(m_instance); }
+    void* GfxVkInstance::Adapter() const { return static_cast<void*>(m_physicalDevice); }
 }
