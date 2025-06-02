@@ -8,6 +8,9 @@
 #include <Runtime/Graphics/Vulkan/Image/GfxVkImageView.h>
 #include <Runtime/Graphics/Vulkan/Swapchain/GfxVkSwapchain.h>
 #include <Runtime/Graphics/Vulkan/Shader/GfxVkShader.h>
+#include <Runtime/Graphics/Vulkan/Sampler/GfxVkSampler.h>
+#include <Runtime/Graphics/Vulkan/Sync/GfxVkFence.h>
+#include <Runtime/Graphics/Vulkan/Sync/GfxVkSemaphore.h>
 
 namespace Flax
 {
@@ -257,8 +260,23 @@ namespace Flax
 		return NewRef<GfxVkSwapchain>(desc, this);
 	}
 
+	Ref<GfxFence> GfxVkDevice::CreateSyncFence(const GfxFenceDesc& desc)
+	{
+		return NewRef<GfxVkFence>(desc, this);
+	}
+
+	Ref<GfxSemaphore> GfxVkDevice::CreateSyncSemaphore(const GfxSemaphoreDesc& desc)
+	{
+		return NewRef<GfxVkSemaphore>(desc, this);
+	}
+
 	Ref<GfxShader> GfxVkDevice::CreateShader(const GfxShaderDesc& desc)
 	{
 		return NewRef<GfxVkShader>(desc, this);
+	}
+
+	Ref<GfxSampler> GfxVkDevice::CreateSampler(const GfxSamplerDesc& desc)
+	{
+		return NewRef<GfxVkSampler>(desc, this);
 	}
 }

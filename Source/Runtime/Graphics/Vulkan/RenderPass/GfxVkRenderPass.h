@@ -8,14 +8,21 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Graphics/RHI/Util/PipelineFormat.h>
+#include <Runtime/Graphics/RHI/RenderPass/GfxRenderPass.h>
 
 #include <vulkan/vulkan.h>
 
 namespace Flax
 {
-	struct VkPipelineUtils
+	class GfxVkRenderPass final : public GfxRenderPass
 	{
-		static VkCompareOp GetVkCompareOp(CompareOp op);
+	public:
+		GfxVkRenderPass(const GfxRenderPassDesc& desc, GfxDevice* pDevice);
+		~GfxVkRenderPass() override final;
+
+		void* Pass() const override final;
+
+	private:
+		VkRenderPass m_pass;
 	};
 }

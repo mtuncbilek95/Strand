@@ -8,14 +8,21 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Graphics/RHI/Util/PipelineFormat.h>
+#include <Runtime/Graphics/RHI/Sampler/GfxSampler.h>
 
 #include <vulkan/vulkan.h>
 
 namespace Flax
 {
-	struct VkPipelineUtils
+	class GfxVkSampler : public GfxSampler
 	{
-		static VkCompareOp GetVkCompareOp(CompareOp op);
+	public:
+		GfxVkSampler(const GfxSamplerDesc& desc, GfxDevice* pDevice);
+		~GfxVkSampler() override final;
+
+		void* Sampler() const override final;
+
+	private:
+		VkSampler m_sampler;
 	};
 }

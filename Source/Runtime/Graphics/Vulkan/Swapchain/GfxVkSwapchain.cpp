@@ -158,7 +158,7 @@ namespace Flax
 				.setArrayLayers(1)
 				.setFormat(ImageFormat())
 				.setUsage(ImageUsage::ColorAttachment);
-			AddImage(NewRef<GfxVkImage>(imageProps, Root()));
+			AddImage(NewRef<GfxVkImage>(imageProps, Root(), static_cast<void*>(images.at(i))));
 			
 			GfxViewDesc viewProps = GfxViewDesc();
 			AddView(Image(i)->CreateView(viewProps));

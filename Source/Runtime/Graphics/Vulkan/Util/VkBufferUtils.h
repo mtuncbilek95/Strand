@@ -8,14 +8,14 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Graphics/RHI/Util/PipelineFormat.h>
+#include <Runtime/Graphics/RHI/Util/BufferFormat.h>
 
 #include <vulkan/vulkan.h>
 
 namespace Flax
 {
-	struct VkPipelineUtils
+	struct VkBufferUtils
 	{
-		static VkCompareOp GetVkCompareOp(CompareOp op);
+		static VkBufferUsageFlags GetVkBufferUsage(BufferUsage usage);
 	};
 }

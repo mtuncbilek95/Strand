@@ -47,12 +47,12 @@ namespace Flax
 		Ref<GfxSwapchain> CreateSwapchain(const GfxSwapchainDesc& desc) override final;
 		Ref<GfxBuffer> CreateBuffer(const GfxBufferDesc& desc) override final { return nullptr; }
 		Ref<GfxPipeline> CreateGraphicsPipeline(const GfxGraphicsPipelineDesc& desc) override final { return nullptr; }
-		Ref<GfxFence> CreateSyncFence(const GfxFenceDesc& desc) override final { return nullptr; }
-		Ref<GfxSemaphore> CreateSyncSemaphore(const GfxSemaphoreDesc& desc) override final { return nullptr; }
+		Ref<GfxFence> CreateSyncFence(const GfxFenceDesc& desc) override final;
+		Ref<GfxSemaphore> CreateSyncSemaphore(const GfxSemaphoreDesc& desc) override final;
 		Ref<GfxDescriptorLayout> CreateDescriptorLayout(const GfxDescriptorLayoutDesc& desc) override final { return nullptr; }
 		Ref<GfxDescriptorPool> CreateDescriptorPool(const GfxDescriptorPoolDesc& desc) override final { return nullptr; }
 		Ref<GfxDescriptorSet> CreateDescriptorSet(const GfxDescriptorSetDesc& desc) override final { return nullptr; }
-		Ref<GfxSampler> CreateSampler(const GfxSamplerDesc& desc) override final { return nullptr; }
+		Ref<GfxSampler> CreateSampler(const GfxSamplerDesc& desc) override final;
 		Ref<GfxShader> CreateShader(const GfxShaderDesc& desc) override final;
 		Ref<GfxCommandPool> CreateCommandPool(const GfxCommandPoolDesc& desc) override final { return nullptr; }
 		Ref<GfxCommandBuffer> CreateCommandBuffer(const GfxCommandBufferDesc& desc) override final { return nullptr; }

@@ -23,7 +23,7 @@ namespace Flax
 		u32 AcquireNextImage(GfxSemaphore* signal, GfxFence* fence) override final;
 		void Present(const Vector<GfxSemaphore*>& waits) const override final;
 		void Resize(const Math::Vec2u& newSize) override final;
-
+		
 	private:
 		VkSwapchainKHR m_swapchain;
 		VkSurfaceKHR m_surface;
