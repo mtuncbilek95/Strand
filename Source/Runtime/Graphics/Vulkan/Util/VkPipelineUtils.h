@@ -9,6 +9,7 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Graphics/RHI/Util/PipelineFormat.h>
+#include <Runtime/Graphics/RHI/Util/ImageFormat.h>
 
 #include <vulkan/vulkan.h>
 
@@ -17,5 +18,9 @@ namespace Flax
 	struct VkPipelineUtils
 	{
 		static VkCompareOp GetVkCompareOp(CompareOp op);
+		static VkPipelineBindPoint GetVkBindPoint(PipelineType type);
+		static VkImageLayout GetVkImgLayout(ImageLayout layout);
+		static VkAttachmentStoreOp GetVkStoreOp(AttachmentStore op);
+		static VkAttachmentLoadOp GetVkLoadOp(AttachmentLoad op);
 	};
 }

@@ -49,6 +49,33 @@ namespace Flax
         Sample64
     };
 
+    enum class ImageLayout
+    {
+        Undefined,
+        General,
+        ColorAttachmentOptimal,
+		DepthStencilAttachmentOptimal,
+        DepthStencilReadOnlyOptimal,
+        ShaderReadOnlyOptimal,
+        TransferSrcOptimal,
+        TransferDstOptimal,
+        Preinitialized,
+        PresentSrcKHR
+    };
+
+    enum class AttachmentStore
+    {
+        DontCare,
+        Store
+    };
+
+    enum class AttachmentLoad
+    {
+        Load,
+        Clear,
+        DontCare
+	};
+
     enum class ImageUsage
     {
         TransferSrc = 1 << 0,
