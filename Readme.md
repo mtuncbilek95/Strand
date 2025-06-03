@@ -50,6 +50,17 @@ actual development of automation, I will switch back completely to Vulkan and wi
 such as DefaultPipelineObject, ForwardRenderPass, DefaultMaterial etc. But eventually we will see Clustered
 Deferred Rendering.
 
+## Work In Progress
+
+If you want to contribute this engine, you can always ask me my plans and try to integrate them. Then I can
+review (I don't care if you know more than me, system needs to work according to my directions. But it doesn't
+mean that I won't listen your suggestions. You have to explain your reasons.) and merge it. If you would like 
+to integrate DX12, be my guest. I dont like using DX12 and I dont think I will integrate DX12 in near future. 
+
+```
+Current Job: Re-writing Graphics Abstraction Layer for MULTI-API support (It also helps on Resource Management)
+```
+
 | Feature                                             | Situation   | Supported On   |
 | :-------------------------------------------------- | :---------- | :------------- |
 | Hybrid Entity Component System (OOP + Data Oriented)| ✅ Done     | MSVC           |
