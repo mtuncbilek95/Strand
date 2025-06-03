@@ -76,11 +76,12 @@ Current Job: Re-writing Graphics Abstraction Layer for MULTI-API support (It als
 | Clustered Deferred Shading                          | 📝 Planned  | Planned        |
 | Shader(Material) Graph System (Inspired by Unity)   | 📝 Planned  | Planned        |
 
-
-
-
-
-
+## System Requirements:
+| Hardwares |        Minimum          |       Recommended       |
+| :-------- | :---------------------: | :---------------------: |
+| CPU:      | Intel 11th Gen or newer | Intel 11th Gen or newer |
+| GPU:      |     Nvidia RTX 2060     |     Nvidia RTX 3060     |
+| OS:       |        Windows 10       |         Windows 11      |
 
 
 
