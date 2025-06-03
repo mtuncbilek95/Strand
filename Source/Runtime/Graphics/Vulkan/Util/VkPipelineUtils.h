@@ -24,5 +24,7 @@ namespace Flax
 		static VkAttachmentStoreOp GetVkStoreOp(AttachmentStore op);
 		static VkAttachmentLoadOp GetVkLoadOp(AttachmentLoad op);
 		static VkShaderStageFlags GetShaderType(ShaderStage stage);
+		static VkShaderStageFlagBits GetShaderTypeBit(ShaderStage stage);
+		static VkPrimitiveTopology GetVkTopo(PrimitiveTopology topo);
 	};
 }

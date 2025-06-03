@@ -21,6 +21,8 @@ namespace Flax
 
 		virtual void* Shader() const = 0;
 
+		ShaderStage Type() const { return m_desc.stage; }
+
 	private:
 		GfxShaderDesc m_desc;
 	};

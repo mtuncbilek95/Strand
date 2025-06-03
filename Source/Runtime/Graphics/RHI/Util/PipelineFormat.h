@@ -138,4 +138,9 @@ namespace Flax
 		Compute,
 		Raytracing
 	};
+
+	enum class PipelineFlags
+	{
+
+	};
 }

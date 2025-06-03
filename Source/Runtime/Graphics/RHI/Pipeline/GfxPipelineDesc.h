@@ -14,6 +14,10 @@
 
 namespace Flax
 {
+	class GfxDescriptorLayout;
+	class GfxShader;
+	class GfxRenderPass;
+
 	struct Viewport
 	{
 		Math::Vec2f position = { 0.f, 0.f };
@@ -164,10 +168,7 @@ namespace Flax
 		DepthStencilState& setMaxDepth(f32 max) { maxDepth = max; return *this; }
 	};
 
-	class GfxDescriptorLayout;
-	class GfxShader;
-
-	struct GfxGraphicsPipelineDesc
+	struct GfxGraphicsPipelineDesc 
 	{
 		Vector<GfxDescriptorLayout*> layouts;
 		Vector<GfxShader*> shaders;
@@ -176,10 +177,24 @@ namespace Flax
 		PushConstants pushes;
 		BlendState blend;
 		DepthStencilState depthStencil;
+		Viewport viewport;
+		Scissor scissor;
+		DynamicState dynamicStates;
+		GfxRenderPass* pass;
+		PipelineFlags flags;
 
 		GfxGraphicsPipelineDesc& addLayout(GfxDescriptorLayout* layout) { layouts.push_back(layout); return *this; }
 		GfxGraphicsPipelineDesc& addShader(GfxShader* shader) { shaders.push_back(shader); return *this; }
+		GfxGraphicsPipelineDesc& setInput(const InputAssembler& ia) { input = ia; return *this; }
+		GfxGraphicsPipelineDesc& setRasterizer(const RasterizerState& rs) { rasterizer = rs; return *this; }
+		GfxGraphicsPipelineDesc& setPushConstants(const PushConstants& pc) { pushes = pc; return *this; }
+		GfxGraphicsPipelineDesc& setBlend(const BlendState& bs) { blend = bs; return *this; }
+		GfxGraphicsPipelineDesc& setDepthStencil(const DepthStencilState& ds) { depthStencil = ds; return *this; }
+		GfxGraphicsPipelineDesc& setViewport(const Viewport& vp) { viewport = vp; return *this; }
+		GfxGraphicsPipelineDesc& setScissor(const Scissor& sc) { scissor = sc; return *this; }
+		GfxGraphicsPipelineDesc& addDynamicState(DynamicState state) { dynamicStates = state; return *this; }
 	};
+
 
 	struct GfxComputePipelineDesc
 	{

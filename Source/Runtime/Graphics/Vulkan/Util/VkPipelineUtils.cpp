@@ -148,4 +148,70 @@ namespace Flax
 
 		return flags;
 	}
+
+	VkShaderStageFlagBits VkPipelineUtils::GetShaderTypeBit(ShaderStage stage)
+	{
+		switch (stage)
+		{
+		case ShaderStage::Vertex:
+			return VK_SHADER_STAGE_VERTEX_BIT;
+		case ShaderStage::TessControl:
+			return VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT;
+		case ShaderStage::TessEval:
+			return VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT;
+		case ShaderStage::Geometry:
+			return VK_SHADER_STAGE_GEOMETRY_BIT;
+		case ShaderStage::Fragment:
+			return VK_SHADER_STAGE_FRAGMENT_BIT;
+		case ShaderStage::Compute:
+			return VK_SHADER_STAGE_COMPUTE_BIT;
+		case ShaderStage::Raygen:
+			return VK_SHADER_STAGE_RAYGEN_BIT_KHR;
+		case ShaderStage::Anyhit:
+			return VK_SHADER_STAGE_ANY_HIT_BIT_KHR;
+		case ShaderStage::ClosestHit:
+			return VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR;
+		case ShaderStage::Miss:
+			return VK_SHADER_STAGE_MISS_BIT_KHR;
+		case ShaderStage::Intersection:
+			return VK_SHADER_STAGE_INTERSECTION_BIT_KHR;
+		case ShaderStage::Callable:
+			return VK_SHADER_STAGE_CALLABLE_BIT_KHR;
+		case ShaderStage::Task:
+			return VK_SHADER_STAGE_TASK_BIT_EXT;
+		case ShaderStage::Mesh:
+			return VK_SHADER_STAGE_MESH_BIT_EXT;
+		default:
+			return VK_SHADER_STAGE_VERTEX_BIT;
+		}
+	}
+
+	VkPrimitiveTopology VkPipelineUtils::GetVkTopo(PrimitiveTopology topo)
+	{
+		switch (topo)
+		{
+		case PrimitiveTopology::PointList:
+			return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
+		case PrimitiveTopology::LineList:
+			return VK_PRIMITIVE_TOPOLOGY_LINE_LIST;
+		case PrimitiveTopology::LineStrip:
+			return VK_PRIMITIVE_TOPOLOGY_LINE_STRIP;
+		case PrimitiveTopology::TriangleList:
+			return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+		case PrimitiveTopology::TriangleStrip:
+			return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
+		case PrimitiveTopology::TriangleFan:
+			return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN;
+		case PrimitiveTopology::LineListAdj:
+			return VK_PRIMITIVE_TOPOLOGY_LINE_LIST_WITH_ADJACENCY;
+		case PrimitiveTopology::LineStripAdj:
+			return VK_PRIMITIVE_TOPOLOGY_LINE_STRIP_WITH_ADJACENCY;
+		case PrimitiveTopology::TriangleListAdj:
+			return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST_WITH_ADJACENCY;
+		case PrimitiveTopology::TriangleStripAdj:
+			return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP_WITH_ADJACENCY;
+		default:
+			return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+		}
+	}
 }
