@@ -1,5 +1,7 @@
 #include "VkPipelineUtils.h"
 
+#include <magic_enum.hpp>
+
 namespace Flax
 {
 	VkCompareOp VkPipelineUtils::GetVkCompareOp(CompareOp op)
@@ -98,4 +100,52 @@ namespace Flax
 		}
 	}
 
+	VkShaderStageFlags VkPipelineUtils::GetShaderType(ShaderStage stage)
+	{
+		VkShaderStageFlags flags = 0;
+
+		for (auto s : magic_enum::enum_values<ShaderStage>())
+		{
+			if (IsSameFlag(s, ShaderStage::All))
+				return VK_SHADER_STAGE_ALL;
+
+			if (HasFlag(stage, s))
+			{
+				switch (s)
+				{
+				case ShaderStage::Vertex:
+					flags |= VK_SHADER_STAGE_VERTEX_BIT; break;
+				case ShaderStage::TessControl:
+					flags |= VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT; break;
+				case ShaderStage::TessEval:
+					flags |= VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT; break;
+				case ShaderStage::Geometry:
+					flags |= VK_SHADER_STAGE_GEOMETRY_BIT; break;
+				case ShaderStage::Fragment:
+					flags |= VK_SHADER_STAGE_FRAGMENT_BIT; break;
+				case ShaderStage::Compute:
+					flags |= VK_SHADER_STAGE_COMPUTE_BIT; break;
+				case ShaderStage::Raygen:
+					flags |= VK_SHADER_STAGE_RAYGEN_BIT_KHR; break;
+				case ShaderStage::Anyhit:
+					flags |= VK_SHADER_STAGE_ANY_HIT_BIT_KHR; break;
+				case ShaderStage::ClosestHit:
+					flags |= VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR; break;
+				case ShaderStage::Miss:
+					flags |= VK_SHADER_STAGE_MISS_BIT_KHR; break;
+				case ShaderStage::Intersection:
+					flags |= VK_SHADER_STAGE_INTERSECTION_BIT_KHR; break;
+				case ShaderStage::Callable:
+					flags |= VK_SHADER_STAGE_CALLABLE_BIT_KHR; break;
+				case ShaderStage::Task:
+					flags |= VK_SHADER_STAGE_TASK_BIT_EXT; break;
+				case ShaderStage::Mesh:
+					flags |= VK_SHADER_STAGE_MESH_BIT_EXT; break;
+				default: break;
+				}
+			}
+		}
+
+		return flags;
+	}
 }

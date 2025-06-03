@@ -24,6 +24,8 @@ int main()
 	GfxContext::Get().CreateContext(contextDesc);
 
 	WindowContext::Get().CoreWindow()->Show();
+
+	printf("%s\n", TypeUtil::TypeName<WindowContext>().data());
 	
 	while (WindowContext::Get().CoreWindow()->IsActive())
 	{

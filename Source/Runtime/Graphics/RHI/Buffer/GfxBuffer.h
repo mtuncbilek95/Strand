@@ -26,6 +26,8 @@ namespace Flax
 		virtual void Map(void* buffer, usize size) = 0;
 		virtual void Unmap() = 0;
 
+		usize SizeInBytes() const { return m_desc.sizeInBytes; }
+
 	private:
 		GfxBufferDesc m_desc;
 	};

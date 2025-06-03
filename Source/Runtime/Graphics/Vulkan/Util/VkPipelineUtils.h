@@ -10,6 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Graphics/RHI/Util/PipelineFormat.h>
 #include <Runtime/Graphics/RHI/Util/ImageFormat.h>
+#include <Runtime/Graphics/RHI/Util/ShaderStage.h>
 
 #include <vulkan/vulkan.h>
 
@@ -22,5 +23,6 @@ namespace Flax
 		static VkImageLayout GetVkImgLayout(ImageLayout layout);
 		static VkAttachmentStoreOp GetVkStoreOp(AttachmentStore op);
 		static VkAttachmentLoadOp GetVkLoadOp(AttachmentLoad op);
+		static VkShaderStageFlags GetShaderType(ShaderStage stage);
 	};
 }
