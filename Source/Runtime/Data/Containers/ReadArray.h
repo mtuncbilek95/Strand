@@ -128,6 +128,8 @@ namespace Flax
         const T& operator[](usize index) const noexcept { return m_data[index]; }
         T* Data() noexcept { return m_data; }
         const T* Data() const noexcept { return m_data; }
+        Span<T> ToSpan() noexcept { return Span<T>(m_data, m_size); }
+        Span<T> ToSpan() const noexcept { return Span<T>(m_data, m_size); }
 
         b8 Empty() const noexcept { return m_size == 0; }
         usize Size() const noexcept { return m_size; }
