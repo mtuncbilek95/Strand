@@ -24,12 +24,10 @@ namespace Flax
 
 		void* Queue() const override final;
 		void Submit(const Vector<GfxCommandBuffer*>& cmdBuffers, const Vector<GfxSemaphore*>& waits,
-			const Vector<GfxSemaphore*>& signals, const GfxFence* fence, PipelineStageFlags flags) const override final {}
+			const Vector<GfxSemaphore*>& signals, const GfxFence* fence, PipelineStageFlags flags) const override final;
 		void WaitIdle() const override final;
 
 	private:
-		GfxQueueDesc m_desc;
-
 		VkQueue m_queue;
 	};
 }

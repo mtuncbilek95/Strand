@@ -71,7 +71,7 @@ namespace Flax
 		OneMinusDstColor = 5,
 		SrcAlpha = 6,
 		OneMinusSrcAlpha = 7,
-		DstAplha = 8,
+		DstAlpha = 8,
 		OneMinusDstAlpha = 9,
 		ConstantColor = 10,
 		OneMinusConstantColor = 11,
@@ -109,6 +109,7 @@ namespace Flax
 		Red = 1 << 0,
 		Green = 1 << 1,
 		Blue = 1 << 2,
+		Alpha = 1 << 3,
 		All = 0x3FFF
 	};
 
@@ -141,6 +142,7 @@ namespace Flax
 
 	enum class PipelineFlags
 	{
-
+		None = 0,
+		DescriptorBuffer = 1 << 0,
 	};
 }

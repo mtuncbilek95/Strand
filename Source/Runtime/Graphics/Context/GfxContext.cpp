@@ -9,9 +9,8 @@
 #include <Runtime/Graphics/RHI/Image/GfxImage.h>
 #include <Runtime/Graphics/RHI/Image/GfxImageView.h>
 #include <Runtime/Graphics/RHI/Swapchain/GfxSwapchain.h>
-
-#include <Runtime/Graphics/RHI/Shader/GfxShader.h>
-#include <Runtime/ShaderCompiler/ShaderCompiler.h>
+#include <Runtime/Graphics/RHI/Command/GfxCommandPool.h>
+#include <Runtime/Graphics/RHI/Command/GfxCommandBuffer.h>
 
 namespace Flax
 {
@@ -53,10 +52,12 @@ namespace Flax
 
 		m_swapchain = m_device->CreateSwapchain(swapDesc);
 
-		GfxShaderDesc sDesc = GfxShaderDesc()
-			.setByteCode(ShaderCompiler::CompileShader(R"(D:\Projects\Flax\Shaders\ProceduralSky.vert)"))
-			.setStage(ShaderStage::Vertex);
+		GfxCommandPoolDesc poolDesc = GfxCommandPoolDesc().setQueue(m_graphicsQueue.get())
+			.setFlags(CommandPoolFlags::ResetCommandBuffer);
+		m_cmdPool = m_device->CreateCommandPool(poolDesc);
 
-		auto shader = m_device->CreateShader(sDesc);
+		m_cmdBuffers.resize(swapDesc.imageCount);
+		for (usize i = 0; i < swapDesc.imageCount; i++)
+			m_cmdBuffers[i] = m_cmdPool->CreateBuffer(CommandLevel::Primary);
 	}
 }

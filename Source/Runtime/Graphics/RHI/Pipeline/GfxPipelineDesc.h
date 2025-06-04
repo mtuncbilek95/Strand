@@ -83,10 +83,10 @@ namespace Flax
 	struct InputBinding
 	{
 		VertexInputRate inputRate;
-		Vector<ImageFormat> attrributes;
+		Vector<ImageFormat> attributes;
 
 		InputBinding& setInputRate(VertexInputRate rate) { inputRate = rate; return *this; }
-		InputBinding& addAttribute(ImageFormat format) { attrributes.push_back(format); return *this; }
+		InputBinding& addAttribute(ImageFormat format) { attributes.push_back(format); return *this; }
 	};
 
 	struct InputAssembler
@@ -179,7 +179,7 @@ namespace Flax
 		DepthStencilState depthStencil;
 		Viewport viewport;
 		Scissor scissor;
-		DynamicState dynamicStates;
+		Vector<DynamicState> dynamicStates;
 		GfxRenderPass* pass;
 		PipelineFlags flags;
 
@@ -192,7 +192,7 @@ namespace Flax
 		GfxGraphicsPipelineDesc& setDepthStencil(const DepthStencilState& ds) { depthStencil = ds; return *this; }
 		GfxGraphicsPipelineDesc& setViewport(const Viewport& vp) { viewport = vp; return *this; }
 		GfxGraphicsPipelineDesc& setScissor(const Scissor& sc) { scissor = sc; return *this; }
-		GfxGraphicsPipelineDesc& addDynamicState(DynamicState state) { dynamicStates = state; return *this; }
+		GfxGraphicsPipelineDesc& addDynamicState(DynamicState state) { dynamicStates.push_back(state); return *this; }
 	};
 
 

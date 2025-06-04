@@ -11,6 +11,15 @@
 #include <Runtime/Graphics/Vulkan/Sampler/GfxVkSampler.h>
 #include <Runtime/Graphics/Vulkan/Sync/GfxVkFence.h>
 #include <Runtime/Graphics/Vulkan/Sync/GfxVkSemaphore.h>
+#include <Runtime/Graphics/Vulkan/Buffer/GfxVkBuffer.h>
+#include <Runtime/Graphics/Vulkan/Pipeline/GfxVkPipeline.h>
+#include <Runtime/Graphics/Vulkan/Command/GfxVkCommandBuffer.h>
+#include <Runtime/Graphics/Vulkan/Command/GfxVkCommandPool.h>
+#include <Runtime/Graphics/Vulkan/Descriptor/GfxVkDescriptorLayout.h>
+#include <Runtime/Graphics/Vulkan/Descriptor/GfxVkDescriptorPool.h>
+#include <Runtime/Graphics/Vulkan/Descriptor/GfxVkDescriptorSet.h>
+#include <Runtime/Graphics/Vulkan/Framebuffer/GfxVkFramebuffer.h>
+#include <Runtime/Graphics/Vulkan/RenderPass/GfxVkRenderPass.h>
 
 namespace Flax
 {
@@ -260,6 +269,16 @@ namespace Flax
 		return NewRef<GfxVkSwapchain>(desc, this);
 	}
 
+	Ref<GfxBuffer> GfxVkDevice::CreateBuffer(const GfxBufferDesc& desc)
+	{
+		return NewRef<GfxVkBuffer>(desc, this);
+	}
+
+	Ref<GfxPipeline> GfxVkDevice::CreateGraphicsPipeline(const GfxGraphicsPipelineDesc& desc)
+	{
+		return NewRef<GfxVkPipeline>(desc, this);
+	}
+
 	Ref<GfxFence> GfxVkDevice::CreateSyncFence(const GfxFenceDesc& desc)
 	{
 		return NewRef<GfxVkFence>(desc, this);
@@ -270,9 +289,44 @@ namespace Flax
 		return NewRef<GfxVkSemaphore>(desc, this);
 	}
 
+	Ref<GfxDescriptorLayout> GfxVkDevice::CreateDescriptorLayout(const GfxDescriptorLayoutDesc& desc)
+	{
+		return NewRef<GfxVkDescriptorLayout>(desc, this);
+	}
+
+	Ref<GfxDescriptorPool> GfxVkDevice::CreateDescriptorPool(const GfxDescriptorPoolDesc& desc)
+	{
+		return NewRef<GfxVkDescriptorPool>(desc, this);
+	}
+
+	Ref<GfxDescriptorSet> GfxVkDevice::CreateDescriptorSet(const GfxDescriptorSetDesc& desc)
+	{
+		return NewRef<GfxVkDescriptorSet>(desc, this);
+	}
+
 	Ref<GfxShader> GfxVkDevice::CreateShader(const GfxShaderDesc& desc)
 	{
 		return NewRef<GfxVkShader>(desc, this);
+	}
+
+	Ref<GfxCommandPool> GfxVkDevice::CreateCommandPool(const GfxCommandPoolDesc& desc)
+	{
+		return NewRef<GfxVkCommandPool>(desc, this);
+	}
+
+	Ref<GfxCommandBuffer> GfxVkDevice::CreateCommandBuffer(const GfxCommandBufferDesc& desc)
+	{
+		return NewRef<GfxVkCommandBuffer>(desc, this);
+	}
+
+	Ref<GfxFramebuffer> GfxVkDevice::CreateFramebuffer(const GfxFramebufferDesc& desc)
+	{
+		return NewRef<GfxVkFramebuffer>(desc, this);
+	}
+
+	Ref<GfxRenderPass> GfxVkDevice::CreateRenderPass(const GfxRenderPassDesc& desc)
+	{
+		return NewRef<GfxVkRenderPass>(desc, this);
 	}
 
 	Ref<GfxSampler> GfxVkDevice::CreateSampler(const GfxSamplerDesc& desc)

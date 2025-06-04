@@ -45,19 +45,19 @@ namespace Flax
 		Ref<GfxImage> CreateImage(const GfxImageDesc& desc) override final;
 		Ref<GfxImageView> CreateView(const GfxImageViewDesc& desc) override final;
 		Ref<GfxSwapchain> CreateSwapchain(const GfxSwapchainDesc& desc) override final;
-		Ref<GfxBuffer> CreateBuffer(const GfxBufferDesc& desc) override final { return nullptr; }
-		Ref<GfxPipeline> CreateGraphicsPipeline(const GfxGraphicsPipelineDesc& desc) override final { return nullptr; }
+		Ref<GfxBuffer> CreateBuffer(const GfxBufferDesc& desc) override final;
+		Ref<GfxPipeline> CreateGraphicsPipeline(const GfxGraphicsPipelineDesc& desc) override final;
 		Ref<GfxFence> CreateSyncFence(const GfxFenceDesc& desc) override final;
 		Ref<GfxSemaphore> CreateSyncSemaphore(const GfxSemaphoreDesc& desc) override final;
-		Ref<GfxDescriptorLayout> CreateDescriptorLayout(const GfxDescriptorLayoutDesc& desc) override final { return nullptr; }
-		Ref<GfxDescriptorPool> CreateDescriptorPool(const GfxDescriptorPoolDesc& desc) override final { return nullptr; }
-		Ref<GfxDescriptorSet> CreateDescriptorSet(const GfxDescriptorSetDesc& desc) override final { return nullptr; }
+		Ref<GfxDescriptorLayout> CreateDescriptorLayout(const GfxDescriptorLayoutDesc& desc) override final;
+		Ref<GfxDescriptorPool> CreateDescriptorPool(const GfxDescriptorPoolDesc& desc) override final;
+		Ref<GfxDescriptorSet> CreateDescriptorSet(const GfxDescriptorSetDesc& desc) override final;
 		Ref<GfxSampler> CreateSampler(const GfxSamplerDesc& desc) override final;
 		Ref<GfxShader> CreateShader(const GfxShaderDesc& desc) override final;
-		Ref<GfxCommandPool> CreateCommandPool(const GfxCommandPoolDesc& desc) override final { return nullptr; }
-		Ref<GfxCommandBuffer> CreateCommandBuffer(const GfxCommandBufferDesc& desc) override final { return nullptr; }
-		Ref<GfxFramebuffer> CreateFramebuffer(const GfxFramebufferDesc& desc) override final { return nullptr; }
-		Ref<GfxRenderPass> CreateRenderPass(const GfxRenderPassDesc& desc) override final { return nullptr; }
+		Ref<GfxCommandPool> CreateCommandPool(const GfxCommandPoolDesc& desc) override final;
+		Ref<GfxCommandBuffer> CreateCommandBuffer(const GfxCommandBufferDesc& desc) override final;
+		Ref<GfxFramebuffer> CreateFramebuffer(const GfxFramebufferDesc& desc) override final;
+		Ref<GfxRenderPass> CreateRenderPass(const GfxRenderPassDesc& desc) override final;
 
 	private:
 		VkDevice m_device;

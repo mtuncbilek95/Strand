@@ -56,16 +56,16 @@ namespace Flax
 			binding.inputRate = element.inputRate == VertexInputRate::Vertex ? VK_VERTEX_INPUT_RATE_VERTEX : VK_VERTEX_INPUT_RATE_INSTANCE;
 
 			u32 offset = 0;
-			for (u8 attIndex = 0; attIndex < element.attrributes.size(); attIndex++)
+			for (u8 attIndex = 0; attIndex < element.attributes.size(); attIndex++)
 			{
 				VkVertexInputAttributeDescription attr = {};
 				attr.binding = bindIndex;
 				attr.location = attIndex;
-				attr.format = VkImageUtils::GetVkImgFormat(element.attrributes[attIndex]);
+				attr.format = VkImageUtils::GetVkImgFormat(element.attributes[attIndex]);
 				attr.offset = offset;
 				attributes.push_back(attr);
 
-				offset += 0; //VUtils::GetVkImgSize(element.attributes[attIndex]);
+				offset += 0; VkImageUtils::GetVkImgSize(element.attributes[attIndex]);
 			}
 			binding.stride = offset;
 			bindings.push_back(binding);
@@ -84,7 +84,8 @@ namespace Flax
 		inputAssembly.primitiveRestartEnable = false;
 
 		Vector<VkDynamicState> dStates;
-		//for(usize i = 0; i < desc.)
+		for(usize i = 0; i < desc.dynamicStates.size(); i++)
+			dStates.push_back(VkPipelineUtils::GetVkDynamicState(desc.dynamicStates[i]));
 
 		// DynamicPipelineState
 		VkPipelineDynamicStateCreateInfo dynamicState = { VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO };
@@ -105,10 +106,10 @@ namespace Flax
 		VkPipelineRasterizationStateCreateInfo rasterizer = { VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO };
 		rasterizer.depthClampEnable = VK_FALSE;
 		rasterizer.rasterizerDiscardEnable = VK_FALSE;
-		rasterizer.polygonMode = desc.rasterizer.polygon;
+		rasterizer.polygonMode = VkPipelineUtils::GetVkPolygonMode(desc.rasterizer.polygon);
 		rasterizer.lineWidth = 1.0f;
-		rasterizer.cullMode = desc.rasterizer.cull;
-		rasterizer.frontFace = desc.rasterizer.face;
+		rasterizer.cullMode = VkPipelineUtils::GetVkCullMode(desc.rasterizer.cull);
+		rasterizer.frontFace = VkPipelineUtils::GetVkFrontFace(desc.rasterizer.face);
 		rasterizer.depthBiasEnable = desc.rasterizer.depthBiasEnable;
 		rasterizer.depthBiasConstantFactor = desc.rasterizer.depthBiasConstantFactor;
 		rasterizer.depthBiasClamp = desc.rasterizer.depthBiasClamp;
@@ -124,17 +125,17 @@ namespace Flax
 		for (auto& attachment : desc.blend.attachments)
 		{
 			VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
-			colorBlendAttachment.colorWriteMask = attachment.colorMask;
+			colorBlendAttachment.colorWriteMask = VkPipelineUtils::GetVkColorComponents(attachment.colorMask);
 
 			colorBlendAttachment.blendEnable = attachment.blendEnable;
 
-			colorBlendAttachment.srcColorBlendFactor = attachment.srcColor;
-			colorBlendAttachment.dstColorBlendFactor = attachment.dstColor;
-			colorBlendAttachment.colorBlendOp = attachment.colorOp;
+			colorBlendAttachment.srcColorBlendFactor = VkPipelineUtils::GetVkBlendFactor(attachment.srcColor);
+			colorBlendAttachment.dstColorBlendFactor = VkPipelineUtils::GetVkBlendFactor(attachment.dstColor);
+			colorBlendAttachment.colorBlendOp = VkPipelineUtils::GetVkBlendOp(attachment.colorOp);
 
-			colorBlendAttachment.srcAlphaBlendFactor = attachment.srcAlpha;
-			colorBlendAttachment.dstAlphaBlendFactor = attachment.dstAlpha;
-			colorBlendAttachment.alphaBlendOp = attachment.alphaOp;
+			colorBlendAttachment.srcAlphaBlendFactor = VkPipelineUtils::GetVkBlendFactor(attachment.srcAlpha);
+			colorBlendAttachment.dstAlphaBlendFactor = VkPipelineUtils::GetVkBlendFactor(attachment.dstAlpha);
+			colorBlendAttachment.alphaBlendOp = VkPipelineUtils::GetVkBlendOp(attachment.alphaOp);
 
 			colorBlendAttachments.push_back(colorBlendAttachment);
 		}
@@ -142,7 +143,7 @@ namespace Flax
 		// ColorBlendState
 		VkPipelineColorBlendStateCreateInfo colorBlending = { VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO };
 		colorBlending.logicOpEnable = desc.blend.logicEnable;
-		colorBlending.logicOp = desc.blend.logicOp;
+		colorBlending.logicOp = VkPipelineUtils::GetVkLogicOp(desc.blend.logicOp);
 		colorBlending.attachmentCount = static_cast<u32>(colorBlendAttachments.size());
 		colorBlending.pAttachments = colorBlendAttachments.data();
 		colorBlending.blendConstants[0] = 0.0f;
@@ -154,7 +155,7 @@ namespace Flax
 		VkPipelineDepthStencilStateCreateInfo depthstencil = { VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO };
 		depthstencil.depthWriteEnable = desc.depthStencil.depthWriteEnable;
 		depthstencil.depthTestEnable = desc.depthStencil.depthTestEnable;
-		depthstencil.depthCompareOp = desc.depthStencil.depthOp;
+		depthstencil.depthCompareOp = VkPipelineUtils::GetVkCompareOp(desc.depthStencil.depthOp);
 		depthstencil.depthBoundsTestEnable = VK_FALSE;
 		depthstencil.stencilTestEnable = VK_FALSE;
 		depthstencil.minDepthBounds = 0.0f;
@@ -176,7 +177,7 @@ namespace Flax
 		pipelineInfo.layout = m_layout;
 		pipelineInfo.renderPass = VkRenderPass(desc.pass->Pass());
 		pipelineInfo.subpass = 0;
-		pipelineInfo.flags = desc.flags;
+		pipelineInfo.flags = VkPipelineUtils::GetVkPipelineFlags(desc.flags);
 		pipelineInfo.pNext = nullptr;
 
 		VDebug::VkAssert(vkCreateGraphicsPipelines(VkDevice(Root()->Device()), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_pipeline), "GfxVkPipeline::Graphics");

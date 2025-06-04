@@ -23,5 +23,6 @@ namespace Flax
 		static VkImageAspectFlags GetVkAspectMask(ImageAspect aspect);
 		static VkImageViewType GetVkViewType(ImageViewType type);
 		static VkPresentModeKHR GetVkPresentMode(PresentMode mode);
+		static u32 GetVkImgSize(ImageFormat type);
 	};
 }

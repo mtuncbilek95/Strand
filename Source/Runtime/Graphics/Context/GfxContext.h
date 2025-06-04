@@ -16,6 +16,8 @@ namespace Flax
 	class GfxDevice;
 	class GfxQueue;
 	class GfxSwapchain;
+	class GfxCommandPool;
+	class GfxCommandBuffer;
 
 	class GfxContext : public Singleton<GfxContext>
 	{
@@ -31,9 +33,14 @@ namespace Flax
 	private:
 		Ref<GfxInstance> m_instance;
 		Ref<GfxDevice> m_device;
+		
 		Ref<GfxQueue> m_graphicsQueue;
 		Ref<GfxQueue> m_computeQueue;
 		Ref<GfxQueue> m_transferQueue;
+
 		Ref<GfxSwapchain> m_swapchain;
+
+		Ref<GfxCommandPool> m_cmdPool;
+		Vector<Ref<GfxCommandBuffer>> m_cmdBuffers;
 	};
 }
