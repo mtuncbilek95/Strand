@@ -36,7 +36,7 @@ namespace Flax
 				auto component = GlobalComponentResolver::CreateComponent(T::StaticName());
 				if (component)
 				{
-					m_owner->GetRegistry().emplace<T>(m_entityId, std::forward<Args>(args)...);
+					m_owner->Registry().emplace<T>(m_entityId, std::forward<Args>(args)...);
 
 					m_components[T::StaticName()] = std::move(component);
 					Log::Debug(LogType::ECS, "Adding component {} to entity", T::StaticName());

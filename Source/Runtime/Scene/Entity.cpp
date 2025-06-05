@@ -6,7 +6,7 @@ namespace Flax
 	{
 		if (m_parent)
 		{
-			m_entityId = owner->GetRegistry().create();
+			m_entityId = owner->Registry().create();
 			Log::Debug(LogType::ECS, "Creating child entity with name {}", "Default Entity " + std::to_string(m_parent->GetEntitySize()));
 		}
 		else
@@ -17,7 +17,7 @@ namespace Flax
 	{
 		if (m_parent)
 		{
-			m_owner->GetRegistry().destroy(m_entityId);
+			m_owner->Registry().destroy(m_entityId);
 			m_entityId = entt::null;
 		}
 	}
