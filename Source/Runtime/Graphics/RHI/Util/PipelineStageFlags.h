@@ -11,7 +11,7 @@
 
 namespace Flax
 {
-    enum class PipelineStageFlags
+    enum class PipelineStageFlags : usize
     {
         TopOfPipe = 1 << 0,
         DrawIndirect = 1 << 1,

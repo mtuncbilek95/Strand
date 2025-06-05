@@ -41,8 +41,7 @@ namespace Flax
 
 		VkPipelineStageFlags stgFlags = VkPipelineUtils::GetVkStageFlags(flags);
 
-		VkSubmitInfo submitInfo = {};
-		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+		VkSubmitInfo submitInfo = { VK_STRUCTURE_TYPE_SUBMIT_INFO };
 		submitInfo.waitSemaphoreCount = waitSems.size();
 		submitInfo.pWaitSemaphores = waitSems.data();
 		submitInfo.pWaitDstStageMask = &stgFlags;

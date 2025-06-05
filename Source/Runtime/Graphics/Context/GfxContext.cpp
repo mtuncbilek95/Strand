@@ -11,6 +11,8 @@
 #include <Runtime/Graphics/RHI/Swapchain/GfxSwapchain.h>
 #include <Runtime/Graphics/RHI/Command/GfxCommandPool.h>
 #include <Runtime/Graphics/RHI/Command/GfxCommandBuffer.h>
+#include <Runtime/Graphics/RHI/Sync/GfxSemaphore.h>
+#include <Runtime/Graphics/RHI/Sync/GfxFence.h>
 
 namespace Flax
 {
@@ -57,7 +59,43 @@ namespace Flax
 		m_cmdPool = m_device->CreateCommandPool(poolDesc);
 
 		m_cmdBuffers.resize(swapDesc.imageCount);
+		m_signalSems.resize(swapDesc.imageCount);
+		m_waitSems.resize(swapDesc.imageCount);
+		m_fences.resize(swapDesc.imageCount);
 		for (usize i = 0; i < swapDesc.imageCount; i++)
+		{
 			m_cmdBuffers[i] = m_cmdPool->CreateBuffer(CommandLevel::Primary);
+			m_signalSems[i] = m_device->CreateSyncSemaphore(GfxSemaphoreDesc());
+			m_waitSems[i] = m_device->CreateSyncSemaphore(GfxSemaphoreDesc());
+			m_fences[i] = m_device->CreateSyncFence(GfxFenceDesc().setSignal(false));
+		}
+	}
+
+	void GfxContext::DestroyContext()
+	{
+		m_device->WaitIdle();
+
+		m_fences.clear();
+		m_waitSems.clear();
+		m_signalSems.clear();
+		m_cmdBuffers.clear();
+	}
+
+	void GfxContext::BeginFrame()
+	{
+		m_currIndex = m_swapchain->AcquireNextImage(m_waitSems[m_prevIndex].get(), nullptr);
+		m_cmdBuffers[m_currIndex]->BeginRecord();
+	}
+
+	void GfxContext::EndFrame()
+	{
+		m_cmdBuffers[m_currIndex]->EndRecord();
+
+		m_graphicsQueue->Submit({ m_cmdBuffers[m_currIndex].get() }, { m_waitSems[m_prevIndex].get() },
+			{ m_signalSems[m_currIndex].get() }, m_fences[m_currIndex].get(), PipelineStageFlags::ColorAttachment);
+		
+		m_swapchain->Present({ m_signalSems[m_currIndex].get() });
+		m_fences[m_currIndex]->WaitIdle();
+		m_fences[m_currIndex]->Reset();
 	}
 }

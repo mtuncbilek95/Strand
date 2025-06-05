@@ -436,11 +436,13 @@ namespace Flax
 	{
 		VkPipelineStageFlags vkFlags = 0;
 
-		for (auto s : magic_enum::enum_values<PipelineStageFlags>())
+		for (usize i = 0; i <= 18; ++i)
 		{
-			if (HasFlag(flags, s))
+			PipelineStageFlags val = static_cast<PipelineStageFlags>(1ull << i);
+
+			if (HasFlag(flags, val))
 			{
-				switch (s)
+				switch (val)
 				{
 				case PipelineStageFlags::TopOfPipe:
 					vkFlags |= VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;

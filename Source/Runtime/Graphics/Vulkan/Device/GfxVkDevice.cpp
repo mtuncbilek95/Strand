@@ -210,6 +210,11 @@ namespace Flax
 	void* GfxVkDevice::Adapter() const { return static_cast<void*>(m_adapter); }
 	void* GfxVkDevice::Allocator() const { return static_cast<void*>(m_allocator); }
 
+	void GfxVkDevice::WaitIdle() const
+	{
+		vkDeviceWaitIdle(m_device);
+	}
+
 	Ref<GfxQueue> GfxVkDevice::CreateQueue(QueueType type)
 	{
 		switch (type)

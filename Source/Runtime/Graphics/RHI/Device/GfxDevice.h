@@ -60,6 +60,8 @@ namespace Flax
 		virtual void* Adapter() const = 0;
 		virtual void* Allocator() const = 0;
 
+		virtual void WaitIdle() const = 0;
+
 		virtual Ref<GfxQueue> CreateQueue(QueueType type) = 0;
 		virtual Ref<GfxImage> CreateImage(const GfxImageDesc& desc) = 0;
 		virtual Ref<GfxSwapchain> CreateSwapchain(const GfxSwapchainDesc& desc) = 0;

@@ -41,6 +41,8 @@ namespace Flax
 		void* Adapter() const override final;
 		void* Allocator() const override final;
 
+		void WaitIdle() const override final;
+
 		Ref<GfxQueue> CreateQueue(QueueType type) override final;
 		Ref<GfxImage> CreateImage(const GfxImageDesc& desc) override final;
 		Ref<GfxImageView> CreateView(const GfxImageViewDesc& desc) override final;

@@ -9,6 +9,7 @@ int main()
 		.setWindowMode(WindowMode::Windowed)
 		.setWindowSize({ 1920, 1080 });
 	WindowContext::Get().CreateCoreWindow(windProp);
+	auto* window = WindowContext::Get().CoreWindow();
 
 	GfxContextDesc contextDesc = GfxContextDesc().setAPIType(GfxType::Vulkan)
 		.setAppName("Flaxbox")
@@ -22,15 +23,18 @@ int main()
 		.setPresentMode(PresentMode::Fifo);
 
 	GfxContext::Get().CreateContext(contextDesc);
+	auto& ctx = GfxContext::Get();
 
-	WindowContext::Get().CoreWindow()->Show();
+	window->Show();
 
-	printf("%s\n", TypeUtil::TypeName<WindowContext>().data());
-	
-	while (WindowContext::Get().CoreWindow()->IsActive())
+	while (window->IsActive())
 	{
-		WindowContext::Get().CoreWindow()->ProcessEvents();
+		window->ProcessEvents();
+
+		ctx.BeginFrame();
+		ctx.EndFrame();
 	}
 
-	WindowContext::Get().CoreWindow()->Hide();
+	ctx.DestroyContext();
+	window->Hide();
 }
