@@ -1,5 +1,7 @@
 #include "AssetMetadata.h"
 
+#include <Runtime/Resource/Asset/Core/AssetTypeRegistry.h>
+
 #include <magic_enum.hpp>
 
 namespace Flax
@@ -8,7 +10,7 @@ namespace Flax
 	{
 		jsonOut["Uuid"] = assetId.ToString();
 		jsonOut["AssetName"] = name;
-		jsonOut["AssetType"] = magic_enum::enum_name<AssetType>(type);
+		jsonOut["AssetType"] = type;
 		jsonOut["AssetPath"] = path;
 
 		Json extJson = {};
@@ -23,17 +25,15 @@ namespace Flax
 	{
 		assetId = Uuid(jsonIn["Uuid"]);
 		name = jsonIn["AssetName"];
-		type = magic_enum::enum_cast<AssetType>(jsonIn["AssetType"].get<String>()).value_or(AssetType::Unknown);
+		type = jsonIn["AssetType"].get<String>();
 		path = jsonIn["AssetPath"];
 
-		// TODO: Get extension registry structure
-		// const auto* registry = AssetTypeRegistry::Get().GetAssetTypeExtension(GetTypeId(magic_enum::enum_name<AssetType>(type)));
+		const auto* registry = AssetTypeRegistry::TypeInfo(AssetTypeId::TypeId(type));
 		if (jsonIn.contains("Asset Custom Details"))
 		{
 			const Json& extJson = jsonIn["Asset Custom Details"];
 
-			// TODO: Create extension instance based on type
-			// extension = registry->CreateExtension();
+			extension = registry->CreateExtension();
 			if (extension)
 				extension->Deserialize(extJson);
 		}

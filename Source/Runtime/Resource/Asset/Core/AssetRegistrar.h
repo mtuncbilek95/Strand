@@ -8,21 +8,14 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Resource/Asset/Core/AssetTypeRegistry.h>
+#include <Runtime/Resource/Asset/Core/AssetImportRegistry.h>
 
 namespace Flax
 {
-	enum class AssetType
+	struct AssetRegistrar
 	{
-		Unknown = 0,
-		Scene,
-		Model,
-		Texture,
-		Audio,
-		Material,
-		Animation,
-		Font,
-		Script,
-		Shader,
-		RenderPass
+		AssetRegistrar(const String& extName, function<Ref<IAssetImporter>()> importerFactory,
+			function<Ref<IAssetMetadataExtension>()> metadataFactory);
 	};
 }

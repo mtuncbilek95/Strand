@@ -3,6 +3,8 @@
 #include <Runtime/Window/WindowContext.h>
 #include <Runtime/Graphics/Context/GfxContext.h>
 
+#include <Runtime/Resource/Asset/Core/AssetImportRegistry.h>
+
 namespace Flax
 {
 	auto& wCtx = WindowContext::Get();
@@ -27,6 +29,8 @@ namespace Flax
 			.setPresentMode(PresentMode::Fifo);
 
 		gCtx.CreateContext(contextDesc);
+
+		//AssetImportRegistry::Importer(".png");
 	}
 
 	Application::~Application()
@@ -37,7 +41,6 @@ namespace Flax
 	{
 		// TODO: Try to use multi-thread for initializing the scene, Sponza that has been used is quite large
 		// Load scene data which will handle the loading of meshes, materials, textures, etc.
-		m_scene = SceneManager::LoadSceneFromFile("");
 		wCtx.CoreWindow()->Show();
 
 		while (wCtx.CoreWindow()->IsActive())

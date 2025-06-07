@@ -10,7 +10,7 @@ namespace Flax
 	{
 		if (!std::filesystem::exists(path))
 		{
-			Log::Error(LogType::Importer, "File not found: {0}", path);
+			Log::Error(LogType::Resource, "File not found: {0}", path);
 			return Geometry();
 		}
 
@@ -21,7 +21,7 @@ namespace Flax
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
-			Log::Error(LogType::Importer, "Assimp error: {0}", importer.GetErrorString());
+			Log::Error(LogType::Resource, "Assimp error: {0}", importer.GetErrorString());
 			return Geometry();
 		}
 

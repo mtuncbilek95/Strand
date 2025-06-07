@@ -13,7 +13,7 @@ namespace Flax
 {
 	struct AssetTypeId
 	{
-		static constexpr u32 GetTypeId(const String& name);
-		static constexpr String GetTypeName(u32 typeId);
+		static u32 TypeId(const String& name);
+		static const String& TypeName(u32 typeId);
 	};
 }

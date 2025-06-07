@@ -8,7 +8,6 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resource/Asset/AssetType.h>
 
 namespace Flax
 {
@@ -23,7 +22,7 @@ namespace Flax
 	struct AssetMetadata
 	{
 		String name;
-		AssetType type;
+		String type;
 		String path;
 		Uuid assetId;
 
