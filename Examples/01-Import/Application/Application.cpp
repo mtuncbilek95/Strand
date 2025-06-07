@@ -36,9 +36,8 @@ namespace Flax
 	void Application::Run()
 	{
 		// TODO: Try to use multi-thread for initializing the scene, Sponza that has been used is quite large
-		m_scene = NewRef<Scene>();
 		// Load scene data which will handle the loading of meshes, materials, textures, etc.
-
+		m_scene = SceneManager::LoadSceneFromFile("");
 		wCtx.CoreWindow()->Show();
 
 		while (wCtx.CoreWindow()->IsActive())

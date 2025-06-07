@@ -14,4 +14,9 @@ namespace Flax
 
 		static SceneServiceRegister gbSceneService;
 	}
+
+	Ref<Scene> SceneService::LoadSceneFromFile(const String& path)
+	{
+		return nullptr;
+	}
 }

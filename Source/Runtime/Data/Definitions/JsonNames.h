@@ -7,14 +7,9 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resource/Geometry/Geometry.h>
-#include <Runtime/Scene/Scene.h>
+#include <nlohmann/json.hpp>
 
 namespace Flax
 {
-	struct MeshImporter
-	{
-		static Geometry ReadGeometry(const String& path);
-	};
+	using Json = nlohmann::json;
 }

@@ -8,21 +8,12 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resource/IResource.h>
 
 namespace Flax
 {
-	struct ShaderResourceProps final
+	struct AssetTypeId
 	{
-	};
-
-	class ShaderResource : public ResourceBase<ShaderResource>
-	{
-	public:
-		ShaderResource(const ShaderResourceProps& desc);
-		~ShaderResource();
-
-	private:
-		ShaderResourceProps m_props;
+		static constexpr u32 GetTypeId(const String& name);
+		static constexpr String GetTypeName(u32 typeId);
 	};
 }

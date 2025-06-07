@@ -22,7 +22,7 @@ namespace Flax
 		friend class ComponentResolver;
 
 	public:
-		Scene();
+		Scene(const String& name = "DefaultScene");
 		~Scene();
 
 		Ref<Entity> AddEntity(Ref<Entity> parent = nullptr);
@@ -33,5 +33,6 @@ namespace Flax
 	private:
 		entt::registry m_registry;
 		Ref<Entity> m_rootEntity;
+		String m_name;
 	};
 }

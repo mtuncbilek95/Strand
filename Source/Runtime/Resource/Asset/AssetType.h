@@ -11,15 +11,18 @@
 
 namespace Flax
 {
-	class MeshResource
+	enum class AssetType
 	{
-	public:
-		MeshResource() = default;
-		~MeshResource() = default;
-
-		void Load(const String& path);
-		void Unload();
-
-	private:
+		Unknown = 0,
+		Scene,
+		Model,
+		Texture,
+		Audio,
+		Material,
+		Animation,
+		Font,
+		Script,
+		Shader,
+		RenderPass
 	};
 }

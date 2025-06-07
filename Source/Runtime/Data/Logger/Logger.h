@@ -24,17 +24,11 @@ namespace Flax
         GraphicsAPI,
         Render,
         Resource,
-        VFS,
+        Asset,
         ECS,
-        Reflection,
-        Executor,
         Thread,
         Input,
-        Memory,
         ShaderCompiler,
-        StandardLib,
-        General,
-        Importer,
         Game
     };
 

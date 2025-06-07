@@ -19,6 +19,7 @@ namespace Flax
 		~SceneService() = default;
 
 		void SetCurrentScene(Scene* currentScene) { m_currentScene = currentScene; }
+		Ref<Scene> LoadSceneFromFile(const String& path);
 		Scene* GetCurrentScene() const { return m_currentScene; }
 
 		void ResetServiceField() override final {}

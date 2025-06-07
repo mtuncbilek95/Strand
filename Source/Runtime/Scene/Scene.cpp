@@ -5,7 +5,8 @@
 
 namespace Flax
 {
-	Scene::Scene() : m_registry()
+	Scene::Scene(const String& name) : m_registry(), 
+		m_name(name)
 	{
 		m_rootEntity = NewRef<Entity>(this, nullptr);
 	}
