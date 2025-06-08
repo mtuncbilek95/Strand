@@ -18,11 +18,15 @@ namespace Flax
 	{
 	}
 
-	static AssetRegistrar modelReg("model", "gltf",
+	static AssetRegistrar modelReg1("model", "gltf",
 		[]() { return NewRef<ModelImporter>(); },
 		[]() { return NewRef<ModelMetadata>(); });
 
-	static AssetRegistrar modelReg2("model", "fbx",
+	static AssetRegistrar modelReg2("model", "glb",
+		[]() { return NewRef<ModelImporter>(); },
+		[]() { return NewRef<ModelMetadata>(); });
+
+	static AssetRegistrar modelReg3("model", "fbx",
 		[]() { return NewRef<ModelImporter>(); },
 		[]() { return NewRef<ModelMetadata>(); });
 }
