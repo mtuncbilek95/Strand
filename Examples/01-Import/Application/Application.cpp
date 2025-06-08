@@ -3,7 +3,7 @@
 #include <Runtime/Window/WindowContext.h>
 #include <Runtime/Graphics/Context/GfxContext.h>
 
-#include <Runtime/Resource/Asset/Core/AssetImportRegistry.h>
+#include <Runtime/Resources/Asset/Core/AssetImportRegistry.h>
 
 namespace Flax
 {
@@ -29,8 +29,6 @@ namespace Flax
 			.setPresentMode(PresentMode::Fifo);
 
 		gCtx.CreateContext(contextDesc);
-
-		//AssetImportRegistry::Importer(".png");
 	}
 
 	Application::~Application()

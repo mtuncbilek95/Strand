@@ -32,6 +32,7 @@ int main()
 		window->ProcessEvents();
 
 		ctx.BeginFrame();
+		// ctx.DispatchSubmission();
 		ctx.EndFrame();
 	}
 
