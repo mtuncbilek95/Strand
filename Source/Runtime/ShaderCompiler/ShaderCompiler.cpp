@@ -3,7 +3,7 @@
 #include <Runtime/Data/Tools/DataReader.h>
 
 #include <shaderc/shaderc.hpp>
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 namespace Flax
 {

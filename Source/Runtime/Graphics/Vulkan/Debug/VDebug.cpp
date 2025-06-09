@@ -6,7 +6,7 @@
 #define VOLK_IMPLEMENTATION
 #include <volk/volk.h>
 
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 namespace Flax
 {

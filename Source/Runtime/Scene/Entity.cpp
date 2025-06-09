@@ -7,7 +7,7 @@ namespace Flax
 		if (m_parent)
 		{
 			m_entityId = owner->Registry().create();
-			Log::Debug(LogType::ECS, "Creating child entity with name {}", "Default Entity " + std::to_string(m_parent->GetEntitySize()));
+			Log::Debug(LogType::ECS, "Creating child entity with name {}", "Default Entity " + std::to_string(m_parent->Count()));
 		}
 		else
 			Log::Debug(LogType::ECS, "Creating root entity");

@@ -48,9 +48,9 @@ namespace Flax
 		GfxSwapchainDesc swapDesc = GfxSwapchainDesc().setFormat(desc.colorFormat)
 			.setGraphicsQueue(m_graphicsQueue.get())
 			.setImageCount(desc.imageCount)
-			.setImageSize(WindowContext::Get().CoreWindow()->GetSize())
+			.setImageSize(desc.windowSize)
 			.setPresentMode(desc.presentMode)
-			.setWindowHandler(WindowContext::Get().CoreWindow()->GetHandle());
+			.setWindowHandler(desc.windowHandle);
 
 		m_swapchain = m_device->CreateSwapchain(swapDesc);
 
@@ -97,5 +97,12 @@ namespace Flax
 		m_swapchain->Present({ m_signalSems[m_currIndex].get() });
 		m_fences[m_currIndex]->WaitIdle();
 		m_fences[m_currIndex]->Reset();
+	}
+
+	void GfxContext::DispatchResize(const Math::Vec2u& newSize)
+	{
+		m_swapchain->Resize(newSize);
+
+		Log::Debug(LogType::GfxContext, "Resized as '{0} x {1}'", newSize.x, newSize.y);
 	}
 }

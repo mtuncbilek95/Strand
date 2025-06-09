@@ -35,4 +35,14 @@ namespace Flax
 			entity = nullptr;
 		}
 	}
+
+	Entity* Scene::Child(usize index) const
+	{
+		return m_rootEntity->Child(index);
+	}
+
+	usize Scene::Count() const
+	{
+		return m_rootEntity->Count();
+	}
 }

@@ -9,7 +9,7 @@
 #include <Runtime/Graphics/Vulkan/Sampler/GfxVkSampler.h>
 #include <Runtime/Graphics/Vulkan/Util/VkDescriptorUtils.h>
 
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 namespace Flax
 {

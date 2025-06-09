@@ -11,7 +11,7 @@ FetchContent_Declare(
         magic_enum
         EXCLUDE_FROM_ALL
         GIT_REPOSITORY ${MAGIC_URL}
-        GIT_TAG v0.9.3
+        GIT_TAG v0.9.7
         GIT_SHALLOW TRUE
 )
 

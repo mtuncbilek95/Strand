@@ -28,6 +28,9 @@ namespace Flax
 		Ref<Entity> AddEntity(Ref<Entity> parent = nullptr);
 		void RemoveEntity(Ref<Entity> entity);
 
+		Entity* Child(usize index) const;
+		usize Count() const;
+
 		entt::registry& Registry() { return m_registry; }
 
 	private:

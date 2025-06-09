@@ -35,6 +35,7 @@ namespace Flax
 
     class LoggerWorker final : public Singleton<LoggerWorker>
     {
+		friend class TerminalWidget;
     public:
         LoggerWorker();
         ~LoggerWorker();

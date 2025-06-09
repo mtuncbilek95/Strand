@@ -79,9 +79,12 @@ namespace Flax
 			}
 		}
 
-		entt::entity GetEntityId() const { return m_entityId; }
-		usize GetEntitySize() const { return m_children.size(); }
-		const Vector<Ref<Entity>>& GetChildren() const { return m_children; }
+		entt::entity EntityId() const { return m_entityId; }
+		const Vector<Ref<Entity>>& Children() const { return m_children; }
+
+		usize Count() const { return m_children.size(); }
+		Entity* Child(usize index) const { return m_children.at(index).get(); }
+		Entity* Parent() const { return m_parent; }
 
 	private:
 		Scene* m_owner = nullptr;

@@ -31,6 +31,9 @@ namespace Flax
 		u32 imageCount = 2;
 		PresentMode presentMode = PresentMode::Fifo;
 
+		Math::Vec2u windowSize = { 1280, 720 };
+		void* windowHandle = nullptr;
+
 		GfxContextDesc& setAppName(const String& name) { appName = name; return *this; }
 		GfxContextDesc& setAppVersion(const Math::Vec3u& version) { appVer = version; return *this; }
 		GfxContextDesc& setAPIType(GfxType gfxType) { type = gfxType; return *this; }
@@ -41,5 +44,7 @@ namespace Flax
 		GfxContextDesc& setDepthFormat(ImageFormat format) { depthFormat = format; return *this; }
 		GfxContextDesc& setImageCount(u32 count) { imageCount = count; return *this; }
 		GfxContextDesc& setPresentMode(PresentMode mode) { presentMode = mode; return *this; }
+		GfxContextDesc& setWindowSize(const Math::Vec2u& size) { windowSize = size; return *this; }
+		GfxContextDesc& setWindowHandle(void* handle) { windowHandle = handle; return *this; }
 	};
 }

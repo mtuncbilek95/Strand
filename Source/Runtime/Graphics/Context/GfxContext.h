@@ -37,6 +37,8 @@ namespace Flax
 		void BeginFrame();
 		void EndFrame();
 
+		void DispatchResize(const Math::Vec2u& newSize);
+
 	private:
 		Ref<GfxInstance> m_instance;
 		Ref<GfxDevice> m_device;
