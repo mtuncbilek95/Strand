@@ -1,5 +1,7 @@
 #include "HierarchyItemModel.h"
 
+#include <Editor/Models/Hierarchy/HierarchyCustomRole.h>
+
 #include <Runtime/Scene/Scene.h>
 #include <Runtime/Scene/Entity.h>
 
@@ -7,6 +9,14 @@ namespace Flax
 {
 	HierarchyItemModel::HierarchyItemModel(QObject* pParent) : QAbstractItemModel(pParent)
 	{
+		setCurrentScene(new Scene("DumpScene"));
+
+		addEntity(QModelIndex());
+		addEntity(QModelIndex());
+		addEntity(QModelIndex());
+
+		addEntity(index(2, 0, QModelIndex()));
+		addEntity(index(2, 0, QModelIndex()));
 	}
 
 	HierarchyItemModel::~HierarchyItemModel()
@@ -15,14 +25,36 @@ namespace Flax
 
 	void HierarchyItemModel::addEntity(const QModelIndex& parent)
 	{
-		beginResetModel();
+		Entity* parentEntity = parent.isValid()
+			? static_cast<Entity*>(parent.internalPointer())
+			: m_currentScene->Root();
 
-		if (!parent.isValid())
-			m_currentScene->AddEntity(nullptr);
-		else
-			static_cast<Entity*>(parent.internalPointer())->AddChild();
+		i32 row = static_cast<i32>(parentEntity->Count());
 
-		endResetModel();
+		beginInsertRows(parent, row, row);
+		parentEntity->AddChild();
+		endInsertRows();
+	}
+
+	void HierarchyItemModel::renameEntity(const QModelIndex& index, const QString& newName)
+	{
+		if (!index.isValid())
+		{
+			Log::Error(LogType::Editor, "Invalid index provided for renaming entity.");
+			return;
+		}
+		Entity* entity = static_cast<Entity*>(index.internalPointer());
+		if (!entity)
+		{
+			Log::Error(LogType::Editor, "Entity pointer is null while renaming.");
+			return;
+		}
+		entity->SetName(newName.toStdString());
+		dataChanged(index, index, { i32(HierarchyCustomRole::EntityName) });
+	}
+
+	void HierarchyItemModel::duplicateEntity(const QModelIndex& index)
+	{
 	}
 
 	void HierarchyItemModel::removeEntity(const QModelIndex& index)
@@ -50,38 +82,61 @@ namespace Flax
 
 	QModelIndex HierarchyItemModel::index(int row, int column, const QModelIndex& parent) const
 	{
-		// If has no proper index return invalid QModelIndex()
+		if (!m_currentScene)
+			return QModelIndex();
+
 		if (!hasIndex(row, column, parent))
 			return QModelIndex();
 
-		// If parent is not valid, return it from root
-		if (!parent.isValid())
-			return createIndex(row, column, m_currentScene->Child(usize(row)));
+		Entity* child = nullptr;
 
-		// Parent is valid. Turn into Entity* then use row to create correct QModelIndex()
-		Entity* parentPtr = static_cast<Entity*>(parent.internalPointer());
-		return createIndex(row, column, parentPtr->Child(usize(row)));
+		if (!parent.isValid())
+			child = m_currentScene->Child(static_cast<usize>(row));
+		else
+		{
+			const Entity* parentPtr = static_cast<const Entity*>(parent.internalPointer());
+			if (!parentPtr)
+				return QModelIndex();
+
+			child = parentPtr->Child(static_cast<usize>(row));
+		}
+
+		if (!child)
+			return QModelIndex();
+
+		return createIndex(row, column, child);
 	}
 
 	QModelIndex HierarchyItemModel::parent(const QModelIndex& index) const
 	{
-		if (!index.isValid())
+		if (!m_currentScene || !index.isValid())
 			return QModelIndex();
 
-		if (index.parent().isValid())
+		const Entity* ptr = static_cast<const Entity*>(index.internalPointer());
+		if (!ptr)
+			return QModelIndex();
+
+		const Entity* parentPtr = ptr->Parent();
+		if (!parentPtr)
+			return QModelIndex();
+
+		const Entity* grandPtr = parentPtr->Parent();
+		if (grandPtr)
 		{
-			Entity* parentPtr = static_cast<Entity*>(index.parent().internalPointer());
-			Entity* grandPtr = parentPtr->Parent();
-
-			if (grandPtr)
+			for (usize i = 0; i < grandPtr->Count(); ++i)
 			{
-				for (usize i = 0; i < grandPtr->Count(); i++)
-				{
-					if (grandPtr->Child(i) == parentPtr)
-						return createIndex(i, 0, parentPtr);
-				}
-
-				return QModelIndex();
+				const Entity* child = grandPtr->Child(i);
+				if (child == parentPtr)
+					return createIndex(static_cast<i32>(i), 0, const_cast<Entity*>(parentPtr));
+			}
+		}
+		else
+		{
+			for (usize i = 0; i < m_currentScene->Count(); ++i)
+			{
+				const Entity* child = m_currentScene->Child(i);
+				if (child == parentPtr)
+					return createIndex(static_cast<i32>(i), 0, const_cast<Entity*>(parentPtr));
 			}
 		}
 
@@ -90,6 +145,9 @@ namespace Flax
 
 	int HierarchyItemModel::rowCount(const QModelIndex& parent) const
 	{
+		if (!m_currentScene)
+			return 0;
+
 		if (!parent.isValid())
 			return m_currentScene->Count();
 
@@ -99,11 +157,65 @@ namespace Flax
 
 	int HierarchyItemModel::columnCount(const QModelIndex& parent) const
 	{
-		return 0;
+		return 1;
 	}
 
 	QVariant HierarchyItemModel::data(const QModelIndex& index, int role) const
 	{
+		if (!m_currentScene)
+			return QVariant();
+
+		if (!index.isValid())
+			return QVariant();
+
+		switch (role)
+		{
+		case Qt::DisplayRole:
+		case i32(HierarchyCustomRole::EntityName):
+		{
+			Entity* ptr = static_cast<Entity*>(index.internalPointer());
+			return QString::fromStdString(ptr->Name());
+		}
+		case i32(HierarchyCustomRole::EntityType):
+			return "Entity";
+		default:
+			return QVariant();
+		}
+
 		return QVariant();
+	}
+
+	QVariant HierarchyItemModel::headerData(int section, Qt::Orientation orientation, int role) const
+	{
+		if (!m_currentScene)
+			return QVariant("Empty Scene");
+
+		if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+			return QString::fromStdString(m_currentScene->Name());
+
+		return QVariant();
+	}
+
+	Qt::ItemFlags HierarchyItemModel::flags(const QModelIndex& index) const
+	{
+		if (!index.isValid())
+			return Qt::NoItemFlags;
+
+		return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable;
+	}
+
+	bool HierarchyItemModel::setData(const QModelIndex& index, const QVariant& value, int role)
+	{
+		if (!index.isValid() || role != Qt::EditRole)
+			return false;
+
+		Entity* entity = static_cast<Entity*>(index.internalPointer());
+		if (!entity)
+			return false;
+
+		entity->SetName(value.toString().toStdString());
+
+		emit dataChanged(index, index, { Qt::DisplayRole, Qt::EditRole });
+		return true;
 	}
 }

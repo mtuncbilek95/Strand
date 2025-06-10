@@ -86,6 +86,9 @@ namespace Flax
 		Entity* Child(usize index) const { return m_children.at(index).get(); }
 		Entity* Parent() const { return m_parent; }
 
+		void SetName(const String& name) { m_name = name; }
+		const String& Name() const { return m_name; }
+
 	private:
 		Scene* m_owner = nullptr;
 		Entity* m_parent = nullptr;
@@ -94,5 +97,7 @@ namespace Flax
 		entt::entity m_entityId = entt::null;
 
 		HashMap<String, Owned<IComponentBase>> m_components;
+
+		String m_name = "Default Entity";
 	};
 }

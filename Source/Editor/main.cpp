@@ -1,7 +1,6 @@
 #include <QApplication>
 
-#include <Editor/SceneWidget/SceneWidget.h>
-#include <Editor/TerminalWidget/TerminalWidget.h>
+#include <Editor/HierarchyWidget/HierarchyWidget.h>
 
 using namespace Flax;
 
@@ -9,12 +8,8 @@ int main(int argC, char** argV)
 {
 	QApplication app(argC, argV);
 
-	TerminalWidget t;
-	t.show();
-
-	SceneWidget widget;
-	widget.show();
-	widget.RunScene();
+	HierarchyWidget test;
+	test.show();
 
 	return app.exec();
 }

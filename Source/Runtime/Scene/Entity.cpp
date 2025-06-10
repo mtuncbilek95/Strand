@@ -8,9 +8,13 @@ namespace Flax
 		{
 			m_entityId = owner->Registry().create();
 			Log::Debug(LogType::ECS, "Creating child entity with name {}", "Default Entity " + std::to_string(m_parent->Count()));
+			m_name += " " + std::to_string(m_parent->Count());
 		}
 		else
+		{
 			Log::Debug(LogType::ECS, "Creating root entity");
+			m_name = "Root";
+		}
 	}
 
 	Entity::~Entity()
