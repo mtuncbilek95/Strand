@@ -8,6 +8,8 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
+
 #include <Runtime/Graphics/Context/GfxContext.h>
 
 namespace Flax

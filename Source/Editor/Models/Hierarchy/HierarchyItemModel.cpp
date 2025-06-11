@@ -9,14 +9,6 @@ namespace Flax
 {
 	HierarchyItemModel::HierarchyItemModel(QObject* pParent) : QAbstractItemModel(pParent)
 	{
-		setCurrentScene(new Scene("DumpScene"));
-
-		addEntity(QModelIndex());
-		addEntity(QModelIndex());
-		addEntity(QModelIndex());
-
-		addEntity(index(2, 0, QModelIndex()));
-		addEntity(index(2, 0, QModelIndex()));
 	}
 
 	HierarchyItemModel::~HierarchyItemModel()

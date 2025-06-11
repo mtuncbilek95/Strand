@@ -8,23 +8,13 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	using QSink = QLogSink<Mutex>;
-
-	class TerminalWidget : public QWidget
+	class UIServiceBase : public QObject
 	{
 		Q_OBJECT
 	public:
-		TerminalWidget(QWidget* pParent = nullptr);
-		~TerminalWidget();
-
-	private slots:
-		void OnLogMessageReceived(const QString& msg, const QString& category, int level);
-
-	private:
-		QTextEdit* m_textEdit;
+		virtual void ResetServiceField() = 0;
 	};
 }

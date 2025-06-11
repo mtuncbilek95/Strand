@@ -12,7 +12,7 @@
 
 namespace Flax
 {
-	class VFSService final : public ServiceBase
+	class VFSService final : public RuntimeServiceBase
 	{
 	public:
 		void InitVFS(VFSType type, const String& rootPath);

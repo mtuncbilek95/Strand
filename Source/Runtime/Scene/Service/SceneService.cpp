@@ -8,7 +8,7 @@ namespace Flax
 		{
 			SceneServiceRegister()
 			{
-				ServiceLocator::Register<SceneService>(NewRef<SceneService>());
+				RuntimeService::Register<SceneService>(NewRef<SceneService>());
 			}
 		};
 

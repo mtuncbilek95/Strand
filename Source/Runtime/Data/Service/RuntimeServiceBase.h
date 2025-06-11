@@ -13,7 +13,7 @@
 
 namespace Flax
 {
-	class ServiceBase
+	class RuntimeServiceBase
 	{
 	public:
 		virtual void ResetServiceField() = 0;

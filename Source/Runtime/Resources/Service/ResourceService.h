@@ -12,7 +12,7 @@
 
 namespace Flax
 {
-	class ResourceService : public ServiceBase
+	class ResourceService : public RuntimeServiceBase
 	{
 	public:
 		template<typename T, typename = std::enable_if<std::is_base_of_v<IResource, T>>>

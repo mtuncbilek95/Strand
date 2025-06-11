@@ -8,7 +8,7 @@ namespace Flax
 		{
 			ResourceServiceRegister()
 			{
-				ServiceLocator::Register<ResourceService>(NewRef<ResourceService>());
+				RuntimeService::Register<ResourceService>(NewRef<ResourceService>());
 			}
 		};
 

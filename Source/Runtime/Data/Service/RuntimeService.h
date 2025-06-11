@@ -10,14 +10,14 @@
 #include <Runtime/Data/Definitions/Definitions.h>
 #include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Data/Logger/Logger.h>
-#include <Runtime/Data/Service/ServiceBase.h>
+#include <Runtime/Data/Service/RuntimeServiceBase.h>
 
 namespace Flax
 {
-	class ServiceLocator
+	class RuntimeService
 	{
 	public:
-		template<typename T, typename = std::enable_if_t<std::is_base_of_v<ServiceBase, T>>>
+		template<typename T, typename = std::enable_if_t<std::is_base_of_v<RuntimeServiceBase, T>>>
 		static void Register(Ref<T> service)
 		{
 			auto typeId = TypeIndex(typeid(T));
@@ -51,9 +51,9 @@ namespace Flax
 		}
 
 	private:
-		static HashMap<TypeIndex, Ref<ServiceBase>>& Services()
+		static HashMap<TypeIndex, Ref<RuntimeServiceBase>>& Services()
 		{
-			static HashMap<TypeIndex, Ref<ServiceBase>> instanceMap;
+			static HashMap<TypeIndex, Ref<RuntimeServiceBase>> instanceMap;
 			return instanceMap;
 		}
 	};

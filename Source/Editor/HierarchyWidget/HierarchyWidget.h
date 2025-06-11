@@ -20,16 +20,9 @@ namespace Flax
 		HierarchyWidget(QWidget* pParent = nullptr);
 		~HierarchyWidget();
 
-	protected:
-		bool eventFilter(QObject* pWatched, QEvent* pEvent) override;
-
-	private slots:
-		void onItemSelected(const QModelIndex& index);
-		void onContextMenuRequested(const QPoint& pos);
-		void onItemDoubleClicked(const QModelIndex& index);
+		QTreeView* View() const { return m_view; }
 
 	private:
 		QTreeView* m_view;
-		HierarchyItemModel* m_model;
 	};
 }

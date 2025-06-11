@@ -12,7 +12,7 @@
 
 namespace Flax
 {
-	class SceneService final : public ServiceBase
+	class SceneService final : public RuntimeServiceBase
 	{
 	public:
 		SceneService() = default;

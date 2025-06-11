@@ -1,11 +1,14 @@
 #include "HierarchyWidget.h"
 
 #include <Editor/Models/Hierarchy/HierarchyItemModel.h>
+#include <Editor/HierarchyWidget/HierarchyService.h>
 
 namespace Flax
 {
 	HierarchyWidget::HierarchyWidget(QWidget* pParent) : QWidget(pParent)
 	{
+		auto* service = UIService::Get<HierarchyService>();
+
 		setObjectName("Scene_HierarchyWidget");
 		setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 		setContentsMargins(0, 0, 0, 0);
@@ -14,88 +17,22 @@ namespace Flax
 		mainLayout->setContentsMargins(0, 0, 0, 0);
 		mainLayout->setSpacing(0);
 
-		m_model = new HierarchyItemModel(this);
+		service->setWidget(this);
 		m_view = new QTreeView(this);
 		m_view->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-		m_view->viewport()->installEventFilter(this);
+		m_view->viewport()->installEventFilter(service);
 		m_view->setObjectName("Scene_HierarchyWidget_TreeView");
 		m_view->setContextMenuPolicy(Qt::CustomContextMenu);
-		m_view->setModel(m_model);
+		m_view->setModel(service->Model());
 
 		mainLayout->addWidget(m_view);
 
-		connect(m_view, &QTreeView::clicked, this, &HierarchyWidget::onItemSelected);
-		connect(m_view, &QTreeView::customContextMenuRequested, this, &HierarchyWidget::onContextMenuRequested);
-		connect(m_view, &QTreeView::doubleClicked, this, &HierarchyWidget::onItemDoubleClicked);
+		connect(m_view, &QTreeView::clicked, service, &HierarchyService::onItemSelected);
+		connect(m_view, &QTreeView::customContextMenuRequested, service, &HierarchyService::onContextMenuRequested);
+		connect(m_view, &QTreeView::doubleClicked, service, &HierarchyService::onItemDoubleClicked);
 	}
 
 	HierarchyWidget::~HierarchyWidget()
-	{
-	}
-
-	bool HierarchyWidget::eventFilter(QObject* pWatched, QEvent* pEvent)
-	{
-		if ((pWatched == m_view || pWatched == m_view->viewport()) && pEvent->type() == QEvent::MouseButtonPress)
-		{
-			auto* mouseEvent = static_cast<QMouseEvent*>(pEvent);
-			if (mouseEvent->button() == Qt::LeftButton)
-			{
-				QModelIndex index = m_view->indexAt(mouseEvent->pos());
-				if (!index.isValid())
-				{
-					m_view->clearSelection();
-					m_view->setCurrentIndex(QModelIndex());
-				}
-			}
-		}
-		return QWidget::eventFilter(pWatched, pEvent);
-	}
-
-	void HierarchyWidget::onItemSelected(const QModelIndex& index)
-	{
-
-	}
-
-	void HierarchyWidget::onContextMenuRequested(const QPoint& pos)
-	{
-		QModelIndex index = m_view->indexAt(pos);
-
-		QMenu contextMenu;
-		QAction* addEntityAction = nullptr;
-		QAction* renameEntityAction = nullptr;
-		QAction* duplicateEntityAction = nullptr;
-		QAction* removeEntityAction = nullptr;
-
-		if (index.isValid())
-		{
-			addEntityAction = contextMenu.addAction("Add Child Entity");
-			renameEntityAction = contextMenu.addAction("Rename");
-			duplicateEntityAction = contextMenu.addAction("Duplicate");
-			removeEntityAction = contextMenu.addAction("Remove");
-		}
-		else
-		{
-			addEntityAction = contextMenu.addAction("Add Entity");
-			m_view->clearSelection();
-		}
-
-		QAction* selectedAction = contextMenu.exec(m_view->viewport()->mapToGlobal(pos));
-		if (!selectedAction)
-			return;
-
-		if (selectedAction == addEntityAction)
-			m_model->addEntity(index);
-		else if (removeEntityAction && selectedAction == removeEntityAction)
-			m_model->removeEntity(index);
-		else if (renameEntityAction && selectedAction == renameEntityAction)
-			m_view->edit(index);
-		else if (duplicateEntityAction && selectedAction == duplicateEntityAction)
-			m_model->duplicateEntity(index);
-		else
-			return; // No action handled
-	}
-
-	void HierarchyWidget::onItemDoubleClicked(const QModelIndex& index)
 	{
 	}
 }

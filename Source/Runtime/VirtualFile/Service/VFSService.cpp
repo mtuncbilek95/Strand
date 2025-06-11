@@ -8,7 +8,7 @@ namespace Flax
 		{
 			VFSServiceRegister()
 			{
-				ServiceLocator::Register<VFSService>(NewRef<VFSService>());
+				RuntimeService::Register<VFSService>(NewRef<VFSService>());
 			}
 		};
 

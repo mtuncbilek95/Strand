@@ -40,7 +40,7 @@ target_link_libraries(Editor
 )
 
 target_link_libraries(Editor PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,Runtime>")
-target_precompile_headers(Editor PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Core/CoreMinimal.h")
+target_precompile_headers(Editor PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Core/PCH.h")
 # ------------------------------------------------------------
 
 # ---------------------- FILE ADDITION -----------------------
