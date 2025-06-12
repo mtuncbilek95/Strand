@@ -78,7 +78,6 @@ namespace Flax
 		Entity* AddChild();
 		void RemoveChild(Entity* child);
 		void RemoveAllChildren();
-
 		void MoveTo(Entity* target, Entity* parent);
 
 		entt::entity EntityId() const { return m_entityId; }

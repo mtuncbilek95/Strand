@@ -19,6 +19,8 @@ namespace Flax
 
 	Entity::~Entity()
 	{
+		Log::Debug(LogType::ECS, "Destroying entity with name {}", m_name);
+
 		if (m_parent)
 		{
 			m_owner->Registry().destroy(m_entityId);

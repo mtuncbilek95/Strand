@@ -27,7 +27,7 @@ namespace Flax
 		void duplicateEntity(const QModelIndex& index);
 		void removeEntity(const QModelIndex& index);
 		void setCurrentScene(Scene* newScene);
-		void moveEntity(const QModelIndex& from, const QModelIndex& toParent);
+
 		QModelIndex indexOf(Entity* entity) const;
 
 		QModelIndex index(int row, int column, const QModelIndex& parent) const override final;
@@ -38,10 +38,6 @@ namespace Flax
 		QVariant headerData(int section, Qt::Orientation orientation, int role) const override final;
 		Qt::ItemFlags flags(const QModelIndex& index) const override final;
 		bool setData(const QModelIndex& index, const QVariant& value, int role) override final;
-		Qt::DropActions supportedDropActions() const override final;
-		QStringList mimeTypes() const override final;
-		QMimeData* mimeData(const QModelIndexList& indexes) const override final;
-		bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) override final;
 
 	private:
 		Scene* m_currentScene;
