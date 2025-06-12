@@ -15,19 +15,19 @@ namespace Flax
 	{
 	}
 
-	Ref<Entity> Scene::AddEntity(Ref<Entity> parent)
+	Entity* Scene::AddEntity(Entity* parent)
 	{
 		if (parent)
 		{
-			auto child = parent->AddChild();
+			auto* child = parent->AddChild();
 			return child;
 		}
 
-		auto child = m_rootEntity->AddChild();
+		auto* child = m_rootEntity->AddChild();
 		return child;
 	}
 
-	void Scene::RemoveEntity(Ref<Entity> entity)
+	void Scene::RemoveEntity(Entity* entity)
 	{
 		if (entity)
 		{

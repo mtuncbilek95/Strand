@@ -1,5 +1,8 @@
 #include "SceneWidget.h"
 
+#include <Editor/HierarchyWidget/HierarchyService.h>
+#include <Editor/Models/Hierarchy/HierarchyItemModel.h>
+
 namespace Flax
 {
 	SceneWidget::SceneWidget(QWidget* pParent) : QWidget(pParent), m_ctx(&GfxContext::Get())

@@ -1,5 +1,6 @@
 #include <QApplication>
 
+#include <Editor/TerminalWidget/TerminalWidget.h>
 #include <Editor/HierarchyWidget/HierarchyWidget.h>
 
 using namespace Flax;

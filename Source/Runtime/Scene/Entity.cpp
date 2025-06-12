@@ -26,24 +26,32 @@ namespace Flax
 		}
 	}
 
-	Ref<Entity> Entity::AddChild()
+	Entity* Entity::AddChild()
 	{
 		Ref<Entity> child = NewRef<Entity>(m_owner, this);
 		m_children.push_back(child);
 
-		return child;
+		return child.get();
 	}
 
-	void Entity::RemoveChild(Ref<Entity> child)
+	void Entity::RemoveChild(Entity* child)
 	{
-		auto it = std::find(m_children.begin(), m_children.end(), child);
-		if (it != m_children.end())
+		if (!child)
+			return;
+
+		String name = child ? child->Name() : "nullptr";
+		usize targetIndex = IndexOf(child);
+
+		if (targetIndex == NumericLimits<usize>::max())
 		{
-			(*it)->RemoveAllChildren();
-			m_children.erase(it);
+			Log::Warn(LogType::ECS, "Attempted to remove an entity that is not a child of the parent entity.");
+			return;
 		}
-		else
-			Log::Error(LogType::ECS, "Child entity not found");
+
+		m_children[targetIndex]->RemoveAllChildren();
+		m_children.erase(m_children.begin() + targetIndex);
+
+		Log::Debug(LogType::ECS, "Removing child entity with name {}", name);
 	}
 
 	void Entity::RemoveAllChildren()
@@ -55,4 +63,40 @@ namespace Flax
 		}
 		m_children.clear();
 	}
+
+	void Entity::MoveTo(Entity* target, Entity* parent)
+	{
+		if (target == this || target == nullptr || parent == nullptr)
+			return;
+
+		usize targetIndex = IndexOf(target);
+		if (targetIndex == NumericLimits<usize>::max())
+		{
+			Log::Warn(LogType::ECS, "Attempted to move an entity that is not a child of the parent entity.");
+			return;
+		}
+
+		if (parent == this)
+		{
+			Log::Warn(LogType::ECS, "Attempted to move an entity to its own parent.");
+			return;
+		}
+
+		Ref<Entity> targetRef = m_children[targetIndex];
+		m_children.erase(m_children.begin() + targetIndex);
+
+		parent->m_children.push_back(targetRef);
+		target->m_parent = parent;
+	}
+
+    usize Entity::IndexOf(Entity* child) const
+    {
+		for (usize i = 0; i < m_children.size(); ++i)
+		{
+			if (m_children[i].get() == child)
+				return i;
+		}
+
+		return NumericLimits<usize>::max();
+    }
 }

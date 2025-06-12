@@ -7,7 +7,8 @@
 
 namespace Flax
 {
-	HierarchyItemModel::HierarchyItemModel(QObject* pParent) : QAbstractItemModel(pParent)
+	HierarchyItemModel::HierarchyItemModel(QObject* pParent) : QAbstractItemModel(pParent), 
+		m_currentScene(nullptr)
 	{
 	}
 
@@ -70,6 +71,53 @@ namespace Flax
 		beginResetModel();
 		m_currentScene = newScene;
 		endResetModel();
+	}
+
+	void HierarchyItemModel::moveEntity(const QModelIndex& from, const QModelIndex& toParent)
+	{
+		if (!from.isValid() || from == toParent)
+			return;
+
+		Entity* entity = static_cast<Entity*>(from.internalPointer());
+		Entity* newParent = toParent.isValid()
+			? static_cast<Entity*>(toParent.internalPointer())
+			: m_currentScene->Root();
+
+		Entity* oldParent = entity->Parent();
+		if (!entity || !newParent || oldParent == newParent)
+			return;
+
+		i32 newRow = newParent->Count() - 1;
+		i32 oldRow = oldParent->IndexOf(entity);
+		beginRemoveRows(from.parent(), oldRow, oldRow);
+		beginInsertRows(toParent, newRow, newRow);
+
+		entity->MoveTo(entity, newParent);
+
+		endRemoveRows();
+		endInsertRows();
+	}
+
+	QModelIndex HierarchyItemModel::indexOf(Entity* entity) const
+	{
+		if (!entity)
+			return QModelIndex();
+
+		Entity* parent = entity->Parent();
+		if (!parent)
+		{
+			for (int i = 0; i < m_currentScene->Count(); ++i)
+				if (m_currentScene->Child(i) == entity)
+					return index(i, 0, QModelIndex());
+		}
+		else
+		{
+			for (int i = 0; i < parent->Count(); ++i)
+				if (parent->Child(i) == entity)
+					return index(i, 0, createIndex(0, 0, parent));
+		}
+
+		return QModelIndex();
 	}
 
 	QModelIndex HierarchyItemModel::index(int row, int column, const QModelIndex& parent) const
@@ -191,9 +239,10 @@ namespace Flax
 	Qt::ItemFlags HierarchyItemModel::flags(const QModelIndex& index) const
 	{
 		if (!index.isValid())
-			return Qt::NoItemFlags;
+			return Qt::ItemIsDropEnabled;
 
-		return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable;
+		return Qt::ItemIsEnabled | Qt::ItemIsSelectable |
+			Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable;
 	}
 
 	bool HierarchyItemModel::setData(const QModelIndex& index, const QVariant& value, int role)
@@ -208,6 +257,55 @@ namespace Flax
 		entity->SetName(value.toString().toStdString());
 
 		emit dataChanged(index, index, { Qt::DisplayRole, Qt::EditRole });
+		return true;
+	}
+
+	Qt::DropActions HierarchyItemModel::supportedDropActions() const
+	{
+		return Qt::MoveAction;
+	}
+
+	QStringList HierarchyItemModel::mimeTypes() const
+	{
+		return { "application/x-entity-ptr" };
+	}
+
+	QMimeData* HierarchyItemModel::mimeData(const QModelIndexList& indexes) const
+	{
+		if (indexes.isEmpty())
+			return nullptr;
+
+		QMimeData* mimeData = new QMimeData();
+		Entity* entity = static_cast<Entity*>(indexes.first().internalPointer());
+
+		QByteArray data;
+		QDataStream stream(&data, QIODevice::WriteOnly);
+		stream << quintptr(entity);
+
+		mimeData->setData("application/x-entity-ptr", data);
+		return mimeData;
+	}
+
+	bool HierarchyItemModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
+	{
+		if (action != Qt::MoveAction)
+			return false;
+
+		if (!data->hasFormat("application/x-entity-ptr"))
+			return false;
+
+		QByteArray encoded = data->data("application/x-entity-ptr");
+		QDataStream stream(&encoded, QIODevice::ReadOnly);
+		quintptr ptrVal;
+		stream >> ptrVal;
+
+		Entity* entity = reinterpret_cast<Entity*>(ptrVal);
+		if (!entity)
+			return false;
+
+		QModelIndex fromIndex = indexOf(entity);
+		moveEntity(fromIndex, parent);
+
 		return true;
 	}
 }

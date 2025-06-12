@@ -1,9 +1,9 @@
 function(SetupVulkan TARGET)
 	find_package(Vulkan REQUIRED)
-	target_link_libraries(${TARGET} PRIVATE Vulkan::Vulkan)
+	target_link_libraries(${TARGET} PRIVATE Vulkan::Vulkan volk::volk)
 	find_package(Vulkan OPTIONAL_COMPONENTS shaderc_combined)
 	if(Vulkan_shaderc_combined_FOUND)
-		target_link_libraries(${TARGET} PRIVATE Vulkan::shaderc_combined volk::volk)
+		target_link_libraries(${TARGET} PRIVATE Vulkan::shaderc_combined)
 	endif()
 	
 	target_include_directories(${TARGET} PUBLIC ${Vulkan_INCLUDE_DIR})

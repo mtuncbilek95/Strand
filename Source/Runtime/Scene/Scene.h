@@ -25,8 +25,8 @@ namespace Flax
 		Scene(const String& name = "DefaultScene");
 		~Scene();
 
-		Ref<Entity> AddEntity(Ref<Entity> parent = nullptr);
-		void RemoveEntity(Ref<Entity> entity);
+		Entity* AddEntity(Entity* parent = nullptr);
+		void RemoveEntity(Entity* entity);
 
 		const String& Name() const { return m_name; }
 		Entity* Child(usize index) const;

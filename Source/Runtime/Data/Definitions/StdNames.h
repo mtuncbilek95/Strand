@@ -116,3 +116,6 @@ template<typename T>
 using function = std::function<T>;
 using voidPtrFunc = std::function<void*>;
 using voidFunc = std::function<void()>;
+
+template<typename T>
+using NumericLimits = std::numeric_limits<T>;

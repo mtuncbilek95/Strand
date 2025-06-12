@@ -24,10 +24,6 @@ namespace Flax
 		Entity(Scene* owner, Entity* parent = nullptr);
 		~Entity();
 
-		Ref<Entity> AddChild();
-		void RemoveChild(Ref<Entity> child);
-		void RemoveAllChildren();
-
 		template<typename T, typename...Args, typename = std::enable_if<std::is_base_of_v<IComponentBase, T>>>
 		T* AddComponent(Args&&... args)
 		{
@@ -79,11 +75,20 @@ namespace Flax
 			}
 		}
 
+		Entity* AddChild();
+		void RemoveChild(Entity* child);
+		void RemoveAllChildren();
+
+		void MoveTo(Entity* target, Entity* parent);
+
 		entt::entity EntityId() const { return m_entityId; }
 		const Vector<Ref<Entity>>& Children() const { return m_children; }
-
 		usize Count() const { return m_children.size(); }
+
+		usize IndexOf(Entity* child) const;
 		Entity* Child(usize index) const { return m_children.at(index).get(); }
+
+		void SetParent(Entity* parent) { m_parent = parent; }
 		Entity* Parent() const { return m_parent; }
 
 		void SetName(const String& name) { m_name = name; }

@@ -24,6 +24,10 @@ namespace Flax
 		m_view->setObjectName("Scene_HierarchyWidget_TreeView");
 		m_view->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_view->setModel(service->Model());
+		m_view->setDragEnabled(true);
+		m_view->setAcceptDrops(true);
+		m_view->setDropIndicatorShown(true);
+		m_view->setDefaultDropAction(Qt::MoveAction);
 
 		mainLayout->addWidget(m_view);
 

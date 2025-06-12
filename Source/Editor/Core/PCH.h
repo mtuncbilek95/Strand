@@ -12,6 +12,7 @@
 #include <QVariant>
 #include <QTimer>
 #include <QVector>
+#include <QMimeData>
 
 #include <QWidget>
 #include <QLabel>
