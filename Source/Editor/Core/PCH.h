@@ -44,3 +44,6 @@
 #include <QPlainTextEdit>
 
 #include <QAbstractItemModel>
+#include <QAbstractTableModel>
+#include <QAbstractListModel>
+
