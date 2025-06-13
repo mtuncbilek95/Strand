@@ -1,0 +1,23 @@
+# DRAG LABEL STYLE
+/*m_dragLabel->setStyleSheet("#Inspector_DragFloatInput_DragLabel {"
+			"background-color: #1e1e1e;"
+			"color: white;"
+			"padding: 2px 6px;"
+			"font-size: 10pt;"
+			"border: 1px solid #444;"
+			"border-left: none;"
+			"border-top-right-radius: 6px;"
+			"border-bottom-right-radius: 6px;"
+			"}");*/
+
+# TEXT LABEL STYLE
+/*m_textLabel->setStyleSheet("#Inspector_DragFloatInput_TextLabel {"
+			"background-color: #1e1e1e;"
+			"color: white;"
+			"padding: 2px 6px;"
+			"font-size: 10pt;"
+			"border: 1px solid #666;"
+			"border-left: none;"
+			"border-top-right-radius: 6px;"
+			"border-bottom-right-radius: 6px;"
+			"}");*/

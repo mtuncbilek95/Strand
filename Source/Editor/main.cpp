@@ -1,7 +1,6 @@
 #include <QApplication>
 
-#include <Editor/TerminalWidget/TerminalWidget.h>
-#include <Editor/HierarchyWidget/HierarchyWidget.h>
+#include <Editor/InspectorWidget/TransformWidget.h>
 
 using namespace Flax;
 
@@ -9,7 +8,7 @@ int main(int argC, char** argV)
 {
 	QApplication app(argC, argV);
 
-	HierarchyWidget test;
+	TransformWidget test;
 	test.show();
 
 	return app.exec();

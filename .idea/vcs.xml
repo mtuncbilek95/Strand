@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/assimp-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/catch2-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/entt-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/fmt-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/ftxui-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/glfw-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/glm-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/imgui-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/magic_enum-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/nlohmann-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/spdlog-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/stb-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Build/Debug/_deps/volk-src" vcs="Git" />
+  </component>
+</project>
