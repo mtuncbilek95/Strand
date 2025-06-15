@@ -70,6 +70,7 @@ namespace Flax
             m_loggers[type]->critical(fmt, std::forward<Args>(args)...);
         }
 
+		
     private:
         HashMap<LogType, std::shared_ptr<spdlog::logger>> m_loggers;
     };

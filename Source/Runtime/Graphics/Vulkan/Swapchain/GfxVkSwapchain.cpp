@@ -75,7 +75,7 @@ namespace Flax
 	u32 GfxVkSwapchain::AcquireNextImage(GfxSemaphore* signal, GfxFence* fence)
 	{
 		VDebug::VkAssert(vkAcquireNextImageKHR(VkDevice(Root()->Device()), m_swapchain,
-			UINT64_MAX, signal ? VkSemaphore(signal->Semaphore()) : VK_NULL_HANDLE, fence ? VkFence(fence->Fence()) : VK_NULL_HANDLE, &m_requestedIndex), "VulkanSwapchain");
+			UINT64_MAX, signal ? VkSemaphore(signal->Semaphore()) : VK_NULL_HANDLE, fence ? VkFence(fence->Fence()) : VK_NULL_HANDLE, &m_requestedIndex), "GfxVkSwapchain");
 
 		return m_requestedIndex;
 	}

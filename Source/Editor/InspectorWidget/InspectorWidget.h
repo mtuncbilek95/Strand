@@ -8,19 +8,22 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	enum class VFSNodeType
+	class InspectorWidget : public QWidget
 	{
-		Unknown = 0,
-		File,
-		Directory,
-	};
+		Q_OBJECT
+	public:
+		InspectorWidget(QWidget* pParent = nullptr);
+		~InspectorWidget();
 
-	enum class VFSType
-	{
-		Editor,
-		Standalone
+	private slots:
+		void showComponentsOf(const QModelIndex& index);
+
+	private:
+		QPersistentModelIndex m_selectedEntity;
+		QListWidget* m_componentList;
 	};
 }

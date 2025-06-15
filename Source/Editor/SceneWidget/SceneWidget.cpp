@@ -11,7 +11,7 @@ namespace Flax
 			.setAppName("Flaxbox")
 			.setAppVersion({ 1, 0, 0 })
 			.setColorFormat(ImageFormat::R8G8B8A8_UNorm)
-			.setImageCount(2)
+			.setImageCount(3)
 			.setGraphicsQueueCount(1)
 			.setComputeQueueCount(1)
 			.setTransferQueueCount(1)
@@ -35,9 +35,11 @@ namespace Flax
 
 	void SceneWidget::RunScene()
 	{
-		m_ctx->BeginFrame();
-		// m_ctx->DispatchSubmission();
-		m_ctx->EndFrame();
+		if (m_ctx->FrameCompleted())
+		{
+			m_ctx->BeginFrame();
+			m_ctx->EndFrame();
+		}
 
 		QMetaObject::invokeMethod(this, "RunScene", Qt::QueuedConnection);
 	}

@@ -8,19 +8,18 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	enum class VFSNodeType
+	class PushButton : public QPushButton
 	{
-		Unknown = 0,
-		File,
-		Directory,
-	};
+	public:
+		PushButton(QWidget* pParent = nullptr);
+		~PushButton();
 
-	enum class VFSType
-	{
-		Editor,
-		Standalone
+	protected:
+		void enterEvent(QEnterEvent* event) override;
+		void leaveEvent(QEvent* event) override;
 	};
 }

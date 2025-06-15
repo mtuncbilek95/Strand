@@ -13,7 +13,9 @@
 namespace Flax
 {
 	class HierarchyItemModel;
+	class InspectorListModel;
 	class HierarchyWidget;
+	class InspectorWidget;
 
 	class HierarchyService final : public UIServiceBase
 	{
@@ -22,8 +24,11 @@ namespace Flax
 		HierarchyService(QObject* parent = nullptr);
 		~HierarchyService() = default;
 
-		void setWidget(HierarchyWidget* widget) { m_hWidget = widget; }
-		HierarchyItemModel* Model() const { return m_model.get(); }
+		void setHierarchy(HierarchyWidget* widget) { m_hWidget = widget; }
+		HierarchyItemModel* HierarchyModel() const { return m_hModel.get(); }
+
+		void setInspector(InspectorWidget* widget) { m_iWidget = widget; }
+		InspectorListModel* InspectorModel() const { return m_iModel.get(); }
 
 		void ResetServiceField() override final {}
 
@@ -36,7 +41,10 @@ namespace Flax
 		bool eventFilter(QObject* pWatched, QEvent* pEvent) override;
 
 	private:
-		Ref<HierarchyItemModel> m_model;
+		Ref<HierarchyItemModel> m_hModel;
 		HierarchyWidget* m_hWidget = nullptr;
+
+		Ref<InspectorListModel> m_iModel;
+		InspectorWidget* m_iWidget = nullptr;
 	};
 }

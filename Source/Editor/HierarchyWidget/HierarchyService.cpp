@@ -23,8 +23,8 @@ namespace Flax
 
 	HierarchyService::HierarchyService(QObject* parent)
 	{
-		m_model = NewRef<HierarchyItemModel>(this);
-		m_model->setCurrentScene(new Scene("DumpScene"));
+		m_hModel = NewRef<HierarchyItemModel>(this);
+		m_hModel->setCurrentScene(new Scene("DumpScene"));
 	}
 
 	bool HierarchyService::eventFilter(QObject* pWatched, QEvent* pEvent)
@@ -78,13 +78,13 @@ namespace Flax
 			return;
 
 		if (selectedAction == addEntityAction)
-			m_model->addEntity(index);
+			m_hModel->addEntity(index);
 		else if (removeEntityAction && selectedAction == removeEntityAction)
-			m_model->removeEntity(index);
+			m_hModel->removeEntity(index);
 		else if (renameEntityAction && selectedAction == renameEntityAction)
 			m_hWidget->View()->edit(index);
 		else if (duplicateEntityAction && selectedAction == duplicateEntityAction)
-			m_model->duplicateEntity(index);
+			m_hModel->duplicateEntity(index);
 		else
 			return; // No action handled
 	}

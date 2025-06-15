@@ -37,6 +37,11 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDockWidget>
+#include <QMenuBar>
+#include <QMenu>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 #include <QMouseEvent>
 #include <QKeyEvent>
@@ -46,4 +51,3 @@
 #include <QAbstractItemModel>
 #include <QAbstractTableModel>
 #include <QAbstractListModel>
-

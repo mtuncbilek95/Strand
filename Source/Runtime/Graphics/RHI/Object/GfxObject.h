@@ -11,6 +11,8 @@
 
 namespace Flax
 {
+	typedef void* GfxHandle;
+
 	class GfxDevice;
 
 	class GfxObject

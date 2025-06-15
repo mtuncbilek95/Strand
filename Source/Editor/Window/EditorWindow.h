@@ -8,21 +8,25 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	class Scene;
+	class SceneWidget;
+	class SceneControlWidget;
+	class HierarchyWidget;
 
-	class Application
+	class EditorWindow : public QMainWindow
 	{
 	public:
-		Application(i32 argC, c8** argV);
-		~Application();
+		EditorWindow(QWidget* pParent = nullptr);
+		~EditorWindow();
 
-		void Run();
+		void RunEditor();
 
 	private:
-		Ref<Scene> m_scene;
+		SceneWidget* m_scene;
+		SceneControlWidget* m_sceneControl;
+		HierarchyWidget* m_sceneHierarchy;
 	};
 }
-

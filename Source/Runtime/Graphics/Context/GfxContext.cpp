@@ -83,6 +83,11 @@ namespace Flax
 
 	void GfxContext::BeginFrame()
 	{
+		if (!m_frameCompleted)
+			return;
+
+		m_frameCompleted = false;
+
 		m_currIndex = m_swapchain->AcquireNextImage(m_waitSems[m_prevIndex].get(), nullptr);
 		m_cmdBuffers[m_currIndex]->BeginRecord();
 	}
@@ -97,10 +102,14 @@ namespace Flax
 		m_swapchain->Present({ m_signalSems[m_currIndex].get() });
 		m_fences[m_currIndex]->WaitIdle();
 		m_fences[m_currIndex]->Reset();
+
+		m_prevIndex = m_currIndex;
+		m_frameCompleted = true;
 	}
 
 	void GfxContext::DispatchResize(const Math::Vec2u& newSize)
 	{
+		m_device->WaitIdle();
 		m_swapchain->Resize(newSize);
 
 		Log::Debug(LogType::GfxContext, "Resized as '{0} x {1}'", newSize.x, newSize.y);

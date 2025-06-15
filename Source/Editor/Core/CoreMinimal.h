@@ -11,3 +11,5 @@
 #include <Editor/Data/LogSink/QLogSink.h>
 
 #include <Editor/Data/Service/UIService.h>
+
+#include <Editor/Data/Button/PushButton.h>

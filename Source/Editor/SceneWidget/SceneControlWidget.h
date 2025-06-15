@@ -8,19 +8,20 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	enum class VFSNodeType
+	class SceneControlWidget : public QWidget
 	{
-		Unknown = 0,
-		File,
-		Directory,
-	};
+		Q_OBJECT
+	public:
+		SceneControlWidget(QWidget* pParent = nullptr);
+		~SceneControlWidget();
 
-	enum class VFSType
-	{
-		Editor,
-		Standalone
+	private:
+		PushButton* m_playButton;
+		PushButton* m_pauseButton;
+		PushButton* m_stopButton;
 	};
 }

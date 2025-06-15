@@ -23,3 +23,5 @@ namespace Flax
 		void Import(const String& sourcePath, AssetMetadata& outMetadata) override final;
 	};
 }
+
+// TODO: Extend ModelImporter for FBXImporter : public ModelImporter, IGESImporter, GLTFImporter etc.

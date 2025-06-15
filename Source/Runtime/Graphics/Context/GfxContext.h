@@ -36,6 +36,7 @@ namespace Flax
 
 		void BeginFrame();
 		void EndFrame();
+		b8 FrameCompleted() const { return m_frameCompleted; }
 
 		void DispatchResize(const Math::Vec2u& newSize);
 
@@ -57,5 +58,7 @@ namespace Flax
 
 		u32 m_prevIndex = 0;
 		u32 m_currIndex = 0;
+
+		b8 m_frameCompleted = true;
 	};
 }
