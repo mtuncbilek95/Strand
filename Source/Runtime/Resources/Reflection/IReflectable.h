@@ -16,6 +16,6 @@ namespace Flax
 		virtual ~IReflectable() = default;
 
 		virtual void Reflect() = 0;
-		virtual Variant ToVariant() = 0;
+		virtual Any ToVariant() = 0;
 	};
 }
