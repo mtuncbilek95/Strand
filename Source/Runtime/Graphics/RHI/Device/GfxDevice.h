@@ -49,6 +49,10 @@ namespace Flax
 	class GfxFramebuffer;
 	class GfxRenderPass;
 
+	/**
+	 * @class GfxDevice
+	 * @brief Main device that controls every creation.
+	 */
 	class GfxDevice
 	{
 	public:

@@ -19,6 +19,11 @@ namespace Flax
 	class GfxSemaphore;
 	class GfxFence;
 
+	/**
+	 * @class GfxInstance
+	 * @brief Backbuffer controller of the window. It generates and controls
+	 * image buffers of the window unit.
+	 */
 	class GfxSwapchain : public GfxObject
 	{
 	public:

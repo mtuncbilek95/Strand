@@ -13,6 +13,12 @@
 
 namespace Flax
 {
+	/**
+	 * @class GfxDescriptorLayout
+	 * @brief General purpose layout structure for shader inputs such 
+	 * as textures, cbuffer(uniform), storage etc. It will be used in
+	 * pipeline classes.
+	 */
 	class GfxDescriptorLayout : public GfxObject
 	{
 	public:

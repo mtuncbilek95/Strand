@@ -13,6 +13,11 @@
 
 namespace Flax
 {
+	/**
+	 * @class GfxDescriptorPool
+	 * @brief General purpose descriptor pool structure to pool all the shader
+	 * units that will be defined.
+	 */
 	class GfxDescriptorPool : public GfxObject
 	{
 	public:

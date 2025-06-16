@@ -15,6 +15,10 @@ namespace Flax
 {
 	class GfxDevice;
 
+	/**
+	 * @class GfxInstance
+	 * @brief Main instance and gpu device generator for RHI.
+	 */
 	class GfxInstance
 	{
 	public:

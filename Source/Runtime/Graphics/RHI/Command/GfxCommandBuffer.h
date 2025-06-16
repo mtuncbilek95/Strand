@@ -15,6 +15,12 @@ namespace Flax
 {
 	class GfxBuffer;
 
+	/**
+	 * @class GfxCommandBuffer
+	 * @brief All purpose command buffer for RHI. CommandBuffer a.k.a
+	 * CommandList is being used for recording the commands of rendering
+	 * system such as DrawIndexed, DispatchCompute etc.
+	 */
 	class GfxCommandBuffer : public GfxObject
 	{
 	public:

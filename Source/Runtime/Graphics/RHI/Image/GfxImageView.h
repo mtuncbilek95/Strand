@@ -13,6 +13,10 @@
 
 namespace Flax
 {
+	/**
+	 * @class GfxImageView
+	 * @brief GPU representation of the image buffers.
+	 */
 	class GfxImageView : public GfxObject
 	{
 	public:

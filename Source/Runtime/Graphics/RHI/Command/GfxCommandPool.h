@@ -15,6 +15,11 @@ namespace Flax
 {
 	class GfxCommandBuffer;
 
+	/**
+	 * @class GfxCommandPool
+	 * @brief All purpose command pool for RHI. CommandPool a.k.a
+	 * CommandAllocator is being used for pooling the commandbuffers.
+	 */
 	class GfxCommandPool : public GfxObject
 	{
 	public:

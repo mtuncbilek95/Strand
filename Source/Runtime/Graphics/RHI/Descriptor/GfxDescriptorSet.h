@@ -13,6 +13,12 @@
 
 namespace Flax
 {
+	/**
+	 * @class GfxDescriptorSet
+	 * @brief General purpose descriptor set structure send shader unit
+	 * into the shaders as textures, uniforms(cbuffer), storage or samplers
+	 * etc.
+	 */
 	class GfxDescriptorSet : public GfxObject
 	{
 	public:

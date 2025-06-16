@@ -13,6 +13,12 @@
 
 namespace Flax
 {
+	/**
+	 * @class GfxBuffer
+	 * @brief General purpose buffer for RHI. It can be used for Vertex, 
+	 * Index, Uniform(Constant), Storage and Staging. The Descriptor Buffer
+	 * will be found in Source/Runtime/Graphics/RHI/Descriptor/GfxDescriptorBuffer.h
+	 */
 	class GfxBuffer : public GfxObject
 	{
 	public:
