@@ -77,4 +77,16 @@ namespace Flax
 
         return str.substr(0, dotPos);
     }
+
+	String StringHelpers::NameWithoutExt(const String& path)
+	{
+		FileSystem::path p(path);
+		return p.stem().string();
+	}
+
+	String StringHelpers::FileExtension(const String& path)
+	{
+		FileSystem::path fsPath(path);
+		return fsPath.extension().string();
+	}
 }

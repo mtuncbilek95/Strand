@@ -1,12 +1,12 @@
 #include "ImagePixel.h"
 
-#include <stb_image.h>
+//#include <stb_image.h>
 
 namespace Flax
 {
 	void ImagePixel::ImportPixelData(const String& path)
 	{
-        i32 w, h, channels;
+       /* i32 w, h, channels;
         stbi_uc* pixelData = stbi_load(path.c_str(), &w, &h, &channels, 0);
         if (!pixelData)
         {
@@ -26,7 +26,7 @@ namespace Flax
         m_size = Math::Vec2u(static_cast<u32>(w), static_cast<u32>(h));
         m_channels = static_cast<u32>(channels);
 
-        stbi_image_free(pixelData);
+        stbi_image_free(pixelData);*/
 	}
 
 	Span<c8> ImagePixel::Data() const { return m_data.ToSpan(); }

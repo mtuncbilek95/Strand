@@ -8,13 +8,13 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resources/Asset/Core/AssetMetadata.h>
 
 namespace Flax
 {
-	struct SceneMetadata : public IAssetMetadataExtension
+	enum class AssetValidation
 	{
-		void Serialize(const Json& jsonOut) override;
-		void Deserialize(const Json& jsonIn) override;
+		Valid,
+		Invalid,
+		Corrupted
 	};
 }

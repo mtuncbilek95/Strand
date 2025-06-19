@@ -13,7 +13,7 @@ add_library(Runtime STATIC ${SUBDIRECTORIES})
 
 # ------------------- INCLUDE DIRECTORIES --------------------
 target_include_directories(Runtime PRIVATE "${CMAKE_SOURCE_DIR}/Source")
-target_link_libraries(Runtime PUBLIC glm::glm fmt spdlog magic_enum stb assimp glfw EnTT::EnTT nlohmann_json)
+target_link_libraries(Runtime PUBLIC glm::glm fmt spdlog magic_enum stb assimp glfw EnTT::EnTT nlohmann_json reflectcpp)
 
 DefineGlmMacros(Runtime)
 AddStbMacros(Runtime)

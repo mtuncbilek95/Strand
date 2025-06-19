@@ -1,12 +1,16 @@
 #include "TextureMetadata.h"
 
+#include <Runtime/Resources/Asset/Core/MetadataRegistry.h>
+
 namespace Flax
 {
-	void TextureMetadata::Serialize(const Json& jsonOut)
+	namespace
 	{
-	}
+		struct TexMetaRegister
+		{
+			TexMetaRegister() { MetadataRegistry::Get().RegisterMetaType<TextureMetadata>(); }
+		};
 
-	void TextureMetadata::Deserialize(const Json& jsonIn)
-	{
+		static TexMetaRegister texMetaRegistered;
 	}
 }

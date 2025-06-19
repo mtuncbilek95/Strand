@@ -12,12 +12,11 @@
 
 namespace Flax
 {
-    struct TextureMetadata : public IAssetMetadataExtension
-    {
-        Math::Vec2u size;
-        String format;
+	struct TextureMetadata : public AssetMetadata
+	{
+		Math::Vec3u textureSize;
 
-        void Serialize(const Json& jsonOut) override final;
-        void Deserialize(const Json& jsonIn) override final;
-    };
+		static String StaticAssetType() { return "texture"; }
+		String AssetType() const override final { return StaticAssetType(); }
+	};
 }

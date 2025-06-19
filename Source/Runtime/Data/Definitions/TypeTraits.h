@@ -28,4 +28,13 @@ namespace Flax
 			return Hash<TypeIndex>{}(TypeIndex(typeid(T)));
 		}
 	}
+
+	static Atomic<i32> uniqueTypeID;
+
+	template<class T>
+	static i32 GetUniqueTypeId()
+	{
+		static const i32 id = uniqueTypeID++;
+		return id;
+	}
 }

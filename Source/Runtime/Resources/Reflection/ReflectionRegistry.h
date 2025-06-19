@@ -8,18 +8,14 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Resources/Reflection/IReflectable.h>
 
 namespace Flax
 {
-	class AssetTypeId : public Singleton<AssetTypeId>
+	class ReflectionRegistry : public Singleton<ReflectionRegistry>
 	{
 	public:
-		u32 TypeId(const String& name);
-		const String& TypeName(u32 typeId);
-
-	private:
-		HashMap<u32, String> m_idName;
-		HashMap<String, u32> m_nameId;
-		SharedMutex m_mutex;
+		void RegisterType(const String& typeName, function<IReflectable* ()> creator);
+		IReflectable* CreateInstance(const )
 	};
 }

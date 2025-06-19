@@ -8,27 +8,19 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Resources/Asset/Core/AssetValidation.h>
 
 namespace Flax
 {
-	struct IAssetMetadataExtension
-	{
-		virtual ~IAssetMetadataExtension() = default;
-
-		virtual void Serialize(const Json& jsonOut) = 0;
-		virtual void Deserialize(const Json& jsonIn) = 0;
-	};
-
 	struct AssetMetadata
 	{
-		String name;
-		String type;
-		String path;
+		String assetName;
+		String assetPath;
+		
 		Uuid assetId;
 
-		Ref<IAssetMetadataExtension> extension;
+		AssetValidation validate;
 
-		void Serialize(Json& jsonOut) const;
-		void Deserialize(const Json& jsonIn);
+		virtual String AssetType() const = 0;
 	};
 }

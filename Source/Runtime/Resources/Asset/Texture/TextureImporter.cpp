@@ -1,67 +1,52 @@
 #include "TextureImporter.h"
 
-#include <Runtime/Resources/Asset/Core/AssetRegistrar.h>
+#include <Runtime/Resources/Asset/Core/ImporterRegistry.h>
 #include <Runtime/Resources/Asset/Texture/TextureMetadata.h>
+
+#include <stb_image.h>
 
 namespace Flax
 {
-	ReadArray<u8> ReadJPG(const String& path);
-	ReadArray<u8> ReadPNG(const String& path);
-	ReadArray<u8> ReadTGA(const String& path);
-	ReadArray<u8> ReadHDR(const String& path);
-	ReadArray<u8> ReadJPEG(const String& path);
-
-	TextureImporter::~TextureImporter()
+	u32 TextureImporter::AssetTypeId() const
 	{
+		return 0;
 	}
 
-	u32 TextureImporter::AssetTypeID() const
+	void TextureImporter::Import(const String& path, AssetMetadata& outMeta)
 	{
-		return AssetTypeId::Get().TypeId(AssetTypeName());
+		Log::Warn(LogType::Asset, "Importing from '{}'", path);
+
+		if (StringHelpers::FileExtension(path).compare(".png") != 0)
+		{
+			Log::Error(LogType::Asset, "Unsupported file extension '{}'", StringHelpers::FileExtension(path));
+			return;
+		}
+
+		auto tt = dynamic_cast<TextureMetadata*>(&outMeta);
+
+		i32 x, y, channel;
+		stbi_uc* data = stbi_load(path.data(), &x, &y, &channel, STBI_rgb_alpha);
+		if (!data)
+		{
+			Log::Error(LogType::Asset, "Data is invalid!");
+			tt->validate = AssetValidation::Invalid;
+		}
+
+		tt->assetId = UuidHelper::GenerateID();
+		tt->assetName = StringHelpers::NameWithoutExt(path);
+		tt->assetPath = "Somewhere!";
+		tt->textureSize = { u32(x), u32(y), 1 };
+		
+		stbi_image_free(data);
 	}
 
-	void TextureImporter::Import(const String& sourcePath, AssetMetadata& outMetadata)
+	namespace
 	{
+		struct TexImporterRegister
+		{
+			TexImporterRegister() { ImporterRegistry::Get().RegisterImporter<TextureImporter>("png"); }
+		};
+
+		static TexImporterRegister texImportRegistered;
 	}
-
-	ReadArray<u8> ReadJPG(const String& path)
-	{
-		return ReadArray<u8>();
-	}
-
-	ReadArray<u8> ReadPNG(const String& path)
-	{
-		return ReadArray<u8>();
-	}
-
-	ReadArray<u8> ReadTGA(const String& path)
-	{
-		return ReadArray<u8>();
-	}
-
-	ReadArray<u8> ReadHDR(const String& path)
-	{
-		return ReadArray<u8>();
-	}
-
-	ReadArray<u8> ReadJPEG(const String& path)
-	{
-		return ReadArray<u8>();
-	}
-
-	static AssetRegistrar textureReg("texture", "jpg",
-		[]() { return NewRef<TextureImporter>(); },
-		[]() { return NewRef<TextureMetadata>(); });
-
-	static AssetRegistrar textureReg2("texture", "jpeg",
-		[]() { return NewRef<TextureImporter>(); },
-		[]() { return NewRef<TextureMetadata>(); });
-
-	static AssetRegistrar textureReg3("texture", "png",
-		[]() { return NewRef<TextureImporter>(); },
-		[]() { return NewRef<TextureMetadata>(); });
-
-	static AssetRegistrar textureReg4("texture", "tga",
-		[]() { return NewRef<TextureImporter>(); },
-		[]() { return NewRef<TextureMetadata>(); });
 }

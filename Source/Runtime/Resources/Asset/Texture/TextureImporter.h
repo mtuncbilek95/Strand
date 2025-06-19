@@ -8,18 +8,17 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resources/Asset/Core/IAssetImporter.h>
+#include <Runtime/Resources/Asset/Core/AssetImporter.h>
 
 namespace Flax
 {
-    class TextureImporter final : public IAssetImporter
-    {
-    public:
-        TextureImporter() = default;
-        ~TextureImporter() override final;
+	struct TextureImporter : public AssetImporter
+	{
+		u32 AssetTypeId() const;
 
-        String AssetTypeName() const override final { return "texture"; }
-        u32 AssetTypeID() const override final;
-        void Import(const String& sourcePath, AssetMetadata& outMetadata) override final;
-    };
+		static String StaticAssetType() { return "texture"; }
+		String AssetType() const override final { return StaticAssetType(); }
+
+		virtual void Import(const String& path, AssetMetadata& outMeta) override;
+	};
 }

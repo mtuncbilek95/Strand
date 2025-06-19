@@ -13,9 +13,10 @@ namespace Flax
 {
 	class IReflectable
 	{
+	public:
 		virtual ~IReflectable() = default;
 
 		virtual void Reflect() = 0;
-		virtual Any ToVariant() = 0;
+		virtual Any ToAny() = 0;
 	};
 }
