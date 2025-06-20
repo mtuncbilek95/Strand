@@ -25,6 +25,7 @@ namespace Flax
 		usize Count() const { return m_children.size(); }
 		VFSNode* Child(usize index) const;
 		VFSNode* Child(const String& name) const;
+		Vector<VFSNode*> Children() const;
 
 		void AddChild(const VFSNodeDesc& desc);
 		void RemoveChild(const String& name);

@@ -35,6 +35,15 @@ namespace Flax
 		return nullptr;
 	}
 
+	Vector<VFSNode*> VFSNode::Children() const
+	{
+		Vector<VFSNode*> children;
+		children.reserve(m_children.size());
+		for (const auto& child : m_children)
+			children.push_back(child.get());
+		return children;
+	}
+
 	void VFSNode::AddChild(const VFSNodeDesc& desc)
 	{
 		if (Child(desc.name))
