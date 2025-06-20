@@ -34,7 +34,6 @@ namespace Flax
 
 		tt->assetId = UuidHelper::GenerateID();
 		tt->assetName = StringHelpers::NameWithoutExt(path);
-		tt->assetPath = "Somewhere!";
 		tt->textureSize = { u32(x), u32(y), 1 };
 		
 		stbi_image_free(data);
