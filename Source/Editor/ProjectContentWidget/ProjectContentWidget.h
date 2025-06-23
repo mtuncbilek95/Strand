@@ -12,5 +12,13 @@
 
 namespace Flax
 {
+	class ProjectContentWidget : public QWidget
+	{
+		Q_OBJECT
+	public:
+		ProjectContentWidget(QWidget* parent = nullptr);
+		~ProjectContentWidget();
 
+	private:
+	};
 }

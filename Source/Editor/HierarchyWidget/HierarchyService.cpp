@@ -1,6 +1,5 @@
 #include "HierarchyService.h"
 
-#include <Editor/Data/Service/UIService.h>
 #include <Editor/Models/Hierarchy/HierarchyItemModel.h>
 #include <Editor/HierarchyWidget/HierarchyWidget.h>
 

@@ -18,18 +18,16 @@ namespace Flax
 		VirtualFileSystem(VFSType type, const String& rootPath);
 		~VirtualFileSystem();
 
-		void AddChild(const VFSNodeDesc& desc, VFSNode* pParent = nullptr);
-		void RemoveChild(const String& name, VFSNode* pParent = nullptr);
-		void RemoveChild(usize index, VFSNode* pParent = nullptr);
-		void Clear();
+		void AddNode(const String& name, VFSNodeType type, VFSNode* pParent = nullptr);
+		void RemoveNode(VFSNode* pChild);
 
-		VFSNode* Parent(const String& name, VFSNode* pParent = nullptr) const;
-		VFSNode* Parent(usize index, VFSNode* pParent = nullptr) const;
-		VFSNode* Node(const String& name, VFSNode* pParent = nullptr) const;
-		VFSNode* Node(usize index, VFSNode* pParent = nullptr) const;
-		usize Index(const String& name, VFSNode* pParent = nullptr) const;
+		usize CountOf(const String& name, VFSNode* pParent = nullptr);
+		VFSNode* FindNode(const String& name, VFSNode* pParent = nullptr);
 
 	private:
-		Owned<VFSNode> m_rootNode;
+		Ref<VFSNode> m_rootNode;
+
+		VFSType m_type;
+		String m_rootPath;
 	};
 }

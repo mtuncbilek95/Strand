@@ -21,6 +21,8 @@ namespace Flax
 		ContentItemModel(QObject* pParent = nullptr);
 		~ContentItemModel();
 
+		void setRootNode(const QString& path);
+
 		QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
 		QModelIndex parent(const QModelIndex& index) const override;
 		int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -31,6 +33,6 @@ namespace Flax
 		Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 	private:
-		Ref<VFSNode> m_rootNode;
+		VFSNode* m_rootNode;
 	};
 }

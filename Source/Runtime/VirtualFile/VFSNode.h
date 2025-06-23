@@ -15,28 +15,32 @@ namespace Flax
 	class VFSNode
 	{
 	public:
-		VFSNode(const VFSNodeDesc& desc, VFSNode* owner);
+		VFSNode(const VFSNodeDesc& desc, VFSNode* pParent = nullptr);
 		~VFSNode();
 
-		const String& Name() const { return m_desc.name; }
-		VFSNodeType Type() const { return m_desc.type; }
+		void AddChild(const String& name, VFSNodeType type);
+		void AddChild(Ref<VFSNode> node);
 
-		VFSNode* Owner() const { return m_owner; }
-		usize Count() const { return m_children.size(); }
-		VFSNode* Child(usize index) const;
-		VFSNode* Child(const String& name) const;
-		Vector<VFSNode*> Children() const;
-
-		void AddChild(const VFSNodeDesc& desc);
 		void RemoveChild(const String& name);
-		void RemoveChild(usize index);
+		void RemoveChild(VFSNode* node);
+		void RemoveChild(const Ref<VFSNode>& node);
 
 		void ClearAll();
 
+		String Name() const { return m_desc.name; }
+		VFSNodeType Type() const { return m_desc.type; }
+		VFSNode* Parent() const { return m_parent; }
+		usize Count() const { return m_children.size(); }
+
+		String RelativePath() const;
+
+		VFSNode* Find(const String& name) const;
+		VFSNode* Find(usize index) const;
+
 	private:
 		VFSNodeDesc m_desc;
+		VFSNode* m_parent;
 
-		Vector<Owned<VFSNode>> m_children;
-		VFSNode* m_owner;
+		Vector<Ref<VFSNode>> m_children;
 	};
 }
