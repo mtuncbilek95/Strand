@@ -2,5 +2,11 @@
 
 namespace Flax
 {
+	ProjectContentWidget::ProjectContentWidget(QWidget* pParent) : QWidget(pParent)
+	{
+	}
 
+	ProjectContentWidget::~ProjectContentWidget()
+	{
+	}
 }

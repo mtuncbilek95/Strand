@@ -16,5 +16,8 @@ namespace Flax
 	{
 		String name;
 		VFSNodeType type;
+
+		VFSNodeDesc& setName(const String& newName) { name = newName; return *this; }
+		VFSNodeDesc& setType(VFSNodeType newType) { type = newType; return *this; }
 	};
 }

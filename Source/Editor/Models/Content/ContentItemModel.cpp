@@ -20,10 +20,12 @@ namespace Flax
 
 	QModelIndex ContentItemModel::index(int row, int column, const QModelIndex& parent) const
 	{
+		return QModelIndex();
 	}
 
 	QModelIndex ContentItemModel::parent(const QModelIndex& index) const
 	{
+		return QModelIndex();
 	}
 
 	int ContentItemModel::rowCount(const QModelIndex& parent) const

@@ -17,6 +17,21 @@ namespace Flax
 		m_children.clear();
 	}
 
+	void VFSNode::AddChild(const VFSNodeDesc& desc)
+	{
+		if (desc.name.empty())
+		{
+			Log::Error(LogType::VFS, "VFSNode::AddChild: Cannot add a child with an empty name to '{}'", m_desc.name);
+			return;
+		}
+		if (Find(desc.name))
+		{
+			Log::Error(LogType::VFS, "VFSNode::AddChild: Node '{}' already exists in '{}'", desc.name, m_desc.name);
+			return;
+		}
+		AddChild(NewRef<VFSNode>(desc, this));
+	}
+
 	void VFSNode::AddChild(const String& name, VFSNodeType type)
 	{
 		if (name.empty())
@@ -29,7 +44,17 @@ namespace Flax
 			Log::Error(LogType::VFS, "VFSNode::AddChild: Node '{}' already exists in '{}'", name, m_desc.name);
 			return;
 		}
-		AddChild(Ref<VFSNode>(new VFSNode({ name, type }, this)));
+
+		if (Type() == VFSNodeType::File)
+		{
+			Log::Error(LogType::VFS, "VFSNode::AddChild: Cannot add a child to this type of node!");
+			return;
+		}
+
+		VFSNodeDesc desc = VFSNodeDesc()
+			.setName(name)
+			.setType(type);
+		AddChild(NewRef<VFSNode>(desc, this));
 	}
 
 	void VFSNode::AddChild(Ref<VFSNode> node)
@@ -37,12 +62,6 @@ namespace Flax
 		if (!node)
 		{
 			Log::Error(LogType::VFS, "VFSNode::AddChild: Cannot add a null node to '{}'", m_desc.name);
-			return;
-		}
-
-		if (node->m_parent)
-		{
-			Log::Error(LogType::VFS, "VFSNode::AddChild: Node '{}' already has a parent '{}'", node->Name(), node->m_parent->Name());
 			return;
 		}
 
@@ -120,7 +139,6 @@ namespace Flax
 				return m_children[i].get();
 		}
 
-		Log::Error(LogType::VFS, "VFSNode::Find: Node '{}' not found in '{}'", name, m_desc.name);
 		return nullptr;
 	}
 

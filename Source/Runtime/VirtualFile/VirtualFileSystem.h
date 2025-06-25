@@ -19,10 +19,15 @@ namespace Flax
 		~VirtualFileSystem();
 
 		void AddNode(const String& name, VFSNodeType type, VFSNode* pParent = nullptr);
-		void RemoveNode(VFSNode* pChild);
+		void RemoveNode(VFSNode* pChild = nullptr, VFSNode* pParent = nullptr);
 
 		usize CountOf(const String& name, VFSNode* pParent = nullptr);
 		VFSNode* FindNode(const String& name, VFSNode* pParent = nullptr);
+		String AbsolutePath(VFSNode* pTarget = nullptr);
+		String AbsolutePath(const String& nodeName);
+
+	private:
+		VFSNode* FindNodeRecursive(VFSNode* node, const String& name);
 
 	private:
 		Ref<VFSNode> m_rootNode;

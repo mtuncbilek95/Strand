@@ -22,6 +22,6 @@ namespace Flax
 
 	void VFSService::ResetServiceField()
 	{
-		m_service->Clear();
+		m_service->RemoveNode();
 	}
 }

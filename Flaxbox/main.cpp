@@ -1,102 +1,33 @@
-#include <Runtime/Resources/Asset/Core/ImporterRegistry.h>
-#include <Runtime/Resources/Asset/Core/MetadataRegistry.h>
-
-#include <Runtime/Resources/Asset/Texture/TextureImporter.h>
-#include <Runtime/Resources/Asset/Texture/TextureMetadata.h>
-#include <Runtime/Thread/ThreadPool.h>
+#include <Runtime/VirtualFile/VirtualFileSystem.h>
 
 using namespace Flax;
 
 int main()
 {
-	ThreadPool testpool(8);
+	VirtualFileSystem vfs(VFSType::Editor, "D:/Projects/PythonQtTest");
 
-	for (;;)
-	{
-		testpool.EnqueueJob([]()
-			{
-				auto& importInfo = ImporterRegistry::Get().ImportType<TextureImporter>();
-				auto importer = importInfo.createInstance();
+	vfs.AddNode("FirstLayer_A", VFSNodeType::Directory);
+	vfs.AddNode("FirstLayer_B", VFSNodeType::Directory);
+	vfs.AddNode("FirstLayer_C", VFSNodeType::Directory);
+	vfs.AddNode("FirstLayer_D", VFSNodeType::Directory);
 
-				auto& metaInfo = MetadataRegistry::Get().MetaType<TextureMetadata>();
-				auto meta = metaInfo.createInstance();
-				importer->Import(R"(C:\Users\mtunc\Pictures\Screenshots\Test1.png)", *meta);
+	auto* nodeB = vfs.FindNode("FirstLayer_B");
 
-				Log::Debug(LogType::Asset, "Name: {}, Path: {}, Uuid: {}", meta->assetName, meta->assetPath, meta->assetId.ToString());
-			});
+	vfs.AddNode("SecondLayer_A", VFSNodeType::Directory, nodeB);
+	vfs.AddNode("SecondLayer_B", VFSNodeType::Directory, nodeB);
+	vfs.AddNode("SecondLayer_C", VFSNodeType::Directory, nodeB);
+	vfs.AddNode("SecondLayer_D", VFSNodeType::Directory, nodeB);
+	vfs.AddNode("SecondLayer_E", VFSNodeType::Directory, nodeB);
 
-		testpool.EnqueueJob([]()
-			{
-				auto& importInfo = ImporterRegistry::Get().ImportType<TextureImporter>();
-				auto importer = importInfo.createInstance();
+	auto* nodeD = vfs.FindNode("SecondLayer_D", nodeB);
 
-				auto& metaInfo = MetadataRegistry::Get().MetaType<TextureMetadata>();
-				auto meta = metaInfo.createInstance();
-				importer->Import(R"(C:\Users\mtunc\Pictures\Screenshots\Test2.png)", *meta);
+	vfs.AddNode("ThirdLayer_A", VFSNodeType::Directory, nodeD);
+	vfs.AddNode("ThirdLayer_B", VFSNodeType::Directory, nodeD);
+	vfs.AddNode("ThirdLayer_C", VFSNodeType::Directory, nodeD);
+	vfs.AddNode("ThirdLayer_D", VFSNodeType::Directory, nodeD);
+	vfs.AddNode("ThirdLayer_E", VFSNodeType::Directory, nodeD);
+	vfs.AddNode("ThirdLayer_F", VFSNodeType::Directory, nodeD);
+	vfs.AddNode("ThirdLayer_G", VFSNodeType::Directory, nodeD);
 
-				Log::Debug(LogType::Asset, "Name: {}, Path: {}, Uuid: {}", meta->assetName, meta->assetPath, meta->assetId.ToString());
-			});
-
-		testpool.EnqueueJob([]()
-			{
-				auto& importInfo = ImporterRegistry::Get().ImportType<TextureImporter>();
-				auto importer = importInfo.createInstance();
-
-				auto& metaInfo = MetadataRegistry::Get().MetaType<TextureMetadata>();
-				auto meta = metaInfo.createInstance();
-				importer->Import(R"(C:\Users\mtunc\Pictures\Screenshots\Test3.png)", *meta);
-
-				Log::Debug(LogType::Asset, "Name: {}, Path: {}, Uuid: {}", meta->assetName, meta->assetPath, meta->assetId.ToString());
-			});
-
-		testpool.EnqueueJob([]()
-			{
-				auto& importInfo = ImporterRegistry::Get().ImportType<TextureImporter>();
-				auto importer = importInfo.createInstance();
-
-				auto& metaInfo = MetadataRegistry::Get().MetaType<TextureMetadata>();
-				auto meta = metaInfo.createInstance();
-				importer->Import(R"(C:\Users\mtunc\Pictures\Screenshots\Test4.png)", *meta);
-
-				Log::Debug(LogType::Asset, "Name: {}, Path: {}, Uuid: {}", meta->assetName, meta->assetPath, meta->assetId.ToString());
-			});
-
-		testpool.EnqueueJob([]()
-			{
-				auto& importInfo = ImporterRegistry::Get().ImportType<TextureImporter>();
-				auto importer = importInfo.createInstance();
-
-				auto& metaInfo = MetadataRegistry::Get().MetaType<TextureMetadata>();
-				auto meta = metaInfo.createInstance();
-				importer->Import(R"(C:\Users\mtunc\Pictures\Screenshots\Test5.png)", *meta);
-
-				Log::Debug(LogType::Asset, "Name: {}, Path: {}, Uuid: {}", meta->assetName, meta->assetPath, meta->assetId.ToString());
-			});
-
-		testpool.EnqueueJob([]()
-			{
-				auto& importInfo = ImporterRegistry::Get().ImportType<TextureImporter>();
-				auto importer = importInfo.createInstance();
-
-				auto& metaInfo = MetadataRegistry::Get().MetaType<TextureMetadata>();
-				auto meta = metaInfo.createInstance();
-				importer->Import(R"(C:\Users\mtunc\Pictures\Screenshots\Test6.png)", *meta);
-
-				Log::Debug(LogType::Asset, "Name: {}, Path: {}, Uuid: {}", meta->assetName, meta->assetPath, meta->assetId.ToString());
-			});
-
-		testpool.EnqueueJob([]()
-			{
-				auto& importInfo = ImporterRegistry::Get().ImportType<TextureImporter>();
-				auto importer = importInfo.createInstance();
-
-				auto& metaInfo = MetadataRegistry::Get().MetaType<TextureMetadata>();
-				auto meta = metaInfo.createInstance();
-				importer->Import(R"(C:\Users\mtunc\Pictures\Screenshots\Test7.png)", *meta);
-
-				Log::Debug(LogType::Asset, "Name: {}, Path: {}, Uuid: {}", meta->assetName, meta->assetPath, meta->assetId.ToString());
-			});
-
-		_sleep(50);
-	}
+	Log::Warn(LogType::Asset, "Testing folder search: {}", vfs.AbsolutePath("ThirdLayer_F"));
 }

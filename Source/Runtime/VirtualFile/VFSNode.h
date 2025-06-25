@@ -18,6 +18,7 @@ namespace Flax
 		VFSNode(const VFSNodeDesc& desc, VFSNode* pParent = nullptr);
 		~VFSNode();
 
+		void AddChild(const VFSNodeDesc& desc);
 		void AddChild(const String& name, VFSNodeType type);
 		void AddChild(Ref<VFSNode> node);
 
@@ -36,6 +37,7 @@ namespace Flax
 
 		VFSNode* Find(const String& name) const;
 		VFSNode* Find(usize index) const;
+		Span<Ref<VFSNode>> Children() { return m_children; }
 
 	private:
 		VFSNodeDesc m_desc;
