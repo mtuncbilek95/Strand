@@ -1,17 +1,12 @@
 #include <QApplication>
 
-#include <Editor/Window/EditorWindow.h>
-#include <Editor/SceneWidget/SceneWidget.h>
-
-using namespace Flax;
+#include <Runtime/Data/Config/ProjectConfig.h>
 
 int main(int argC, char** argV)
 {
 	QApplication app(argC, argV);
 
-	EditorWindow* wnd = new EditorWindow();
-	wnd->show();
-	wnd->RunEditor();
-
+	Flax::ProjectConfig config;
+	config.LoadFrom(R"(D:\Projects\FlaxTestProject\TestProject.flax)");
 	return app.exec();
 }

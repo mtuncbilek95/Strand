@@ -7,5 +7,16 @@
  */
 #pragma once
 
-#include <Editor/Data/Registry/ViewModelBase.h>
-#include <Editor/Data/Registry/ViewModelRegistry.h>
+#include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
+
+namespace Flax
+{
+	class ProjectBrowserViewModel : public ViewModelBase
+	{
+		Q_OBJECT;
+	public:
+		ProjectBrowserViewModel(QObject* pParent = nullptr);
+		~ProjectBrowserViewModel();
+	};
+}

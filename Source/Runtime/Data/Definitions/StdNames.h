@@ -44,6 +44,11 @@ using Set = std::set<T>;
 #include <filesystem>
 namespace FileSystem = std::filesystem;
 
+using Path = FileSystem::path;
+
+#include <fstream>
+using FileStream = std::fstream;
+
 #include <unordered_map>
 template<typename K, typename V, typename...Args>
 using HashMap = std::unordered_map<K, V, Args...>;
@@ -119,3 +124,6 @@ using voidFunc = std::function<void()>;
 
 template<typename T>
 using NumericLimits = std::numeric_limits<T>;
+
+using OpenMode = std::ios_base::openmode;
+using IosBase = std::ios_base;

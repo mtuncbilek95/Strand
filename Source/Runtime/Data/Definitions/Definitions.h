@@ -26,6 +26,8 @@ typedef double f64;
 
 typedef bool b8;
 
+using SeekDir = i32;
+
 constexpr u64 u64_max = 0xFFFFFFFFFFFFFFFF;
 constexpr u32 u32_max = 0xFFFFFFFF;
 constexpr u16 u16_max = 0xFFFF;

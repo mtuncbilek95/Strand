@@ -10,5 +10,5 @@ add_executable("Flaxbox" main.cpp ${SOURCES})
 target_include_directories("Flaxbox" PRIVATE "${CMAKE_SOURCE_DIR}/Source")
 target_link_libraries("Flaxbox" PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,Runtime>")
 
-target_link_libraries("Flaxbox" PRIVATE ftxui::screen ftxui::dom ftxui::component reflectcpp)
+target_link_libraries("Flaxbox" PRIVATE ftxui::screen ftxui::dom ftxui::component)
 # ------------------------------------------------------------

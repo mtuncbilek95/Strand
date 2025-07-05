@@ -7,5 +7,15 @@
  */
 #pragma once
 
-#include <Editor/Data/Registry/ViewModelBase.h>
-#include <Editor/Data/Registry/ViewModelRegistry.h>
+#include <Runtime/Core/CoreMinimal.h>
+
+namespace Flax
+{
+	class ViewModelBase : public QObject
+	{
+		Q_OBJECT
+	public:
+		ViewModelBase(QObject* pParent = nullptr) : QObject(pParent) {}
+		virtual ~ViewModelBase() = default;
+	};
+}

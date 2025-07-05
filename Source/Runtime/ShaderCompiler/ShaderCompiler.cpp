@@ -127,13 +127,6 @@ namespace Flax
 		// Copy the data to the return array
 		std::copy(compResult.begin(), compResult.end(), returnResult.Data());
 
-#if defined(DUMP_SHADERS)
-		usize pos = shaderPath.find_last_of("/\\");
-		String fileName = (pos != String::npos) ? shaderPath.substr(pos + 1) : shaderPath;
-
-		Log::Debug(LogType::ShaderCompiler, "\n==========ShaderCode: {}==========\n{}", fileName, file.Data());
-#endif
-
 		return returnResult;
 	}
 }
