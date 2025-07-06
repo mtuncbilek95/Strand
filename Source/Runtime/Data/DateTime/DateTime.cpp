@@ -1,5 +1,7 @@
 #include "DateTime.h"
 
+#include <iostream>
+
 namespace Flax
 {
 	DateTime::DateTime()
@@ -9,17 +11,20 @@ namespace Flax
 
 	DateTime::DateTime(const String& dateAsString)
 	{
-		u8 day = 0, month = 0, hour = 0, min = 0, sec = 0;
-		u16 year = 0;
+		std::tm t = {};
 
 		std::istringstream ss(dateAsString);
-		c8 dot1, dot2, space, colon1, colon2;
+		ss >> std::get_time(&t, "%d.%m.%Y %H:%M:%S");
 
-		if (!(ss >> day >> dot1 >> month >> dot2 >> year >> space >> hour >> colon1 >> min >> colon2 >> sec) ||
-			dot1 != '.' || dot2 != '.' || space != ' ' || colon1 != ':' || colon2 != ':')
-			throw std::invalid_argument("Invalid date/time string format. Expected DD.MM.YYYY HH:MM:SS");
+		if (ss.fail())
+			*this = GetCurrentDateTime();
 
-		SetDateTime(day, month, year, hour, min, sec);
+		m_day = static_cast<u8>(t.tm_mday);
+		m_month = static_cast<u8>(t.tm_mon + 1);
+		m_year = static_cast<u16>(t.tm_year + 1900);
+		m_hour = static_cast<u8>(t.tm_hour);
+		m_min = static_cast<u8>(t.tm_min);
+		m_sec = static_cast<u8>(t.tm_sec);
 	}
 
 	DateTime::DateTime(u8 day, u8 month, u16 year, u8 hour, u8 min, u8 sec)

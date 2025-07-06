@@ -7,10 +7,12 @@
  */
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include <Runtime/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	using Json = nlohmann::json;
-	using OrderedJson = nlohmann::ordered_json;
+	struct PlatformPath
+	{
+		static String AppDataPath();
+	};
 }

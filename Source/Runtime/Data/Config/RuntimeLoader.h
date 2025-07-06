@@ -7,10 +7,13 @@
  */
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Data/Config/EngineSettings.h>
 
 namespace Flax
 {
-	using Json = nlohmann::json;
-	using OrderedJson = nlohmann::ordered_json;
+	struct RuntimeLoader
+	{
+		static EngineSettings LoadEngineSettings(const String& path);
+	};
 }

@@ -11,6 +11,13 @@
 
 namespace Flax
 {
+	/**
+	 * @class ConsoleRegistry
+	 * @brief This class is to catch console commands and execute them 
+	 * for any properties. E.g. user can type something like
+	 * "graphics.setWireframeEnabled true" in console and this may
+	 * enable the wireframes onto the regular mesh representation.
+	 */
 	class ConsoleRegistry : public Singleton<ConsoleRegistry>
 	{
 	public:

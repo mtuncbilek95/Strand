@@ -10,6 +10,7 @@
 #include <string>
 using String = std::string;
 using WString = std::wstring;
+using StringStream = std::stringstream;
 
 #include <string_view>
 using StringView = std::string_view;

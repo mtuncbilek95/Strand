@@ -1,0 +1,14 @@
+[EngineSettings]
+
+[EngineSettings.General]
+EngineName = "FlaxEngine"
+EngineVersion = "1.0.0"
+EngineAuthor = "Neuvex Tech & Consultancy"
+
+[EngineSettings.Graphics]
+GraphicsAPI = 1 
+PresentMode = 2
+ImageCount = 2
+SwapchainFormat = 16
+DepthFormat = 30
+ThreadCount = 4
