@@ -11,6 +11,10 @@
 
 namespace Flax
 {
+	/**
+	 * @class DateTime
+	 * @brief Represents a date and time value.
+	 */
 	class DateTime
 	{
 	public:

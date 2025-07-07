@@ -31,7 +31,7 @@ namespace Flax
 
 	static Atomic<i32> uniqueTypeID;
 
-	template<class T>
+	template<typename T>
 	static i32 GetUniqueTypeId()
 	{
 		static const i32 id = uniqueTypeID++;

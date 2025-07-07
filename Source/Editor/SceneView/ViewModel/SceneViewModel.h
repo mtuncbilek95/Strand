@@ -8,16 +8,17 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Data/Config/EngineSettings.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	/**
-	 * @struct RuntimeLoader
-	 * @brief A utility class for loading runtime configs and libraries.
-	 */
-	struct RuntimeLoader
+	class SceneViewModel : public ViewModelBase
 	{
-		static EngineSettings LoadEngineSettings(const String& path);
+		Q_OBJECT
+	public:
+		SceneViewModel(QObject* pParent = nullptr);
+		~SceneViewModel();
+
+	private:
 	};
 }

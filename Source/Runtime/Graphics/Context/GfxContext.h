@@ -21,6 +21,12 @@ namespace Flax
 	class GfxSemaphore;
 	class GfxFence;
 
+	/**
+	 * @class GfxContext
+	 * @brief A graphics context class where it supports the whole rendering
+	 * ability for the engine. It is responsible for managing the graphics 
+	 * instance, device, queues, swapchain, command pools, and command buffers.
+	 */
 	class GfxContext : public Singleton<GfxContext>
 	{
 	public:

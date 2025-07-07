@@ -11,6 +11,10 @@
 
 namespace Flax
 {
+	/**
+	 * @class DataReader
+	 * @brief A placeholder class for reading features from data files.
+	 */
     struct DataReader
     {
         static ReadArray<c8> ReadData(const String& filePath, b8 emptyOnMissing = false, b8 nullTerminateString = false);

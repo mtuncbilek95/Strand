@@ -22,9 +22,9 @@ namespace Flax
 	{
 	public:
 		void RegisterCommand(const String& commandCall, voidFunc&& func) {}
-		void ExecuteCommand(const String& command) {}
+		void ExecuteCommand(const String& command, const String& value) {}
 
 	private:
-		HashMap<String, voidFunc> m_commands;
+		HashMap<String, function<void(const String&)>> m_commands;
 	};
 }

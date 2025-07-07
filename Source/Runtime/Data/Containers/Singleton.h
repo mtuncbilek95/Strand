@@ -11,6 +11,10 @@
 
 namespace Flax
 {
+	/**
+	 * @class Singleton
+	 * @brief Singleton class with CRTP usage.
+	 */
 	template<typename T>
 	class Singleton
 	{

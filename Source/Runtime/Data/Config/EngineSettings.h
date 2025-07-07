@@ -37,6 +37,10 @@ namespace Flax
 		GraphicsSettings& setRenderThreadCount(u32 count) { renderThreadCount = count; return *this; }
 	};
 
+	/**
+	 * @struct EngineSettings
+	 * @brief Structure for general engine settings for each instance of the engine.
+	 */
 	struct EngineSettings
 	{
 		GeneralSettings general;

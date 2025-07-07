@@ -24,6 +24,7 @@ namespace Flax
         m_loggers[LogType::IO] = createLogger("IO", spdlog::level::debug);
         m_loggers[LogType::Window] = createLogger("Window", spdlog::level::debug);
         m_loggers[LogType::Editor] = createLogger("Editor", spdlog::level::debug);
+        m_loggers[LogType::Engine] = createLogger("Engine", spdlog::level::debug);
         m_loggers[LogType::GfxContext] = createLogger("GfxContext", spdlog::level::debug);
         m_loggers[LogType::GraphicsAPI] = createLogger("GraphicsAPI", spdlog::level::info);
         m_loggers[LogType::Render] = createLogger("Render", spdlog::level::debug);

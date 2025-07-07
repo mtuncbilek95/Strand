@@ -12,6 +12,11 @@
 
 namespace Flax
 {
+	/**
+	 * @class ReadArray
+	 * @brief A read-only array container that provides a dynamic-size array 
+	 * interface with support for iterators.
+	 */
     template<typename T>
     class ReadArray
     {

@@ -3,12 +3,16 @@
 #include <Runtime/Data/Config/RuntimeLoader.h>
 #include <Runtime/Graphics/Context/GfxContext.h>
 #include <Runtime/Data/Platform/PlatformPath.h>
+#include <Editor/TerminalConsole/View/TerminalView.h>
 
 using namespace Flax;
 
 int main(int argC, char** argV)
 {
 	QApplication app(argC, argV);
+
+	TerminalView* viewTest = new TerminalView();
+	viewTest->show();
 
 	Path engineConfig = Path(PlatformPath::AppDataPath());
 	engineConfig /= "Neuvex/FlaxEngine/EngineConfig.toml";

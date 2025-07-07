@@ -20,6 +20,7 @@ namespace Flax
         IO,
         Window,
         Editor,
+		Engine,
         GfxContext,
         GraphicsAPI,
         Render,
@@ -33,9 +34,14 @@ namespace Flax
         Game
     };
 
+	/**
+	 * @class LoggerWorker
+	 * @brief A log system powered by spdlog, which provides a 
+	 * simple interface for logging messages of different types.
+	 */
     class LoggerWorker final : public Singleton<LoggerWorker>
     {
-		friend class TerminalWidget;
+		friend class TerminalView;
     public:
         LoggerWorker();
         ~LoggerWorker();
