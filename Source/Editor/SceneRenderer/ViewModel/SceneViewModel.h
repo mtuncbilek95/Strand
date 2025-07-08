@@ -12,13 +12,12 @@
 
 namespace Flax
 {
+
 	class SceneViewModel : public ViewModelBase
 	{
 		Q_OBJECT
 	public:
 		SceneViewModel(QObject* pParent = nullptr);
 		~SceneViewModel();
-
-	private:
 	};
 }

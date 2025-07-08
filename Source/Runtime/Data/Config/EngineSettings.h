@@ -15,9 +15,11 @@ namespace Flax
 	{
 		String engineName;
 		String engineVersion;
+		u32 applicationType;
 
 		GeneralSettings& setName(const String& name) { engineName = name; return *this; }
 		GeneralSettings& setVersion(const String& version) { engineVersion = version; return *this; }
+		GeneralSettings& setApplicationType(u32 type) { applicationType = type; return *this; }
 	};
 
 	struct GraphicsSettings
@@ -53,7 +55,7 @@ namespace Flax
 		{
 			EngineSettings engineSettings;
 			engineSettings.setGeneral(
-				GeneralSettings().setName("FlaxEngine").setVersion("1.0.0"))
+				GeneralSettings().setName("FlaxEngine").setVersion("1.0.0").setApplicationType(0))
 				.setGraphics(
 					GraphicsSettings()
 					.setGraphicsAPI(1)

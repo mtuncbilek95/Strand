@@ -23,7 +23,8 @@ namespace Flax
 					{"General", toml::table{
 						{"EngineName", defaultSettings.general.engineName},
 						{"EngineVersion", defaultSettings.general.engineVersion},
-						{"EngineAuthor", "Neuvex IT & Consultancy"}
+						{"EngineAuthor", "Neuvex IT & Consultancy"},
+						{"ApplicationType", defaultSettings.general.applicationType}
 					}},
 					{"Graphics", toml::table{
 						{"GraphicsAPI", defaultSettings.graphics.graphicsAPI},
@@ -65,7 +66,8 @@ namespace Flax
 		
 		EngineSettings engineSettings;
 		engineSettings.setGeneral(GeneralSettings().setName(general["EngineName"].value<String>().value())
-			.setVersion(general["EngineVersion"].value<String>().value()))
+			.setVersion(general["EngineVersion"].value<String>().value())
+			.setApplicationType(general["ApplicationType"].value<u32>().value()))
 			.setGraphics(GraphicsSettings().setGraphicsAPI(graphics["GraphicsAPI"].value<u32>().value())
 				.setImageCount(graphics["ImageCount"].value<u32>().value())
 				.setPresentMode(graphics["PresentMode"].value<u32>().value())

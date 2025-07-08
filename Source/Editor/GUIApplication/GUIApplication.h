@@ -12,13 +12,14 @@
 
 namespace Flax
 {
-	class SceneView : public QWidget
+	class GUIApplication : public QApplication
 	{
 		Q_OBJECT
 	public:
-		SceneView(QWidget* pParent = nullptr);
-		~SceneView();
+		GUIApplication(i32 argC, c8** argV);
+		~GUIApplication();
 
 	private:
+		QSettings m_settings;
 	};
 }

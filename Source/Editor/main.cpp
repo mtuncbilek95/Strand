@@ -1,22 +1,22 @@
-#include <QApplication>
+#include <Editor/GUIApplication/GUIApplication.h>
 
-#include <Runtime/Data/Config/RuntimeLoader.h>
-#include <Runtime/Graphics/Context/GfxContext.h>
-#include <Runtime/Data/Platform/PlatformPath.h>
+#include <Editor/EditorWindow/View/EditorWindow.h>
+#include <Editor/EditorWindow/ViewModel/EditorWindowViewModel.h>
 #include <Editor/TerminalConsole/View/TerminalView.h>
+#include <Editor/SceneHierarchy/View/SceneHierarchyView.h>
 
 using namespace Flax;
 
 int main(int argC, char** argV)
 {
-	QApplication app(argC, argV);
+	GUIApplication app(argC, argV);
 
-	TerminalView* viewTest = new TerminalView();
-	viewTest->show();
+	EditorWindow* wind = new EditorWindow();
 
-	Path engineConfig = Path(PlatformPath::AppDataPath());
-	engineConfig /= "Neuvex/FlaxEngine/EngineConfig.toml";
-	auto settings = RuntimeLoader::LoadEngineSettings(engineConfig.string());
+	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new TerminalView(), "Console");
+	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionLeft, new SceneHierarchyView(), "SceneHierarchy");
+
+	wind->show();
 
 	//auto ctxDesc = GfxContextDesc().setAPIType(GfxType(settings.graphics.graphicsAPI))
 	//	.setAppName(settings.general.engineName)

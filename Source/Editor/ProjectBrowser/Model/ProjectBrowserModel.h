@@ -12,23 +12,12 @@
 
 namespace Flax
 {
-	class Scene;
-	class Entity;
-
-	class SceneHierarchyModel : public QAbstractItemModel
+	class ProjectBrowserModel : public QAbstractItemModel
 	{
 		Q_OBJECT
 	public:
-		SceneHierarchyModel(QObject* pParent = nullptr);
-		~SceneHierarchyModel();
-
-		void addEntity(const QModelIndex& parent);
-		void renameEntity(const QModelIndex& index, const QString& newName);
-		void duplicateEntity(const QModelIndex& index);
-		void removeEntity(const QModelIndex& index);
-		void setCurrentScene(Scene* newScene);
-
-		QModelIndex indexOf(Entity* entity) const;
+		ProjectBrowserModel(QObject* pParent = nullptr);
+		~ProjectBrowserModel();
 
 		QModelIndex index(int row, int column, const QModelIndex& parent) const override final;
 		QModelIndex parent(const QModelIndex& index) const override final;
@@ -40,6 +29,6 @@ namespace Flax
 		bool setData(const QModelIndex& index, const QVariant& value, int role) override final;
 
 	private:
-		Scene* m_currentScene;
+
 	};
 }

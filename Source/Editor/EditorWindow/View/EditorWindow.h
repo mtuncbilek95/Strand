@@ -12,20 +12,15 @@
 
 namespace Flax
 {
-	class Scene;
-	class SceneHierarchyModel;
+	class EditorWindowViewModel;
 
-	class SceneHierarchyViewModel : public ViewModelBase
+	class EditorWindow : public QMainWindow
 	{
-		Q_OBJECT
 	public:
-		SceneHierarchyViewModel(QObject* pParent = nullptr);
-		~SceneHierarchyViewModel();
-
-		void SetScene(Scene* scene);
-		SceneHierarchyModel* Model() const { return m_model; }
+		EditorWindow(QWidget* pParent = nullptr);
+		~EditorWindow();
 
 	private:
-		SceneHierarchyModel* m_model;
+		EditorWindowViewModel* m_viewModel;
 	};
 }

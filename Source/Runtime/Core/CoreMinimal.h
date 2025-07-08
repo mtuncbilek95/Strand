@@ -15,6 +15,7 @@
 #include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Data/Definitions/StdHelpers.h>
 #include <Runtime/Data/Definitions/GlmNames.h>
+#include <Runtime/Data/Definitions/ReflectionNames.h>
 #include <Runtime/Data/Definitions/JsonNames.h>
 #include <Runtime/Data/Definitions/BitwiseOperator.h>
 #include <Runtime/Data/Definitions/TypeTraits.h>

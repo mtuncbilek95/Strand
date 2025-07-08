@@ -12,20 +12,11 @@
 
 namespace Flax
 {
-	class Scene;
-	class SceneHierarchyModel;
-
-	class SceneHierarchyViewModel : public ViewModelBase
+	enum class EditorDirection
 	{
-		Q_OBJECT
-	public:
-		SceneHierarchyViewModel(QObject* pParent = nullptr);
-		~SceneHierarchyViewModel();
-
-		void SetScene(Scene* scene);
-		SceneHierarchyModel* Model() const { return m_model; }
-
-	private:
-		SceneHierarchyModel* m_model;
+		DirectionTop,
+		DirectionLeft,
+		DirectionBottom,
+		DirectionRight
 	};
 }

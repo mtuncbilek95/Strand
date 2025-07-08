@@ -12,11 +12,12 @@
 
 namespace Flax
 {
-	class EditorWindow : public QMainWindow
+	class SceneRendererView : public QWidget
 	{
+		Q_OBJECT
 	public:
-		EditorWindow(QWidget* pParent = nullptr);
-		~EditorWindow();
+		SceneRendererView(QWidget* pParent = nullptr);
+		~SceneRendererView();
 
 	private:
 	};

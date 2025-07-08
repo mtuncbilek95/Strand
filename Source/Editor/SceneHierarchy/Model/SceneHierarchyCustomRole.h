@@ -11,18 +11,9 @@
 
 namespace Flax
 {
-	class SceneHierarchyModel;
-	class SceneHierarchyViewModel;
-
-	class SceneHierarchyView : public QWidget
+	enum class SceneHierarchyCustomRole
 	{
-		Q_OBJECT
-	public:
-		SceneHierarchyView(QWidget* pParent = nullptr);
-		~SceneHierarchyView();
-
-	private:
-		QTreeView* m_view;
-		SceneHierarchyViewModel* m_viewModel;
+		EntityName = Qt::UserRole + 1,
+		EntityType,
 	};
 }
