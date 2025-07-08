@@ -43,9 +43,9 @@ template<typename T>
 using Set = std::set<T>;
 
 #include <filesystem>
-namespace FileSystem = std::filesystem;
+namespace FileSys = std::filesystem;
 
-using Path = FileSystem::path;
+using Path = FileSys::path;
 
 #include <fstream>
 using FileStream = std::fstream;

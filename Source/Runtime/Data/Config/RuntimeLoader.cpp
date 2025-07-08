@@ -7,12 +7,12 @@ namespace Flax
 {
 	EngineSettings RuntimeLoader::LoadEngineSettings(const String& path)
 	{
-		if (!FileSystem::exists(Path(path)))
+		if (!FileSys::exists(Path(path)))
 		{
 			Log::Warn(LogType::IO, "Engine settings file '{}' does not exist. Using default settings.", path);
 
 			Path route = Path(path).parent_path();
-			if (FileSystem::create_directories(route))
+			if (FileSys::create_directories(route))
 			{
 				Log::Info(LogType::IO, "Created directories for engine settings at '{}'", route.string());
 

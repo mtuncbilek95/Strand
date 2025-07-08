@@ -32,6 +32,7 @@ namespace Flax
         m_loggers[LogType::Asset] = createLogger("Asset", spdlog::level::debug);
         m_loggers[LogType::ECS] = createLogger("ECS", spdlog::level::debug);
         m_loggers[LogType::VFS] = createLogger("VFS", spdlog::level::debug);
+        m_loggers[LogType::FileSystem] = createLogger("FileSystem", spdlog::level::debug);
         m_loggers[LogType::Thread] = createLogger("Thread", spdlog::level::debug);
         m_loggers[LogType::Input] = createLogger("Input", spdlog::level::debug);
         m_loggers[LogType::ShaderCompiler] = createLogger("ShaderCompiler", spdlog::level::debug);

@@ -80,13 +80,13 @@ namespace Flax
 
 	String StringHelpers::NameWithoutExt(const String& path)
 	{
-		FileSystem::path p(path);
+		FileSys::path p(path);
 		return p.stem().string();
 	}
 
 	String StringHelpers::FileExtension(const String& path)
 	{
-		FileSystem::path fsPath(path);
+		FileSys::path fsPath(path);
 		return fsPath.extension().string();
 	}
 }

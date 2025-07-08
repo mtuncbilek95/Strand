@@ -28,6 +28,7 @@ namespace Flax
         Asset,
         ECS,
 		VFS,
+		FileSystem,
         Thread,
         Input,
         ShaderCompiler,
