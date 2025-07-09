@@ -1,13 +1,24 @@
-#include <Runtime/FileSystem/FileSystem.h>
+#include <Runtime/FileSystem/Service/VirtualFileService.h>
+#include <Runtime/FileSystem/DiskFile/DiskFileSystem.h>
 
 using namespace Flax;
 
 int main()
 {
-	auto fs = RuntimeService::Get<FileSystem>();
+	auto vfm = RuntimeService::Get<VirtualFileService>();
 
-	fs->SetRootPath(R"(D:\)");
-	auto path = fs->SeparatePathFromRoot(R"(D:\Projects\FlaxTestProject\TestProject.toml)");
+	vfm->Initialize(R"(C:\Users\mtunc\Desktop\TestFolder)");
+	vfm->Mount("Assets", NewRef<DiskFileSystem>());
+	vfm->Mount("Cache", NewRef<DiskFileSystem>());
+	vfm->Mount("Content", NewRef<DiskFileSystem>());
+	vfm->Mount("Intermediate", NewRef<DiskFileSystem>());
 
-	printf("%s\n", path.string().data());
+	if(vfm->Exists("Assets/TestFolder/Yalama/GrimLock.txt"))
+		printf("File exists!\n");
+	else
+		printf("File does not exist!\n");
+
+	vfm->Create("Intermediate/TestFolder/Grimlock/");
+
+	return 0;
 }

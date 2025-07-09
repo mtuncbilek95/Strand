@@ -22,6 +22,8 @@ namespace Flax
 		{
 			auto typeId = TypeIndex(typeid(T));
 			Services()[typeId] = service;
+
+			Log::Debug(LogType::IO, "Service '{}' registered successfully.", typeId.name());
 		}
 
 		template<typename T>

@@ -11,9 +11,10 @@
 
 namespace Flax
 {
-	class VfsNode
+	enum class VirtualNodeType
 	{
-	public:
-		VfsNode() = default;
+		None,
+		File,
+		Folder
 	};
 }

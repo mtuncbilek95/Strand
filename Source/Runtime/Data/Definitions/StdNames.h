@@ -49,6 +49,8 @@ using Path = FileSys::path;
 
 #include <fstream>
 using FileStream = std::fstream;
+using OutFileStream = std::ofstream;
+using InFileStream = std::ifstream;
 
 #include <unordered_map>
 template<typename K, typename V, typename...Args>
