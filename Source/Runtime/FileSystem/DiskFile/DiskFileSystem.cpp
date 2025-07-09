@@ -39,6 +39,7 @@ namespace Flax
 			.setType(VirtualNodeType::Folder);
 
 		m_rootNode = NewRef<DiskFileNode>(desc, nullptr);
+		m_rootNode->Refresh();
 
 		Log::Info(LogType::FileSystem, "Mounted disk file system from '{}' to '{}'.", sourcePath.string(), mountPoint.string());
 	}
@@ -129,23 +130,71 @@ namespace Flax
 			}
 		}
 
+		Ref<DiskFileNode> currentNode = m_rootNode;
+		if (!currentNode)
+		{
+			Log::Error(LogType::FileSystem, "DiskFileSystem root node is not initialized for mount point '{}'.", m_mountPoint.string());
+			return;
+		}
+
+		Vector<String> segments;
+		for (const auto& segment : virtualPath)
+			segments.push_back(segment.string());
+
+		Path currentVirtualSegmentPath = m_mountPoint;
+		for (size_t i = 0; i < segments.size(); ++i) 
+		{
+			const String& segment = segments[i];
+			if (segment.empty())
+				continue;
+
+			currentVirtualSegmentPath /= segment;
+			Ref<IVirtualFileNode> foundChild = nullptr;
+
+			if (currentNode->IsFolder())
+			{
+				currentNode->Refresh();
+
+				for (usize j = 0; j < currentNode->Count(); ++j) 
+				{
+					Ref<IVirtualFileNode> child = currentNode->Child(j);
+					if (child && child->Name() == segment) {
+						foundChild = child;
+						break;
+					}
+				}
+			}
+
+			if (foundChild)
+				currentNode = std::dynamic_pointer_cast<DiskFileNode>(foundChild);
+			else 
+			{
+				Log::Error(LogType::FileSystem, "Consistency error: Node '{}' not found after refresh in '{}'.", segment, currentNode->VirtualPath().string());
+				return;
+			}
+		}
+
 		Log::Info(LogType::FileSystem, "Created file or directory '{}'.", fullPath.string());
 	}
 
 	void DiskFileSystem::Delete(const Path& virtualPath)
 	{
+		Log::Warn(LogType::FileSystem, "NOT IMPLEMENTED YET!");
 	}
 
 	void DiskFileSystem::Rename(const Path& oldVirtual, const Path& newVirtual)
 	{
+		Log::Warn(LogType::FileSystem, "NOT IMPLEMENTED YET!");
 	}
 
 	void DiskFileSystem::Copy(const Path& srcVirtual, const Path& dstVirtual)
 	{
+		Log::Warn(LogType::FileSystem, "NOT IMPLEMENTED YET!");
 	}
 
 	void DiskFileSystem::Move(const Path& srcVirtual, const Path& dstVirtual)
 	{
+		Log::Warn(LogType::FileSystem, "NOT IMPLEMENTED YET!");
 	}
 
 	Ref<IVirtualFileNode> DiskFileSystem::RootNode() const
@@ -155,23 +204,70 @@ namespace Flax
 
 	Ref<IVirtualFileNode> DiskFileSystem::Node(const Path& virtualPath) const
 	{
-		if (virtualPath.is_absolute())
+		return FindNodeInTree(virtualPath);
+	}
+
+	Ref<DiskFileNode> DiskFileSystem::FindNodeInTree(const Path& virtualPath) const
+	{
+		String absPathStr = virtualPath.string();
+		String mountPointStr = m_mountPoint.string();
+
+		if (absPathStr.rfind(mountPointStr, 0) != 0) 
 		{
-			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtualPath.string());
+			Log::Error(LogType::FileSystem, "Path '{}' is not part of this file system's mount point '{}'.", virtualPath.string(), m_mountPoint.string());
 			return nullptr;
 		}
 
-		Path fullPath = m_sourcePath / virtualPath;
-		if (!FileSys::exists(fullPath))
+		if (virtualPath == m_mountPoint) {
+			return m_rootNode;
+		}
+
+		Path relativeToMountPoint = virtualPath.lexically_relative(m_mountPoint);
+		Ref<DiskFileNode> currentNode = m_rootNode;
+
+		if (!currentNode) 
 		{
-			Log::Error(LogType::FileSystem, "Virtual path '{}' does not exist.", virtualPath.string());
+			Log::Error(LogType::FileSystem, "DiskFileSystem root node is not initialized for mount point '{}'.", m_mountPoint.string());
 			return nullptr;
 		}
 
-		VirtualNodeDesc desc = VirtualNodeDesc().setName(fullPath.filename().string())
-			.setVirtualPath(virtualPath)
-			.setSourcePath(fullPath)
-			.setType(FileSys::is_directory(fullPath) ? VirtualNodeType::Folder : VirtualNodeType::File);
-		return NewRef<DiskFileNode>(desc, nullptr);
+		Vector<String> segments;
+		for (const auto& segment : relativeToMountPoint)
+			segments.push_back(segment.string());
+		
+		for (const String& segment : segments) 
+		{
+			if (segment.empty()) 
+				continue;
+
+			Ref<IVirtualFileNode> foundChild = nullptr;
+
+			if (!currentNode->IsFolder()) 
+			{
+				Log::Warn(LogType::FileSystem, "Cannot traverse into a non-directory node: '{}'. Path segment: '{}'", currentNode->VirtualPath().string(), segment);
+				return nullptr;
+			}
+
+			currentNode->Refresh();
+
+			for (usize i = 0; i < currentNode->Count(); ++i) 
+			{
+				Ref<IVirtualFileNode> child = currentNode->Child(i);
+				if (child && child->Name() == segment) 
+				{
+					foundChild = child;
+					break;
+				}
+			}
+
+			if (foundChild)
+				currentNode = std::static_pointer_cast<DiskFileNode>(foundChild);
+			else 
+			{
+				Log::Warn(LogType::FileSystem, "Node for segment '{}' not found under '{}'. Path: '{}'", segment, currentNode->VirtualPath().string(), virtualPath.string());
+				return nullptr;
+			}
+		}
+		return currentNode;
 	}
 }

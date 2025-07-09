@@ -38,6 +38,6 @@ namespace Flax
 		IVirtualFileNode* m_parent;
 
 		Vector<Ref<IVirtualFileNode>> m_children;
-		b8 m_childrenLoaded = false;
+		b8 m_childrenLoaded;
 	};
 }

@@ -12,6 +12,8 @@
 
 namespace Flax
 {
+	class DiskFileNode;
+
 	class DiskFileSystem : public IVirtualFileSystem
 	{
 	public:
@@ -32,9 +34,14 @@ namespace Flax
 		Ref<IVirtualFileNode> Node(const Path& virtualPath) const override final;
 
 	private:
+		Ref<DiskFileNode> FindNodeInTree(const Path& virtualPath) const;
+		Path ToRealPath(const Path& virtualPath) const;
+		Path ToVirtualPath(const Path& realPath) const;
+
+	private:
 		Path m_sourcePath;
 		Path m_mountPoint;
 
-		Ref<IVirtualFileNode> m_rootNode;
+		Ref<DiskFileNode> m_rootNode;
 	};
 }

@@ -1,6 +1,7 @@
 #include "VirtualFileService.h"
 
 #include <Runtime/FileSystem/IVirtualFileSystem.h>
+#include <Runtime/FileSystem/IVirtualFileNode.h>
 
 namespace Flax
 {
@@ -48,8 +49,8 @@ namespace Flax
 	{
 		Path targetPath = ClearMountPath(path);
 		auto fileSystem = FileSystem(targetPath);
-		
-		if(!fileSystem)
+
+		if (!fileSystem)
 		{
 			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
 			return false;
@@ -62,8 +63,8 @@ namespace Flax
 	{
 		Path targetPath = ClearMountPath(path);
 		auto fileSystem = FileSystem(targetPath);
-		
-		if(!fileSystem)
+
+		if (!fileSystem)
 		{
 			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
 			return false;
@@ -75,8 +76,8 @@ namespace Flax
 	{
 		Path targetPath = ClearMountPath(path);
 		auto fileSystem = FileSystem(targetPath);
-		
-		if(!fileSystem)
+
+		if (!fileSystem)
 		{
 			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
 			return false;
@@ -88,8 +89,8 @@ namespace Flax
 	{
 		Path targetPath = ClearMountPath(path);
 		auto fileSystem = FileSystem(targetPath);
-		
-		if(!fileSystem)
+
+		if (!fileSystem)
 		{
 			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
 			return;
@@ -172,6 +173,38 @@ namespace Flax
 		}
 
 		return fsIt->second;
+	}
+
+	Ref<IVirtualFileNode> VirtualFileService::RootNode(const Path& mountPoint) const
+	{
+		auto it = m_fileSystems.find(mountPoint.string());
+		if (it == m_fileSystems.end())
+		{
+			Log::Critical(LogType::FileSystem, "Mount point '{}' is not mounted.", mountPoint.string());
+			return nullptr;
+		}
+
+		return it->second->RootNode();
+	}
+
+	Ref<IVirtualFileNode> VirtualFileService::Node(const Path& virtualPath) const
+	{
+		Path targetPath = ClearMountPath(virtualPath);
+		auto fileSystem = FileSystem(targetPath);
+
+		if (!fileSystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
+			return nullptr;
+		}
+
+		if (!fileSystem->Exists(targetPath))
+		{
+			Log::Critical(LogType::FileSystem, "Node '{}' does not exist in the file system.", targetPath.string());
+			return nullptr;
+		}
+
+		return fileSystem->Node(targetPath);
 	}
 
 	struct VirtualFileSystemRegister

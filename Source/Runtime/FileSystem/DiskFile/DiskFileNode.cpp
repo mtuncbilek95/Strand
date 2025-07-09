@@ -3,7 +3,7 @@
 namespace Flax
 {
 	DiskFileNode::DiskFileNode(const VirtualNodeDesc& desc, IVirtualFileNode* pParent) : m_desc(desc),
-		m_parent(pParent)
+		m_parent(pParent), m_childrenLoaded(desc.type == VirtualNodeType::File)
 	{
 	}
 
@@ -87,6 +87,8 @@ namespace Flax
 
 		m_children.clear();
 		m_childrenLoaded = false;
+
+		LoadChildren();
 	}
 
 	void DiskFileNode::LoadChildren()
@@ -96,6 +98,33 @@ namespace Flax
 
 		for (const auto& entry : FileSys::directory_iterator(m_desc.sourcePath))
 		{
+			if (entry.path().filename() == "." || entry.path().filename() == "..")
+				continue; // Skip current and parent directory entries
+
+			std::filesystem::path childVirtualPath = m_desc.virtualPath / entry.path().filename();
+			std::filesystem::path childRealPath = entry.path();
+
+			VirtualNodeType childType = VirtualNodeType::None;
+			if (entry.is_directory())
+				childType = VirtualNodeType::Folder;
+			else if (entry.is_regular_file())
+				childType = VirtualNodeType::File;
+
+			VirtualNodeDesc childDesc = VirtualNodeDesc().setName(entry.path().filename().string())
+				.setVirtualPath(childVirtualPath)
+				.setSourcePath(childRealPath)
+				.setType(childType);
+
+			Ref<DiskFileNode> childNode = NewRef<DiskFileNode>(childDesc, this);
+			m_children.push_back(childNode);
 		}
+
+		std::sort(m_children.begin(), m_children.end(), [](const Ref<IVirtualFileNode>& a, const Ref<IVirtualFileNode>& b) {
+			if (a->IsFolder() && !b->IsFolder()) return true;
+			if (!a->IsFolder() && b->IsFolder()) return false;
+			return a->Name() < b->Name();
+			});
+
+		m_childrenLoaded = true;
 	}
 }

@@ -12,6 +12,7 @@
 namespace Flax
 {
 	class IVirtualFileSystem;
+	class IVirtualFileNode;
 
 	/**
 	 * @class VirtualFileService
@@ -57,6 +58,9 @@ namespace Flax
 		void Move(const Path& sourcePath, const Path& destinationPath);
 
 		void ResetServiceField() override final;
+
+		Ref<IVirtualFileNode> RootNode(const Path& mountPoint) const;
+		Ref<IVirtualFileNode> Node(const Path& virtualPath) const;
 
 	private:
 		Path ClearMountPath(const Path& path) const;
