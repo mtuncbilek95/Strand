@@ -4,9 +4,9 @@
 
 To run the engine, you need a couple of SDKs installed on your system. The engine supports the following SDKs:
 
-- [Vulkan SDK 1.4.313](https://vulkan.lunarg.com/sdk/home)
-- [Qt SDK 6.9.0](https://www.qt.io/download-qt-installer)
-- [Python 3.12](https://www.python.org/downloads/release/python-3120/)
+- [Vulkan SDK 1.4.313.0 or later](https://sdk.lunarg.com/sdk/download/1.4.313.2/windows/vulkansdk-windows-X64-1.4.313.2.exe)
+- [Qt SDK 6.9.0](https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-windows-x64-4.10.0.exe)
+- [Python 3.12 or later](https://www.python.org/ftp/python/3.13.5/python-3.13.5-amd64.exe)
 
 Since the source code expects you to use CMake v3.26 or higher, I will highly recommend you to install Vistual Studio 
 2022 with the following components:
