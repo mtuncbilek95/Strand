@@ -112,10 +112,13 @@ namespace Flax
 		// If the path is a file, ensure the parent directory created/existed first
 		if (!FileSys::is_directory(fullPath))
 		{
-			if (!FileSys::create_directories(fullPath.parent_path()))
+			if (!FileSys::exists(fullPath.parent_path()))
 			{
-				Log::Error(LogType::FileSystem, "Failed to create file or directory '{}'.", fullPath.string());
-				return;
+				if (!FileSys::create_directories(fullPath.parent_path()))
+				{
+					Log::Error(LogType::FileSystem, "Failed to create file or directory '{}'.", fullPath.string());
+					return;
+				}
 			}
 
 			if (fullPath.has_filename())
@@ -139,7 +142,11 @@ namespace Flax
 
 		Vector<String> segments;
 		for (const auto& segment : virtualPath)
+		{
+			if (segment == m_mountPoint.string())
+				continue;
 			segments.push_back(segment.string());
+		}
 
 		Path currentVirtualSegmentPath = m_mountPoint;
 		for (size_t i = 0; i < segments.size(); ++i) 
@@ -158,7 +165,8 @@ namespace Flax
 				for (usize j = 0; j < currentNode->Count(); ++j) 
 				{
 					Ref<IVirtualFileNode> child = currentNode->Child(j);
-					if (child && child->Name() == segment) {
+					if (child && child->Name() == segment) 
+					{
 						foundChild = child;
 						break;
 					}
@@ -218,9 +226,8 @@ namespace Flax
 			return nullptr;
 		}
 
-		if (virtualPath == m_mountPoint) {
+		if (virtualPath == m_mountPoint)
 			return m_rootNode;
-		}
 
 		Path relativeToMountPoint = virtualPath.lexically_relative(m_mountPoint);
 		Ref<DiskFileNode> currentNode = m_rootNode;
