@@ -12,18 +12,17 @@
 #include <Runtime/Data/Containers/Singleton.h>
 
 #include <Runtime/Data/Definitions/Definitions.h>
-#include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Data/Definitions/StdHelpers.h>
-#include <Runtime/Data/Definitions/GlmNames.h>
-#include <Runtime/Data/Definitions/ReflectionNames.h>
-#include <Runtime/Data/Definitions/JsonNames.h>
 #include <Runtime/Data/Definitions/BitwiseOperator.h>
 #include <Runtime/Data/Definitions/TypeTraits.h>
 
 #include <Runtime/Data/Tools/DataReader.h>
-
 #include <Runtime/Data/Service/RuntimeService.h>
-
 #include <Runtime/Data/Logger/Logger.h>
-
 #include <Runtime/Data/DateTime/DateTime.h>
+
+#include <Runtime/Data/Definitions/StdNames.h>
+#include <Runtime/Data/Definitions/GlmNames.h>
+#include <Runtime/Data/Definitions/JsonNames.h>
+#include <Runtime/Data/Definitions/TomlNames.h>
+#include <Runtime/Data/Definitions/ReflectionNames.h>

@@ -18,15 +18,15 @@ namespace Flax
 
 				EngineSettings defaultSettings = EngineSettings::DefaultSettings();
 
-				toml::table tbl;
-				tbl.emplace("EngineSettings", toml::table{
-					{"General", toml::table{
+				Toml tbl;
+				tbl.emplace("EngineSettings", Toml{
+					{"General", Toml{
 						{"EngineName", defaultSettings.general.engineName},
 						{"EngineVersion", defaultSettings.general.engineVersion},
 						{"EngineAuthor", "Neuvex IT & Consultancy"},
 						{"ApplicationType", defaultSettings.general.applicationType}
 					}},
-					{"Graphics", toml::table{
+					{"Graphics", Toml{
 						{"GraphicsAPI", defaultSettings.graphics.graphicsAPI},
 						{"PresentMode", defaultSettings.graphics.presentMode},
 						{"ImageCount", defaultSettings.graphics.imageCount},
@@ -60,9 +60,9 @@ namespace Flax
 			return EngineSettings::DefaultSettings();
 		}
 
-		toml::table& tbl = result.table();
-		toml::table& general = *tbl["EngineSettings"]["General"].as_table();
-		toml::table& graphics = *tbl["EngineSettings"]["Graphics"].as_table();
+		Toml& tbl = result.table();
+		Toml& general = *tbl["EngineSettings"]["General"].as_table();
+		Toml& graphics = *tbl["EngineSettings"]["Graphics"].as_table();
 		
 		EngineSettings engineSettings;
 		engineSettings.setGeneral(GeneralSettings().setName(general["EngineName"].value<String>().value())

@@ -20,22 +20,22 @@ namespace Flax
 		template<typename T, typename = std::enable_if_t<std::is_base_of_v<RuntimeServiceBase, T>>>
 		static void Register(Ref<T> service)
 		{
-			auto typeId = TypeIndex(typeid(T));
+			auto typeId = GetUniqueTypeId<T>();
 			Services()[typeId] = service;
 
-			Log::Debug(LogType::IO, "Service '{}' registered successfully.", typeId.name());
+			Log::Debug(LogType::IO, "Service '{}' registered successfully.", typeid(T).name());
 		}
 
 		template<typename T>
 		static Ref<T> Get()
 		{
-			auto typeId = TypeIndex(typeid(T));
+			auto typeId = GetUniqueTypeId<T>();
 
 			auto it = Services().find(typeId);
 
 			if (it == Services().end())
 			{
-				Log::Critical(LogType::IO, "Service '{}' could not be found!", typeId.name());
+				Log::Critical(LogType::IO, "Service '{}' could not be found!", typeid(T).name());
 				return nullptr;
 			}
 
@@ -53,9 +53,9 @@ namespace Flax
 		}
 
 	private:
-		static HashMap<TypeIndex, Ref<RuntimeServiceBase>>& Services()
+		static HashMap<i32, Ref<RuntimeServiceBase>>& Services()
 		{
-			static HashMap<TypeIndex, Ref<RuntimeServiceBase>> instanceMap;
+			static HashMap<i32, Ref<RuntimeServiceBase>> instanceMap;
 			return instanceMap;
 		}
 	};
