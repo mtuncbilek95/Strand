@@ -8,11 +8,13 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/FileSystem/FileMode.h>
 
 namespace Flax
 {
 	class IVirtualFileSystem;
 	class IVirtualFileNode;
+	class IFileStream;
 
 	/**
 	 * @class VirtualFileService
@@ -47,6 +49,7 @@ namespace Flax
 		void Mount(const Path& mountPoint, Ref<IVirtualFileSystem> fileSystem);
 		void Unmount(const Path& mountPoint);
 
+		Ref<IFileStream> Open(const Path& virtPath, FileMode mode);
 		b8 Exists(const Path& path) const;
 		b8 IsDirectory(const Path& path) const;
 		b8 IsFile(const Path& path) const;

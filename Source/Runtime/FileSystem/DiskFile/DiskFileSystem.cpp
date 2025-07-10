@@ -1,6 +1,7 @@
 #include "DiskFileSystem.h"
 
 #include <Runtime/FileSystem/DiskFile/DiskFileNode.h>
+#include <Runtime/FileSystem/DiskFile/DiskFileStream.h>
 
 namespace Flax
 {
@@ -57,6 +58,25 @@ namespace Flax
 		m_rootNode.reset();
 		m_rootNode = nullptr;
 		Log::Info(LogType::FileSystem, "Unmounted disk file system from '{}'.", mountPoint.string());
+	}
+
+	Ref<IFileStream> DiskFileSystem::Open(const Path& virtualPath, FileMode mode)
+	{
+		Path realPath = ToRealPath(virtualPath);
+
+		if (!FileSys::is_regular_file(realPath))
+		{
+			Log::Error(LogType::FileSystem, "File '{}' is not a regular file.", virtualPath.string());
+			return nullptr;
+		}
+
+		if (!FileSys::exists(realPath))
+		{
+			Log::Error(LogType::FileSystem, "File '{}' does not exist.", virtualPath.string());
+			return nullptr;
+		}
+
+		return NewRef<DiskFileStream>(realPath, mode);
 	}
 
 	b8 DiskFileSystem::Exists(const Path& path) const
@@ -149,7 +169,7 @@ namespace Flax
 		}
 
 		Path currentVirtualSegmentPath = m_mountPoint;
-		for (size_t i = 0; i < segments.size(); ++i) 
+		for (size_t i = 0; i < segments.size(); ++i)
 		{
 			const String& segment = segments[i];
 			if (segment.empty())
@@ -162,10 +182,10 @@ namespace Flax
 			{
 				currentNode->Refresh();
 
-				for (usize j = 0; j < currentNode->Count(); ++j) 
+				for (usize j = 0; j < currentNode->Count(); ++j)
 				{
 					Ref<IVirtualFileNode> child = currentNode->Child(j);
-					if (child && child->Name() == segment) 
+					if (child && child->Name() == segment)
 					{
 						foundChild = child;
 						break;
@@ -175,7 +195,7 @@ namespace Flax
 
 			if (foundChild)
 				currentNode = std::dynamic_pointer_cast<DiskFileNode>(foundChild);
-			else 
+			else
 			{
 				Log::Error(LogType::FileSystem, "Consistency error: Node '{}' not found after refresh in '{}'.", segment, currentNode->VirtualPath().string());
 				return;
@@ -220,7 +240,7 @@ namespace Flax
 		String absPathStr = virtualPath.string();
 		String mountPointStr = m_mountPoint.string();
 
-		if (absPathStr.rfind(mountPointStr, 0) != 0) 
+		if (absPathStr.rfind(mountPointStr, 0) != 0)
 		{
 			Log::Error(LogType::FileSystem, "Path '{}' is not part of this file system's mount point '{}'.", virtualPath.string(), m_mountPoint.string());
 			return nullptr;
@@ -232,7 +252,7 @@ namespace Flax
 		Path relativeToMountPoint = virtualPath.lexically_relative(m_mountPoint);
 		Ref<DiskFileNode> currentNode = m_rootNode;
 
-		if (!currentNode) 
+		if (!currentNode)
 		{
 			Log::Error(LogType::FileSystem, "DiskFileSystem root node is not initialized for mount point '{}'.", m_mountPoint.string());
 			return nullptr;
@@ -241,15 +261,15 @@ namespace Flax
 		Vector<String> segments;
 		for (const auto& segment : relativeToMountPoint)
 			segments.push_back(segment.string());
-		
-		for (const String& segment : segments) 
+
+		for (const String& segment : segments)
 		{
-			if (segment.empty()) 
+			if (segment.empty())
 				continue;
 
 			Ref<IVirtualFileNode> foundChild = nullptr;
 
-			if (!currentNode->IsFolder()) 
+			if (!currentNode->IsFolder())
 			{
 				Log::Warn(LogType::FileSystem, "Cannot traverse into a non-directory node: '{}'. Path segment: '{}'", currentNode->VirtualPath().string(), segment);
 				return nullptr;
@@ -257,10 +277,10 @@ namespace Flax
 
 			currentNode->Refresh();
 
-			for (usize i = 0; i < currentNode->Count(); ++i) 
+			for (usize i = 0; i < currentNode->Count(); ++i)
 			{
 				Ref<IVirtualFileNode> child = currentNode->Child(i);
-				if (child && child->Name() == segment) 
+				if (child && child->Name() == segment)
 				{
 					foundChild = child;
 					break;
@@ -269,7 +289,7 @@ namespace Flax
 
 			if (foundChild)
 				currentNode = std::static_pointer_cast<DiskFileNode>(foundChild);
-			else 
+			else
 			{
 				Log::Warn(LogType::FileSystem, "Node for segment '{}' not found under '{}'. Path: '{}'", segment, currentNode->VirtualPath().string(), virtualPath.string());
 				return nullptr;

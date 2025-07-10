@@ -20,6 +20,7 @@ namespace Flax
 		void Mount(const Path& mountPoint, const Path& sourcePath) override final;
 		void Unmount(const Path& mountPoint) override final;
 
+		Ref<IFileStream> Open(const Path& virtualPath, FileMode mode) override final;
 		b8 Exists(const Path& path) const override final;
 		b8 IsDirectory(const Path& path) const override final;
 		b8 IsFile(const Path& path) const override final;

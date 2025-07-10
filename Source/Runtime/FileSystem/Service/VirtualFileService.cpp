@@ -45,6 +45,20 @@ namespace Flax
 		m_fileSystems.erase(it);
 	}
 
+	Ref<IFileStream> VirtualFileService::Open(const Path& virtPath, FileMode mode)
+	{
+		Path targetPath = ClearMountPath(virtPath);
+		auto fileSystem = FileSystem(targetPath);
+
+		if (!fileSystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
+			return false;
+		}
+
+		return fileSystem->Open(targetPath, mode);
+	}
+
 	b8 VirtualFileService::Exists(const Path& path) const
 	{
 		Path targetPath = ClearMountPath(path);
@@ -127,18 +141,89 @@ namespace Flax
 
 	void VirtualFileService::Rename(const Path& oldPath, const Path& newPath)
 	{
+		Path oldTargetPath = ClearMountPath(oldPath);
+		Path newTargetPath = ClearMountPath(newPath);
+		auto fileSystem = FileSystem(oldTargetPath);
+		
+		if (!fileSystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", oldTargetPath.string());
+			return;
+		}
+
+		if (!fileSystem->Exists(oldTargetPath))
+		{
+			Log::Warn(LogType::FileSystem, "File '{}' does not exist.", oldTargetPath.string());
+			return;
+		}
+
+		if (fileSystem->Exists(newTargetPath))
+		{
+			Log::Warn(LogType::FileSystem, "File '{}' already exists.", newTargetPath.string());
+			return;
+		}
+
+		fileSystem->Rename(oldTargetPath, newTargetPath);
 	}
 
 	void VirtualFileService::Copy(const Path& sourcePath, const Path& destinationPath)
 	{
+		Path sourceTargetPath = ClearMountPath(sourcePath);
+		Path destinationTargetPath = ClearMountPath(destinationPath);
+		auto fileSystem = FileSystem(sourceTargetPath);
+
+		if (!fileSystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", sourceTargetPath.string());
+			return;
+		}
+		
+		if (!fileSystem->Exists(sourceTargetPath))
+		{
+			Log::Warn(LogType::FileSystem, "Source file '{}' does not exist.", sourceTargetPath.string());
+			return;
+		}
+		
+		if (fileSystem->Exists(destinationTargetPath))
+		{
+			Log::Warn(LogType::FileSystem, "Destination file '{}' already exists.", destinationTargetPath.string());
+			return;
+		}
+		
+		fileSystem->Copy(sourceTargetPath, destinationTargetPath);
 	}
 
 	void VirtualFileService::Move(const Path& sourcePath, const Path& destinationPath)
 	{
+		Path sourceTargetPath = ClearMountPath(sourcePath);
+		Path destinationTargetPath = ClearMountPath(destinationPath);
+		auto fileSystem = FileSystem(sourceTargetPath);
+		
+		if (!fileSystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", sourceTargetPath.string());
+			return;
+		}
+		
+		if (!fileSystem->Exists(sourceTargetPath))
+		{
+			Log::Warn(LogType::FileSystem, "Source file '{}' does not exist.", sourceTargetPath.string());
+			return;
+		}
+		
+		if (fileSystem->Exists(destinationTargetPath))
+		{
+			Log::Warn(LogType::FileSystem, "Destination file '{}' already exists.", destinationTargetPath.string());
+			return;
+		}
+		
+		fileSystem->Move(sourceTargetPath, destinationTargetPath);
 	}
 
 	void VirtualFileService::ResetServiceField()
 	{
+		m_fileSystems.clear();
+		m_sourcePath.clear();
 	}
 
 	Path VirtualFileService::ClearMountPath(const Path& path) const
