@@ -297,4 +297,51 @@ namespace Flax
 		}
 		return currentNode;
 	}
+
+	Path DiskFileSystem::ToRealPath(const Path& virtualPath) const
+	{
+		if (virtualPath.is_absolute())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtualPath.string());
+			return Path();
+		}
+
+		if (virtualPath.empty())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual path is empty.");
+			return Path();
+		}
+
+		return m_sourcePath / virtualPath;
+	}
+
+	Path DiskFileSystem::ToVirtualPath(const Path& realPath) const
+	{
+		if (!realPath.is_absolute())
+		{
+			Log::Critical(LogType::FileSystem, "Real path '{}' must be absolute.", realPath.string());
+			return Path();
+		}
+
+		if (realPath.empty())
+		{
+			Log::Critical(LogType::FileSystem, "Real path is empty.");
+			return Path();
+		}
+
+		if (realPath.string().find(m_sourcePath.string()) != 0)
+		{
+			Log::Critical(LogType::FileSystem, "Real path '{}' is not under the source path '{}'.", realPath.string(), m_sourcePath.string());
+			return Path();
+		}
+		
+		Path relativePath = realPath.lexically_relative(m_sourcePath);
+		if (relativePath.empty())
+		{
+			Log::Critical(LogType::FileSystem, "Real path '{}' is not under the source path '{}'.", realPath.string(), m_sourcePath.string());
+			return Path();
+		}
+
+		return relativePath;
+	}
 }

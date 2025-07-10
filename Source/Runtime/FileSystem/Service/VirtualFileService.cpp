@@ -53,7 +53,7 @@ namespace Flax
 		if (!fileSystem)
 		{
 			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
-			return false;
+			return nullptr;
 		}
 
 		return fileSystem->Open(targetPath, mode);

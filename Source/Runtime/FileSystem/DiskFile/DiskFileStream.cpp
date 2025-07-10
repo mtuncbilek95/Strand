@@ -9,7 +9,7 @@ namespace Flax
 
 		if (!m_stream.is_open())
 		{
-			Log::Error(LogType::FileSystem, "Failed to open file: {}", filePath);
+			Log::Error(LogType::FileSystem, "Failed to open file: {}", filePath.string());
 			return;
 		}
 		else
@@ -42,10 +42,18 @@ namespace Flax
 	usize DiskFileStream::Seek(usize offset, i32 origin)
 	{
 		if (!m_stream.is_open())
-			return;
+			return u64_max;
 
-		m_stream.seekg(offset, GetStdSeekDir(origin));
-		m_stream.seekp(offset, GetStdSeekDir(origin));
+		m_stream.seekg(offset, GetSeekDir(origin));
+		m_stream.seekp(offset, GetSeekDir(origin));
+
+		if (m_stream.fail())
+		{
+			Log::Error(LogType::FileSystem, "Failed to seek in file: {}", m_filePath.string());
+			return u64_max;
+		}
+
+		return 0;
 	}
 
 	usize DiskFileStream::Tell() const
@@ -53,7 +61,7 @@ namespace Flax
 		if (!m_stream.is_open())
 			return u64_max;
 
-		return m_stream.tellg();
+		return 0;
 	}
 
 	b8 DiskFileStream::IsEof() const
