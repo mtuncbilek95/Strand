@@ -75,10 +75,9 @@ namespace Flax
 		{
 			Ref<IVirtualFileNode> childNode = parentNode->Child(usize(row));
 			if (childNode) 
-			{
 				return createIndex(row, column, childNode.get());
-			}
 		}
+
 		return QModelIndex();
 	}
 
@@ -135,8 +134,8 @@ namespace Flax
 			return i32(node->Type());
 		case Qt::DecorationRole:
 			return node->Type() == VirtualNodeType::Folder ? 
-				QIcon(R"(D:\Projects\Flax\Resources\Icons\ProjectBrowser\Folder.svg)"): 
-				QIcon(R"(D:\Projects\Flax\Resources\Icons\ProjectBrowser\File.svg)");
+				QIcon(":/Icons/ContentBrowser/PB_Folder.svg") :
+				QIcon(":/Icons/ContentBrowser/PB_File.svg");
 		default:
 			return QVariant();
 		}

@@ -21,6 +21,8 @@ namespace Flax
 		SceneHierarchyView(QWidget* pParent = nullptr);
 		~SceneHierarchyView();
 
+
+
 	private:
 		QTreeView* m_view;
 		SceneHierarchyViewModel* m_viewModel;

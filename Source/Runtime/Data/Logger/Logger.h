@@ -17,6 +17,7 @@ namespace Flax
 {
     enum class LogType
     {
+		Application,
         IO,
         Window,
         Editor,

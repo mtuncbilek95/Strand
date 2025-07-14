@@ -1,4 +1,4 @@
-#include <Engine/Resources/Texture/TextureMetadata.h>
+#include <Runtime/Resources/Assets/Texture/TextureMetadata.h>
 
 #include <iostream>
 

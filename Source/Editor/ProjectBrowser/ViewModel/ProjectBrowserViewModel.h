@@ -26,7 +26,7 @@ namespace Flax
 		ProjectBrowserModel* Model() const { return m_model; }
 
 	signals:
-		void setCurrentIndex(b8 canSetIndex, const QModelIndex& index);
+		void setCurrentIndex(const QModelIndex& index);
 
 	public slots:
 		void onItemSelected(const QModelIndex& index);

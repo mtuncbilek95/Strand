@@ -12,14 +12,17 @@
 
 namespace Flax
 {
-	class ProjectBreadcrumbsView : public QWidget
+	class ProjectWatcherView : public QWidget
 	{
 		Q_OBJECT
 	public:
-		ProjectBreadcrumbsView(QWidget* pParent = nullptr);
-		~ProjectBreadcrumbsView();
+		ProjectWatcherView(QWidget* pParent = nullptr);
+		~ProjectWatcherView();
 
-		void rebuildBreadcrumbs(const QModelIndex& index);
+		void rebuildWatcher(const QModelIndex& index);
+
+	signals:
+		void onWatcherClicked(const QModelIndex& index);
 
 	private:
 		QHBoxLayout* m_layout;

@@ -26,7 +26,7 @@ namespace Flax
 		if (type == VirtualNodeType::Folder)
 		{
 			IVirtualFileNode* node = m_model->Node(index);
-			emit setCurrentIndex(true, index);
+			emit setCurrentIndex(index);
 		}
 		else
 			return;

@@ -12,23 +12,16 @@
 
 namespace Flax
 {
-	class Scene;
-	class SceneHierarchyModel;
-
-	class SceneHierarchyViewModel : public ViewModelBase
+	class StyleManager final : public Singleton<StyleManager>
 	{
-		Q_OBJECT
 	public:
-		SceneHierarchyViewModel(QObject* pParent = nullptr);
-		~SceneHierarchyViewModel();
+		StyleManager();
+		~StyleManager();
 
-		void SetScene(Scene* scene);
-		SceneHierarchyModel* Model() const { return m_model; }
-
-	public slots:
-		void onContextMenuRequested(const QPoint& pos);
+		QString LoadStyle();
+		QStringList LoadFontFamilies() const;
 
 	private:
-		SceneHierarchyModel* m_model;
+		QList<QFile> m_styles;
 	};
 }

@@ -1,0 +1,16 @@
+#ProjectWatcherView_Button 
+{
+    font: italic 14px "Montserrat";
+    background: transparent;
+}
+
+#ProjectWatcherView_Button:hover 
+{
+    text-decoration: underline;
+}
+
+#ProjectWatcherView_Separator
+{
+	font: italic 14px "Montserrat";
+	background: transparent;
+}

@@ -13,19 +13,22 @@
 namespace Flax
 {
 	class ProjectBrowserViewModel;
-	class ProjectBreadcrumbsView;
+	class ProjectWatcherView;
 
 	class ProjectBrowserView : public QWidget
 	{
-		Q_OBJECT
+		Q_OBJECT;
 		friend class ProjectBrowserViewModel;
 	public:
 		ProjectBrowserView(QWidget* pParent = nullptr);
 		~ProjectBrowserView();
 
+	private slots:
+		void onDoubleClicked(const QModelIndex& index);
+
 	private:
 		QListView* m_listView;
 		ProjectBrowserViewModel* m_viewModel;
-		ProjectBreadcrumbsView* m_breadcrumbs;
+		ProjectWatcherView* m_breadcrumbs;
 	};
 }

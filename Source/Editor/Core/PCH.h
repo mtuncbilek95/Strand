@@ -43,6 +43,8 @@
 #include <QListWidgetItem>
 #include <QSettings>
 #include <QApplication>
+#include <QDir>
+#include <QDirIterator>
 
 #include <QMouseEvent>
 #include <QKeyEvent>

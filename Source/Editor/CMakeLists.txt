@@ -19,6 +19,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTORCC_OPTIONS "--compress" "9")
 # ------------------------------------------------------------
 
+# ---------------------- QT RESOURCES ------------------------
 set(RESOURCE_DIR "${CMAKE_SOURCE_DIR}/Resources/Editor/EditorResource.qrc")
 # ------------------------------------------------------------
 
@@ -27,7 +28,7 @@ file(GLOB_RECURSE SUBDIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CU
 	"${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.qrc" "${CMAKE_CURRENT_SOURCE_DIR}/*.qml" "${CMAKE_CURRENT_SOURCE_DIR}/*.moc")
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SUBDIRECTORIES})
 
-qt_add_executable(Editor ${SUBDIRECTORIES})
+qt_add_executable(Editor ${SUBDIRECTORIES} ${RESOURCE_DIR})
 # ------------------------------------------------------------
 
 # ------------------- INCLUDE DIRECTORIES --------------------

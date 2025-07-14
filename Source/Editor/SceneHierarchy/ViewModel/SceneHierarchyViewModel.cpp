@@ -1,7 +1,7 @@
 #include "SceneHierarchyViewModel.h"
 
 #include <Editor/SceneHierarchy/Model/SceneHierarchyModel.h>
-#include <Engine/Scene/Scene.h>
+#include <Runtime/Scene/Scene.h>
 
 namespace Flax
 {
@@ -20,6 +20,10 @@ namespace Flax
 			scene = new Scene();
 
 		m_model->setCurrentScene(scene);
+	}
+
+	void SceneHierarchyViewModel::onContextMenuRequested(const QPoint& pos)
+	{
 	}
 
 	struct SceneHierarchyRegister

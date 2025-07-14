@@ -1,0 +1,26 @@
+<RCC>
+	<qresource prefix="/">
+		<file>Icons/ContentBrowser/PB_File.svg</file>
+		<file>Icons/ContentBrowser/PB_Folder.svg</file>
+
+		<file>Styles/ContentBrowser/ProjectBrowser.qss</file>
+		<file>Styles/ContentBrowser/ProjectWatcher.qss</file>
+
+		<file>Fonts/Montserrat/Montserrat-Bold.ttf</file>
+		<file>Fonts/Montserrat/Montserrat-BoldItalic.ttf</file>
+		<file>Fonts/Montserrat/Montserrat-Italic.ttf</file>
+		<file>Fonts/Montserrat/Montserrat-Medium.ttf</file>
+		<file>Fonts/Montserrat/Montserrat-MediumItalic.ttf</file>
+		<file>Fonts/Montserrat/Montserrat-Regular.ttf</file>
+		<file>Fonts/Montserrat/Montserrat-SemiBold.ttf</file>
+
+		<file>Fonts/SometypeMono/SometypeMono-Bold.ttf</file>
+		<file>Fonts/SometypeMono/SometypeMono-BoldItalic.ttf</file>
+		<file>Fonts/SometypeMono/SometypeMono-Italic.ttf</file>
+		<file>Fonts/SometypeMono/SometypeMono-Medium.ttf</file>
+		<file>Fonts/SometypeMono/SometypeMono-MediumItalic.ttf</file>
+		<file>Fonts/SometypeMono/SometypeMono-Regular.ttf</file>
+		<file>Fonts/SometypeMono/SometypeMono-SemiBold.ttf</file>
+		<file>Fonts/SometypeMono/SometypeMono-SemiBoldItalic.ttf</file>
+	</qresource>
+</RCC>

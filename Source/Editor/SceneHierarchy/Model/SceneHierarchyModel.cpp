@@ -2,8 +2,8 @@
 
 #include <Editor/SceneHierarchy/Model/SceneHierarchyCustomRole.h>
 
-#include <Engine/Scene/Scene.h>
-#include <Engine/Scene/Entity.h>
+#include <Runtime/Scene/Scene.h>
+#include <Runtime/Scene/Entity.h>
 
 namespace Flax
 {
