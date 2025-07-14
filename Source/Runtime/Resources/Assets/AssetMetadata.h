@@ -21,6 +21,7 @@ namespace Flax
 
 	struct AssetMetadata
 	{
+		Uuid assetGuid;
 		String assetName;
 		String assetType;
 		Path assetPath;

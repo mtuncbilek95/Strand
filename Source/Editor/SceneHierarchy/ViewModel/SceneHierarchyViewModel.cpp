@@ -1,7 +1,7 @@
 #include "SceneHierarchyViewModel.h"
 
 #include <Editor/SceneHierarchy/Model/SceneHierarchyModel.h>
-#include <Runtime/Scene/Scene.h>
+#include <Engine/Scene/Scene.h>
 
 namespace Flax
 {

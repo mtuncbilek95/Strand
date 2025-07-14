@@ -30,12 +30,11 @@ namespace Flax
 		static Ref<T> Get()
 		{
 			auto typeId = GetUniqueTypeId<T>();
-
 			auto it = Services().find(typeId);
 
 			if (it == Services().end())
 			{
-				Log::Critical(LogType::IO, "Service '{}' could not be found!", typeid(T).name());
+				//Log::Critical(LogType::IO, "Service '{}' could not be found!", typeid(T).name());
 				return nullptr;
 			}
 

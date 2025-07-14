@@ -64,10 +64,10 @@ namespace Flax
 
 		Ref<IVirtualFileNode> RootNode(const Path& mountPoint) const;
 		Ref<IVirtualFileNode> Node(const Path& virtualPath) const;
+		Ref<IVirtualFileSystem> FileSystem(const Path& path) const;
 
 	private:
 		Path ClearMountPath(const Path& path) const;
-		Ref<IVirtualFileSystem> FileSystem(const Path& path) const;
 
 	private:
 		HashMap<String, Ref<IVirtualFileSystem>> m_fileSystems;

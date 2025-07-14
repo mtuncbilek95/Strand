@@ -11,10 +11,12 @@
 
 namespace Flax
 {
-	struct ProjectSettings
+	enum class ProjectBrowserRole
 	{
-		Path defaultScene;
-
-		ProjectSettings& setDefaultScene(const Path& path) { defaultScene = path; return *this; }
+		ObjectName = Qt::UserRole + 1,
+		ObjectType,
+		ObjectPath,
+		ObjectSize,
+		ObjectDateModified,
 	};
 }

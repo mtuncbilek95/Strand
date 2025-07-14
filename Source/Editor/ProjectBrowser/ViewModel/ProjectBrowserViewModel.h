@@ -12,11 +12,28 @@
 
 namespace Flax
 {
+	class ProjectBrowserModel;
+	class ProjectBrowserView;
+
 	class ProjectBrowserViewModel : public ViewModelBase
 	{
 		Q_OBJECT;
 	public:
 		ProjectBrowserViewModel(QObject* pParent = nullptr);
 		~ProjectBrowserViewModel();
+
+		void SetModel(ProjectBrowserModel* model) { m_model = model; }
+		ProjectBrowserModel* Model() const { return m_model; }
+
+	signals:
+		void setCurrentIndex(b8 canSetIndex, const QModelIndex& index);
+
+	public slots:
+		void onItemSelected(const QModelIndex& index);
+		void onItemDoubleClicked(const QModelIndex& index);
+		void onItemContextMenuRequested(const QModelIndex& index);
+
+	private:
+		ProjectBrowserModel* m_model;
 	};
 }

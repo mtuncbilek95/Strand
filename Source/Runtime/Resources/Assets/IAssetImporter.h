@@ -11,10 +11,8 @@
 
 namespace Flax
 {
-	struct ProjectSettings
+	struct IAssetImporter
 	{
-		Path defaultScene;
 
-		ProjectSettings& setDefaultScene(const Path& path) { defaultScene = path; return *this; }
 	};
 }

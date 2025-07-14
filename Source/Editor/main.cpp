@@ -4,6 +4,7 @@
 #include <Editor/EditorWindow/ViewModel/EditorWindowViewModel.h>
 #include <Editor/TerminalConsole/View/TerminalView.h>
 #include <Editor/SceneHierarchy/View/SceneHierarchyView.h>
+#include <Editor/ProjectBrowser/View/ProjectBrowserView.h>
 
 using namespace Flax;
 
@@ -14,6 +15,7 @@ int main(int argC, char** argV)
 	EditorWindow* wind = new EditorWindow();
 
 	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new TerminalView(), "Console");
+	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new ProjectBrowserView(), "ContentBrowser");
 	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionLeft, new SceneHierarchyView(), "SceneHierarchy");
 
 	wind->show();

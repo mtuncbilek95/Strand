@@ -5,13 +5,13 @@
 
 namespace Flax
 {
-	EngineSettings RuntimeLoader::LoadEngineSettings(const String& path)
+	EngineSettings RuntimeLoader::LoadEngineSettings(const Path& path)
 	{
-		if (!FileSys::exists(Path(path)))
+		if (!FileSys::exists(path))
 		{
-			Log::Warn(LogType::IO, "Engine settings file '{}' does not exist. Using default settings.", path);
+			Log::Warn(LogType::IO, "Engine settings file '{}' does not exist. Using default settings.", path.string());
 
-			Path route = Path(path).parent_path();
+			Path route = path.parent_path();
 			if (FileSys::create_directories(route))
 			{
 				Log::Info(LogType::IO, "Created directories for engine settings at '{}'", route.string());
@@ -41,10 +41,10 @@ namespace Flax
 				{
 					outputFile << tbl;
 					outputFile.close();
-					Log::Info(LogType::IO, "Default engine settings saved to '{}'.", path);
+					Log::Info(LogType::IO, "Default engine settings saved to '{}'.", path.string());
 				}
 				else
-					Log::Error(LogType::IO, "Failed to save default engine settings to '{}'. Check file permissions.", path);
+					Log::Error(LogType::IO, "Failed to save default engine settings to '{}'. Check file permissions.", path.string());
 
 				return defaultSettings;
 			}
@@ -52,11 +52,11 @@ namespace Flax
 			return EngineSettings::DefaultSettings();
 		}
 
-		toml::parse_result result = toml::parse_file(path);
+		toml::parse_result result = toml::parse_file(path.string());
 
 		if (!result)
 		{
-			Log::Critical(LogType::IO, "Failed to parse engine settings from '{}': '{}'", path, result.error().description());
+			Log::Critical(LogType::IO, "Failed to parse engine settings from '{}': '{}'", path.string(), result.error().description());
 			return EngineSettings::DefaultSettings();
 		}
 

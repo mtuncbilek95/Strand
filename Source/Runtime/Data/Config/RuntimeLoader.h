@@ -9,7 +9,7 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Data/Config/EngineSettings.h>
-
+#include <Runtime/Data/Config/ProjectSettings.h>
 namespace Flax
 {
 	/**
@@ -18,6 +18,7 @@ namespace Flax
 	 */
 	struct RuntimeLoader
 	{
-		static EngineSettings LoadEngineSettings(const String& path);
+		static EngineSettings LoadEngineSettings(const Path& path);
+		static ProjectSettings LoadProjectSettings(const Path& path);
 	};
 }

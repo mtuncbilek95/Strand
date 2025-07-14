@@ -8,13 +8,20 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	struct ProjectSettings
+	class ProjectBreadcrumbsView : public QWidget
 	{
-		Path defaultScene;
+		Q_OBJECT
+	public:
+		ProjectBreadcrumbsView(QWidget* pParent = nullptr);
+		~ProjectBreadcrumbsView();
 
-		ProjectSettings& setDefaultScene(const Path& path) { defaultScene = path; return *this; }
+		void rebuildBreadcrumbs(const QModelIndex& index);
+
+	private:
+		QHBoxLayout* m_layout;
 	};
 }

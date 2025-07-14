@@ -12,12 +12,19 @@
 
 namespace Flax
 {
+	class IVirtualFileNode;
+	class IVirtualFileSystem;
+	class IFileStream;
+
 	class ProjectBrowserModel : public QAbstractItemModel
 	{
 		Q_OBJECT
 	public:
 		ProjectBrowserModel(QObject* pParent = nullptr);
 		~ProjectBrowserModel();
+
+		IVirtualFileNode* Root();
+		IVirtualFileNode* Node(const QModelIndex& index);
 
 		QModelIndex index(int row, int column, const QModelIndex& parent) const override final;
 		QModelIndex parent(const QModelIndex& index) const override final;
@@ -27,8 +34,13 @@ namespace Flax
 		QVariant headerData(int section, Qt::Orientation orientation, int role) const override final;
 		Qt::ItemFlags flags(const QModelIndex& index) const override final;
 		bool setData(const QModelIndex& index, const QVariant& value, int role) override final;
+		QModelIndex rootIndex() const;
 
 	private:
+		IVirtualFileNode* getNode(const QModelIndex& index) const;
 
+	private:
+		Ref<IVirtualFileNode> m_rootNode;
+		Ref<IVirtualFileSystem> m_fileSystem;
 	};
 }
