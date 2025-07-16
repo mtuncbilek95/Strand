@@ -114,6 +114,18 @@ namespace Flax
 		return FileSys::is_regular_file(fullPath);
 	}
 
+	Path DiskFileSystem::AbsolutePath(const Path& virtualPath) const
+	{
+		if(virtualPath.is_absolute())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtualPath.string());
+			return Path();
+		}
+
+		Path fullPath = m_sourcePath / virtualPath;
+		return FileSys::absolute(fullPath);
+	}
+
 	void DiskFileSystem::Create(const Path& virtualPath)
 	{
 		if (virtualPath.is_absolute())

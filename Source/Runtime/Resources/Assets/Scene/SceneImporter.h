@@ -8,12 +8,12 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Scene/Scene.h>
+#include <Runtime/Resources/Assets/IAssetImporter.h>
 
 namespace Flax
 {
-	struct SceneBuilder
+	struct SceneImporter : public IAssetImporter
 	{
-		static void SaveToFile(const Path& filePath, Scene* scene);
+		void Import(const Path& virtualPath) override;
 	};
 }

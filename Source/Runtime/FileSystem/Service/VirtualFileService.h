@@ -53,6 +53,7 @@ namespace Flax
 		b8 Exists(const Path& path) const;
 		b8 IsDirectory(const Path& path) const;
 		b8 IsFile(const Path& path) const;
+		Path AbsolutePath(const Path& path) const;
 
 		void Create(const Path& path);
 		void Delete(const Path& path);

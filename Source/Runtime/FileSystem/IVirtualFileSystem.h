@@ -27,6 +27,7 @@ namespace Flax
 		virtual b8 Exists(const Path& virtualPath) const = 0;
 		virtual b8 IsDirectory(const Path& virtualPath) const = 0;
 		virtual b8 IsFile(const Path& virtualPath) const = 0;
+		virtual Path AbsolutePath(const Path& virtualPath) const = 0;
 
 		virtual void Create(const Path& virtualPath) = 0;
 		virtual void Delete(const Path& virtualPath) = 0;

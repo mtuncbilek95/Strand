@@ -1,35 +1,39 @@
-#include <Runtime/Resources/Assets/Texture/TextureMetadata.h>
+#pragma once
+#include <Runtime/FileSystem/Service/VirtualFileService.h>
+#include <Runtime/FileSystem/IVirtualFileNode.h>
+#include <Runtime/FileSystem/IFileStream.h>
+#include <Runtime/FileSystem/DiskFile/DiskFileSystem.h>
+#include <Runtime/Resources/Assets/Scene/SceneMetadata.h>
+#include <Runtime/Resources/Assets/Scene/SceneImporter.h>
+#include <Runtime/Scene/Scene.h>
+#include <Runtime/Scene/Component.h>
 
 #include <iostream>
 
 using namespace Flax;
 
+// Recursive function to print the scene hierarchy with their component names
+void RecursiveScenePrint(Scene* scene)
+{
+
+}
+
 int main()
 {
-	AssetMetadata metaTest;
-	metaTest.assetName = "TestAsset";
-	metaTest.assetType = "texture";
-	metaTest.assetPath = "Assets/Textures/TestAsset.png";
-	metaTest.assetSize = 12975197825;
-	metaTest.lastModifiedDate = DateTime(12, 2, 2025, 16, 30, 22);
-	metaTest.metaExtension = NewOwn<TextureMetaExtension>();
-	auto* ext = static_cast<TextureMetaExtension*>(metaTest.metaExtension.get());
-	ext->imageSize = Math::Vec3u(1024, 1024, 1);
-	ext->imageFormat = ImageFormat::R8G8B8A8_UNorm;
-	ext->mipLevels = 1;
-	ext->arrayLayers = 1;
+	auto vfm = RuntimeService::Get<VirtualFileService>();
+	vfm->Initialize(R"(D:\Projects\FlaxTestProject)");
+	vfm->Mount("Assets", NewRef<DiskFileSystem>());
+	vfm->Mount("Caches", NewRef<DiskFileSystem>());
+	vfm->Mount("Scripts", NewRef<DiskFileSystem>());
+	vfm->Mount("Intermediate", NewRef<DiskFileSystem>());
 
-	Toml tomlToTest;
+	AssetMetadata metadata;
+	metadata.metaExtension = NewOwn<SceneMetaExtension>();
+	Toml testToml = TomlUtils::ImportToml(vfm->AbsolutePath("/Assets/TestFolder2/TestScene.meta"));
+	metadata.Deserialize(testToml);
 
-	metaTest.Serialize(tomlToTest);
-	std::cout << std::endl << "----------From Asset----------" << std::endl << tomlToTest << std::endl << "------------------------------" << std::endl;
+	SceneImporter importer;
 
-	AssetMetadata metaFromTest;
-	metaFromTest.metaExtension = NewOwn<TextureMetaExtension>();
-	metaFromTest.Deserialize(tomlToTest);
-
-	Toml tomlFromTest;
-	metaFromTest.Serialize(tomlFromTest);
-
-	std::cout << std::endl << "----------From Toml----------" << std::endl << tomlFromTest << std::endl << "------------------------------" << std::endl;
+	SceneMetaExtension* sceneMeta = dynamic_cast<SceneMetaExtension*>(metadata.metaExtension.get());
+	importer.Import(sceneMeta->sceneDataPath);
 }

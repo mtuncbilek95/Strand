@@ -2,8 +2,7 @@
 
 namespace Flax
 {
-	Scene* SceneBuilder::BuildSceneFrom(const Path& path)
+	void SceneBuilder::SaveToFile(const Path& filePath, Scene* scene)
 	{
-		return nullptr;
 	}
 }

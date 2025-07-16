@@ -99,6 +99,20 @@ namespace Flax
 		return fileSystem->IsFile(targetPath);
 	}
 
+	Path VirtualFileService::AbsolutePath(const Path& path) const
+	{
+		Path targetPath = ClearMountPath(path);
+		auto fileSystem = FileSystem(targetPath);
+
+		if (!fileSystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
+			return Path();
+		}
+
+		return fileSystem->AbsolutePath(targetPath);
+	}
+
 	void VirtualFileService::Create(const Path& path)
 	{
 		Path targetPath = ClearMountPath(path);

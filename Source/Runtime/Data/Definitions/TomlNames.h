@@ -13,4 +13,19 @@
 namespace Flax
 {
 	using Toml = toml::table;
+
+	struct TomlUtils
+	{
+		static Toml ImportToml(const Path& filePath)
+		{
+			toml::parse_result result = toml::parse_file(filePath.string());
+			if (!result)
+			{
+				Log::Critical(LogType::IO, "Failed to parse TOML file '{}': '{}'", filePath.string(), result.error().description());
+				return Toml();
+			}
+
+			return std::move(result.table());
+		}
+	};
 }

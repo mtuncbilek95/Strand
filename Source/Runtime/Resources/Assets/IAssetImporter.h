@@ -13,6 +13,8 @@ namespace Flax
 {
 	struct IAssetImporter
 	{
+		virtual ~IAssetImporter() = default;
 
+		virtual void Import(const Path& virtualPath) = 0;
 	};
 }

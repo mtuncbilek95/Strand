@@ -24,6 +24,7 @@ namespace Flax
 		b8 Exists(const Path& path) const override final;
 		b8 IsDirectory(const Path& path) const override final;
 		b8 IsFile(const Path& path) const override final;
+		Path AbsolutePath(const Path& virtualPath) const override final;
 
 		void Create(const Path& virtualPath) override final;
 		void Delete(const Path& virtualPath) override final;
