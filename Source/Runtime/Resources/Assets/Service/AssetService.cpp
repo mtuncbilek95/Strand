@@ -1,40 +1,21 @@
 #include "AssetService.h"
 
+#include <Runtime/Resources/Assets/AssetImportRegistry.h>
+#include <Runtime/Resources/Assets/AssetMetadataRegistry.h>
+
 namespace Flax
 {
 	AssetService::AssetService()
 	{
+		m_importReg = &AssetImportRegistry::Get();
+		m_metaReg = &AssetMetadataRegistry::Get();
 	}
 
 	AssetService::~AssetService()
 	{
 	}
 
-	void AssetService::LoadSync(const Path& path)
-	{
-	}
-
-	void AssetService::LoadAsync(const Path& path)
-	{
-	}
-
-	void AssetService::UnloadSync(const Path& path)
-	{
-	}
-
-	void AssetService::UnloadAsync(const Path& path)
-	{
-	}
-
-	void AssetService::UnloadAll()
-	{
-	}
-
-	void AssetService::ImportToProject(const Path& srcPath, const Path& dstPath)
-	{
-	}
-
-	void AssetService::ImportToProjectAsync(const Path& srcPath, const Path& dstPath)
+	void AssetService::ImportAsset(const Path& virtualPath)
 	{
 	}
 

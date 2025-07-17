@@ -28,7 +28,7 @@ namespace Flax
 		usize assetSize;
 		DateTime lastModifiedDate;
 
-		Owned<IAssetMetaExtension> metaExtension;
+		Ref<IAssetMetaExtension> metaExtension;
 
 		void Serialize(Toml& tomlOut) const;
 		void Deserialize(const Toml& tomlIn);

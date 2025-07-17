@@ -61,6 +61,8 @@ namespace Flax
 		void Copy(const Path& sourcePath, const Path& destinationPath);
 		void Move(const Path& sourcePath, const Path& destinationPath);
 
+		void ExternalCopy(const Path& sourcePath, const Path& destPath);
+
 		void ResetServiceField() override final;
 
 		Ref<IVirtualFileNode> RootNode(const Path& mountPoint) const;

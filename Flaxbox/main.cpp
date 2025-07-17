@@ -5,6 +5,7 @@
 #include <Runtime/FileSystem/DiskFile/DiskFileSystem.h>
 #include <Runtime/Resources/Assets/Scene/SceneMetadata.h>
 #include <Runtime/Resources/Assets/Scene/SceneImporter.h>
+#include <Runtime/Resources/Assets/AssetMetadataRegistry.h>
 #include <Runtime/Scene/Scene.h>
 #include <Runtime/Scene/Component.h>
 
@@ -27,13 +28,12 @@ int main()
 	vfm->Mount("Scripts", NewRef<DiskFileSystem>());
 	vfm->Mount("Intermediate", NewRef<DiskFileSystem>());
 
-	AssetMetadata metadata;
-	metadata.metaExtension = NewOwn<SceneMetaExtension>();
-	Toml testToml = TomlUtils::ImportToml(vfm->AbsolutePath("/Assets/TestFolder2/TestScene.meta"));
-	metadata.Deserialize(testToml);
-
-	SceneImporter importer;
-
-	SceneMetaExtension* sceneMeta = dynamic_cast<SceneMetaExtension*>(metadata.metaExtension.get());
-	importer.Import(sceneMeta->sceneDataPath);
+	/*
+	auto aim = RuntimeService::Get<AssetService>();
+	aim->ReadAsset("Assets/TestFolder2/TestScene.scene");
+	
+	
+	
+	
+	*/
 }

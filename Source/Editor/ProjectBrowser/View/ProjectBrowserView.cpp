@@ -1,5 +1,6 @@
 #include "ProjectBrowserView.h"
 
+#include <Editor/Data/CustomPBV/CustomPBV.h>
 #include <Editor/ProjectBrowser/View/ProjectWatcherView.h>
 #include <Editor/ProjectBrowser/Model/ProjectBrowserModel.h>
 #include <Editor/ProjectBrowser/ViewModel/ProjectBrowserViewModel.h>
@@ -11,16 +12,8 @@ namespace Flax
 		m_viewModel = ViewModelRegistry::Get().ViewModel<ProjectBrowserViewModel>().get();
 		m_viewModel->SetModel(new ProjectBrowserModel(m_viewModel));
 
-		m_listView = new QListView(this);
+		m_listView = new CustomPBV(this);
 		m_listView->setModel(m_viewModel->Model());
-		m_listView->setSelectionMode(QAbstractItemView::SingleSelection);
-		m_listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-		m_listView->setViewMode(QListView::IconMode);
-		m_listView->setUniformItemSizes(true);
-		m_listView->setIconSize(QSize(96, 96));
-		m_listView->setGridSize(QSize(128, 128));
-		m_listView->setSpacing(12);
-		m_listView->setResizeMode(QListView::Adjust);
 
 		m_breadcrumbs = new ProjectWatcherView(this);
 		m_breadcrumbs->rebuildWatcher(m_listView->rootIndex());

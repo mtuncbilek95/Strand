@@ -33,6 +33,15 @@ namespace Flax
 	{
 	}
 
+	void ProjectBrowserModel::ResetModel(const QModelIndex& index)
+	{
+		QModelIndex targetIdx = index.isValid() ? index : rootIndex();
+		beginResetModel();
+		IVirtualFileNode* node = getNode(targetIdx);
+		node->Refresh();
+		endResetModel();
+	}
+
 	IVirtualFileNode* ProjectBrowserModel::Root()
 	{
 		beginResetModel();
@@ -132,6 +141,8 @@ namespace Flax
 			return QString::fromStdString(node->Name());
 		case i32(ProjectBrowserRole::ObjectType):
 			return i32(node->Type());
+		case i32(ProjectBrowserRole::ObjectPath):
+			return QString::fromStdString(node->VirtualPath().string());
 		case Qt::DecorationRole:
 			return node->Type() == VirtualNodeType::Folder ? 
 				QIcon(":/Icons/ContentBrowser/PB_Folder.svg") :

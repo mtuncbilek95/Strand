@@ -234,6 +234,27 @@ namespace Flax
 		fileSystem->Move(sourceTargetPath, destinationTargetPath);
 	}
 
+	void VirtualFileService::ExternalCopy(const Path& sourcePath, const Path& destPath)
+	{
+		Path dstTargetPath = ClearMountPath(destPath);
+		auto fileSystem = FileSystem(dstTargetPath);
+
+		if (!sourcePath.is_absolute() || !FileSys::exists(sourcePath))
+		{
+			Log::Critical(LogType::FileSystem, "Source path '{}' must be absolute and existed.", sourcePath.string());
+			return;
+		}
+
+		if (!fileSystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", destPath.string());
+			return;
+		}
+
+		// TODO: Temporarily used
+		FileSys::copy(sourcePath, m_sourcePath / dstTargetPath, FileSys::copy_options::overwrite_existing);
+	}
+
 	void VirtualFileService::ResetServiceField()
 	{
 		m_fileSystems.clear();

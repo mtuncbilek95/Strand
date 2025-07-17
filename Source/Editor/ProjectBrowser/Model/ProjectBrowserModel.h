@@ -23,6 +23,8 @@ namespace Flax
 		ProjectBrowserModel(QObject* pParent = nullptr);
 		~ProjectBrowserModel();
 
+		void ResetModel(const QModelIndex& index);
+
 		IVirtualFileNode* Root();
 		IVirtualFileNode* Node(const QModelIndex& index);
 

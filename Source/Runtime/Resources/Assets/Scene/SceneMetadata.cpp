@@ -1,5 +1,7 @@
 #include "SceneMetadata.h"
 
+#include <Runtime/Resources/Assets/AssetMetadataRegistry.h>
+
 namespace Flax
 {
 	void SceneMetaExtension::Serialize(Toml& tomlOut)
@@ -13,4 +15,10 @@ namespace Flax
 		sceneName = tomlIn.at("SceneName").as_string()->get();
 		sceneDataPath = Path(tomlIn.at("SceneDataPath").as_string()->get());
 	}
+
+	struct SceneMetaExtensionRegister
+	{
+		SceneMetaExtensionRegister() { AssetMetadataRegistry::Get().RegisterMetaExtension<SceneMetaExtension>("scene"); }
+	};
+	static SceneMetaExtensionRegister gb_sceneMetaExtensionRegister;
 }
