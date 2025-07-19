@@ -60,25 +60,6 @@ namespace Flax
 		Log::Info(LogType::FileSystem, "Unmounted disk file system from '{}'.", mountPoint.string());
 	}
 
-	Ref<IFileStream> DiskFileSystem::Open(const Path& virtualPath, FileMode mode)
-	{
-		Path realPath = ToRealPath(virtualPath);
-
-		if (!FileSys::is_regular_file(realPath))
-		{
-			Log::Error(LogType::FileSystem, "File '{}' is not a regular file.", virtualPath.string());
-			return nullptr;
-		}
-
-		if (!FileSys::exists(realPath))
-		{
-			Log::Error(LogType::FileSystem, "File '{}' does not exist.", virtualPath.string());
-			return nullptr;
-		}
-
-		return NewRef<DiskFileStream>(realPath, mode);
-	}
-
 	b8 DiskFileSystem::Exists(const Path& path) const
 	{
 		if (path.is_absolute())
@@ -114,27 +95,27 @@ namespace Flax
 		return FileSys::is_regular_file(fullPath);
 	}
 
-	Path DiskFileSystem::AbsolutePath(const Path& virtualPath) const
+	Path DiskFileSystem::AbsolutePath(const Path& virtPath) const
 	{
-		if(virtualPath.is_absolute())
+		if (virtPath.is_absolute())
 		{
-			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtualPath.string());
+			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtPath.string());
 			return Path();
 		}
 
-		Path fullPath = m_sourcePath / virtualPath;
+		Path fullPath = m_sourcePath / virtPath;
 		return FileSys::absolute(fullPath);
 	}
 
-	void DiskFileSystem::Create(const Path& virtualPath)
+	void DiskFileSystem::Create(const Path& virtPath)
 	{
-		if (virtualPath.is_absolute())
+		if (virtPath.is_absolute())
 		{
-			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtualPath.string());
+			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtPath.string());
 			return;
 		}
 
-		Path fullPath = m_sourcePath / virtualPath;
+		Path fullPath = m_sourcePath / virtPath;
 		if (FileSys::exists(fullPath))
 		{
 			Log::Warn(LogType::FileSystem, "File or directory '{}' already exists.", fullPath.string());
@@ -165,59 +146,12 @@ namespace Flax
 			}
 		}
 
-		Ref<DiskFileNode> currentNode = m_rootNode;
-		if (!currentNode)
-		{
-			Log::Error(LogType::FileSystem, "DiskFileSystem root node is not initialized for mount point '{}'.", m_mountPoint.string());
-			return;
-		}
-
-		Vector<String> segments;
-		for (const auto& segment : virtualPath)
-		{
-			if (segment == m_mountPoint.string())
-				continue;
-			segments.push_back(segment.string());
-		}
-
-		Path currentVirtualSegmentPath = m_mountPoint;
-		for (size_t i = 0; i < segments.size(); ++i)
-		{
-			const String& segment = segments[i];
-			if (segment.empty())
-				continue;
-
-			currentVirtualSegmentPath /= segment;
-			Ref<IVirtualFileNode> foundChild = nullptr;
-
-			if (currentNode->IsFolder())
-			{
-				currentNode->Refresh();
-
-				for (usize j = 0; j < currentNode->Count(); ++j)
-				{
-					Ref<IVirtualFileNode> child = currentNode->Child(j);
-					if (child && child->Name() == segment)
-					{
-						foundChild = child;
-						break;
-					}
-				}
-			}
-
-			if (foundChild)
-				currentNode = std::dynamic_pointer_cast<DiskFileNode>(foundChild);
-			else
-			{
-				Log::Error(LogType::FileSystem, "Consistency error: Node '{}' not found after refresh in '{}'.", segment, currentNode->VirtualPath().string());
-				return;
-			}
-		}
-
-		Log::Info(LogType::FileSystem, "Created file or directory '{}'.", fullPath.string());
+		auto node = FindNodeInTree(virtPath.parent_path());
+		if (node)
+			node->Refresh();
 	}
 
-	void DiskFileSystem::Delete(const Path& virtualPath)
+	void DiskFileSystem::Delete(const Path& virtPath)
 	{
 		Log::Warn(LogType::FileSystem, "NOT IMPLEMENTED YET!");
 	}
@@ -237,123 +171,61 @@ namespace Flax
 		Log::Warn(LogType::FileSystem, "NOT IMPLEMENTED YET!");
 	}
 
-	Ref<IVirtualFileNode> DiskFileSystem::RootNode() const
+	Ref<IVirtualFileNode> DiskFileSystem::Node(const Path& virtPath) const
 	{
-		return m_rootNode;
+		return FindNodeInTree(virtPath);
 	}
 
-	Ref<IVirtualFileNode> DiskFileSystem::Node(const Path& virtualPath) const
+	Ref<DiskFileNode> DiskFileSystem::FindNodeInTree(const Path& virtPath) const
 	{
-		return FindNodeInTree(virtualPath);
-	}
-
-	Ref<DiskFileNode> DiskFileSystem::FindNodeInTree(const Path& virtualPath) const
-	{
-		String absPathStr = virtualPath.string();
-		String mountPointStr = m_mountPoint.string();
-
-		if (absPathStr.rfind(mountPointStr, 0) != 0)
-		{
-			Log::Error(LogType::FileSystem, "Path '{}' is not part of this file system's mount point '{}'.", virtualPath.string(), m_mountPoint.string());
-			return nullptr;
-		}
-
-		if (virtualPath == m_mountPoint)
+		if (virtPath == m_mountPoint)
 			return m_rootNode;
 
-		Path relativeToMountPoint = virtualPath.lexically_relative(m_mountPoint);
-		Ref<DiskFileNode> currentNode = m_rootNode;
-
-		if (!currentNode)
-		{
-			Log::Error(LogType::FileSystem, "DiskFileSystem root node is not initialized for mount point '{}'.", m_mountPoint.string());
-			return nullptr;
-		}
+		Path relativePath = virtPath.lexically_relative(m_mountPoint);
+		String pathStr = relativePath.string();
 
 		Vector<String> segments;
-		for (const auto& segment : relativeToMountPoint)
-			segments.push_back(segment.string());
+		for (const auto& segment : relativePath)
+			segments.emplace_back(segment.string());
 
+		Ref<DiskFileNode> currNode = m_rootNode;
 		for (const String& segment : segments)
 		{
 			if (segment.empty())
 				continue;
 
-			Ref<IVirtualFileNode> foundChild = nullptr;
+			if (!currNode->IsFolder())
+				return nullptr;
 
-			if (!currentNode->IsFolder())
+			currNode->Refresh();
+
+			auto tempNode = currNode->Child(segment);
+			if (!tempNode)
 			{
-				Log::Warn(LogType::FileSystem, "Cannot traverse into a non-directory node: '{}'. Path segment: '{}'", currentNode->VirtualPath().string(), segment);
+				Log::Critical(LogType::FileSystem, "Node '{}' not found in the virtual file system.", pathStr);
 				return nullptr;
 			}
-
-			currentNode->Refresh();
-
-			for (usize i = 0; i < currentNode->Count(); ++i)
-			{
-				Ref<IVirtualFileNode> child = currentNode->Child(i);
-				if (child && child->Name() == segment)
-				{
-					foundChild = child;
-					break;
-				}
-			}
-
-			if (foundChild)
-				currentNode = std::static_pointer_cast<DiskFileNode>(foundChild);
 			else
-			{
-				Log::Warn(LogType::FileSystem, "Node for segment '{}' not found under '{}'. Path: '{}'", segment, currentNode->VirtualPath().string(), virtualPath.string());
-				return nullptr;
-			}
+				currNode = std::static_pointer_cast<DiskFileNode>(tempNode);
 		}
-		return currentNode;
+
+		return currNode;
 	}
 
-	Path DiskFileSystem::ToRealPath(const Path& virtualPath) const
+	Path DiskFileSystem::ToRealPath(const Path& virtPath) const
 	{
-		if (virtualPath.is_absolute())
+		if (virtPath.is_absolute())
 		{
-			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtualPath.string());
+			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtPath.string());
 			return Path();
 		}
 
-		if (virtualPath.empty())
+		if (virtPath.empty())
 		{
 			Log::Critical(LogType::FileSystem, "Virtual path is empty.");
 			return Path();
 		}
 
-		return m_sourcePath / virtualPath;
-	}
-
-	Path DiskFileSystem::ToVirtualPath(const Path& realPath) const
-	{
-		if (!realPath.is_absolute())
-		{
-			Log::Critical(LogType::FileSystem, "Real path '{}' must be absolute.", realPath.string());
-			return Path();
-		}
-
-		if (realPath.empty())
-		{
-			Log::Critical(LogType::FileSystem, "Real path is empty.");
-			return Path();
-		}
-
-		if (realPath.string().find(m_sourcePath.string()) != 0)
-		{
-			Log::Critical(LogType::FileSystem, "Real path '{}' is not under the source path '{}'.", realPath.string(), m_sourcePath.string());
-			return Path();
-		}
-		
-		Path relativePath = realPath.lexically_relative(m_sourcePath);
-		if (relativePath.empty())
-		{
-			Log::Critical(LogType::FileSystem, "Real path '{}' is not under the source path '{}'.", realPath.string(), m_sourcePath.string());
-			return Path();
-		}
-
-		return relativePath;
+		return m_sourcePath / virtPath;
 	}
 }

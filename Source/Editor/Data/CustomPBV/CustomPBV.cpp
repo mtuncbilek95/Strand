@@ -1,15 +1,11 @@
 #include "CustomPBV.h"
 
 #include <Runtime/FileSystem/Service/VirtualFileService.h>
-#include <Editor/ProjectBrowser/Model/ProjectBrowserRole.h>
-#include <Editor/ProjectBrowser/Model/ProjectBrowserModel.h>
 
 namespace Flax
 {
 	CustomPBV::CustomPBV(QWidget* pParent) : QListView(pParent)
 	{
-		//setSelectionMode(QAbstractItemView::SingleSelection);
-		//setEditTriggers(QAbstractItemView::NoEditTriggers);
 		setViewMode(QListView::IconMode);
 		setDragDropMode(QAbstractItemView::DragDrop);
 		setDragEnabled(true);
@@ -50,31 +46,6 @@ namespace Flax
 
 	void CustomPBV::dropEvent(QDropEvent* pEvent)
 	{
-		QPoint dropPos = pEvent->pos();
-
-		QModelIndex targetIndex = indexAt(dropPos);
-		QModelIndex parentIndex = targetIndex.parent();
-		QString targetPath;
-
-		// If targetIndex is valid, object dropped on something. If not, it dropped to the rootIndex().
-		if (!targetIndex.isValid())
-			targetIndex = rootIndex();
-
-		targetPath = targetIndex.data(i32(ProjectBrowserRole::ObjectPath)).toString();
-		if (!targetIndex.isValid())
-		{
-			targetPath = "Assets";
-			parentIndex = QModelIndex();
-		}
-
-		pEvent->acceptProposedAction();
-
-		Path srcPath = pEvent->mimeData()->urls()[0].toLocalFile().toStdString();
-		auto vfm = RuntimeService::Get<VirtualFileService>();
-		
-		// TODO: Temporarily testing purpose
-		vfm->ExternalCopy(srcPath, Path(targetPath.toStdString()));
-		static_cast<ProjectBrowserModel*>(model())->ResetModel(targetIndex);
 	}
 
 	void CustomPBV::startDrag(Qt::DropActions supportedActions)

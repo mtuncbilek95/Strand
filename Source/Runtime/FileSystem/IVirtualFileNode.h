@@ -24,6 +24,8 @@ namespace Flax
 		virtual usize Count() const = 0;
 		virtual Ref<IVirtualFileNode> Child(usize row) const = 0;
 		virtual Ref<IVirtualFileNode> Child(const String& objName) const = 0;
+		virtual IVirtualFileNode* ChildRaw(usize row) const = 0;
+		virtual IVirtualFileNode* ChildRaw(const String& objName) const = 0;
 		virtual usize Index() const = 0;
 		virtual b8 IsFolder() const = 0;
 		virtual b8 IsFile() const = 0;

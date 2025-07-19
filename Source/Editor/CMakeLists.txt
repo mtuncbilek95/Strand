@@ -16,7 +16,7 @@ qt_standard_project_setup()
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTORCC_OPTIONS "--compress" "9")
+#set(CMAKE_AUTORCC_OPTIONS "--compress" "9")
 # ------------------------------------------------------------
 
 # ---------------------- QT RESOURCES ------------------------

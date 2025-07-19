@@ -1,38 +1,23 @@
 #include "ProjectBrowserViewModel.h"
 
-#include <Runtime/FileSystem/VirtualNodeType.h>
-#include <Runtime/FileSystem/IVirtualFileNode.h>
-#include <Editor/ProjectBrowser/Model/ProjectBrowserModel.h>
-#include <Editor/ProjectBrowser/Model/ProjectBrowserRole.h>
-#include <Editor/ProjectBrowser/View/ProjectBrowserView.h>
+#include <Editor/ProjectBrowser/ViewModel/ProjectBrowserIconProvider.h>
+#include <Editor/ProjectBrowser/Model/ProjectBrowserFilterProxy.h>
 
 namespace Flax
 {
 	ProjectBrowserViewModel::ProjectBrowserViewModel(QObject* pParent) : ViewModelBase(pParent)
 	{
+		m_iconProvider = new ProjectBrowserIconProvider();
+		m_proxy = new ProjectBrowserFilterProxy(this);
+		m_fileModel = new QFileSystemModel(this);
+
+		m_proxy->setSourceModel(m_fileModel);
+
+		m_fileModel->setReadOnly(true);
+		m_fileModel->setIconProvider(m_iconProvider);
 	}
 
 	ProjectBrowserViewModel::~ProjectBrowserViewModel()
-	{
-	}
-
-	void ProjectBrowserViewModel::onItemSelected(const QModelIndex& index)
-	{
-	}
-
-	void ProjectBrowserViewModel::onItemDoubleClicked(const QModelIndex& index)
-	{
-		VirtualNodeType type = VirtualNodeType(index.data(i32(ProjectBrowserRole::ObjectType)).toInt());
-		if (type == VirtualNodeType::Folder)
-		{
-			IVirtualFileNode* node = m_model->Node(index);
-			emit setCurrentIndex(index);
-		}
-		else
-			return;
-	}
-
-	void ProjectBrowserViewModel::onItemContextMenuRequested(const QModelIndex& index)
 	{
 	}
 

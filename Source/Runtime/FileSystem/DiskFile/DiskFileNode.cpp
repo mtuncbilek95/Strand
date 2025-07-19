@@ -59,6 +59,25 @@ namespace Flax
 		return nullptr;
 	}
 
+	IVirtualFileNode* DiskFileNode::ChildRaw(usize row) const
+	{
+		if (Type() == VirtualNodeType::File || row < 0 || row >= Count()) {
+			return nullptr;
+		}
+		return m_children[row].get();
+	}
+
+	IVirtualFileNode* DiskFileNode::ChildRaw(const String& objName) const
+	{
+		for (const auto& child : m_children)
+		{
+			if (child->Name() == objName)
+				return child.get();
+		}
+
+		return nullptr;
+	}
+
 	usize DiskFileNode::Index() const
 	{
 		for(usize i = 0; i < m_parent->Count(); ++i)
@@ -101,8 +120,8 @@ namespace Flax
 			if (entry.path().filename() == "." || entry.path().filename() == "..")
 				continue; // Skip current and parent directory entries
 
-			std::filesystem::path childVirtualPath = m_desc.virtualPath / entry.path().filename();
-			std::filesystem::path childRealPath = entry.path();
+			Path childVirtualPath = m_desc.virtualPath / entry.path().filename();
+			Path childRealPath = entry.path();
 
 			VirtualNodeType childType = VirtualNodeType::None;
 			if (entry.is_directory())

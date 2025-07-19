@@ -45,20 +45,6 @@ namespace Flax
 		m_fileSystems.erase(it);
 	}
 
-	Ref<IFileStream> VirtualFileService::Open(const Path& virtPath, FileMode mode)
-	{
-		Path targetPath = ClearMountPath(virtPath);
-		auto fileSystem = FileSystem(targetPath);
-
-		if (!fileSystem)
-		{
-			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
-			return nullptr;
-		}
-
-		return fileSystem->Open(targetPath, mode);
-	}
-
 	b8 VirtualFileService::Exists(const Path& path) const
 	{
 		Path targetPath = ClearMountPath(path);
@@ -234,27 +220,6 @@ namespace Flax
 		fileSystem->Move(sourceTargetPath, destinationTargetPath);
 	}
 
-	void VirtualFileService::ExternalCopy(const Path& sourcePath, const Path& destPath)
-	{
-		Path dstTargetPath = ClearMountPath(destPath);
-		auto fileSystem = FileSystem(dstTargetPath);
-
-		if (!sourcePath.is_absolute() || !FileSys::exists(sourcePath))
-		{
-			Log::Critical(LogType::FileSystem, "Source path '{}' must be absolute and existed.", sourcePath.string());
-			return;
-		}
-
-		if (!fileSystem)
-		{
-			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", destPath.string());
-			return;
-		}
-
-		// TODO: Temporarily used
-		FileSys::copy(sourcePath, m_sourcePath / dstTargetPath, FileSys::copy_options::overwrite_existing);
-	}
-
 	void VirtualFileService::ResetServiceField()
 	{
 		m_fileSystems.clear();
@@ -295,36 +260,9 @@ namespace Flax
 		return fsIt->second;
 	}
 
-	Ref<IVirtualFileNode> VirtualFileService::RootNode(const Path& mountPoint) const
+	Ref<IVirtualFileNode> VirtualFileService::Node(const Path& virtPath)
 	{
-		auto it = m_fileSystems.find(mountPoint.string());
-		if (it == m_fileSystems.end())
-		{
-			Log::Critical(LogType::FileSystem, "Mount point '{}' is not mounted.", mountPoint.string());
-			return nullptr;
-		}
-
-		return it->second->RootNode();
-	}
-
-	Ref<IVirtualFileNode> VirtualFileService::Node(const Path& virtualPath) const
-	{
-		Path targetPath = ClearMountPath(virtualPath);
-		auto fileSystem = FileSystem(targetPath);
-
-		if (!fileSystem)
-		{
-			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", targetPath.string());
-			return nullptr;
-		}
-
-		if (!fileSystem->Exists(targetPath))
-		{
-			Log::Critical(LogType::FileSystem, "Node '{}' does not exist in the file system.", targetPath.string());
-			return nullptr;
-		}
-
-		return fileSystem->Node(targetPath);
+		return nullptr;
 	}
 
 	struct VirtualFileSystemRegister

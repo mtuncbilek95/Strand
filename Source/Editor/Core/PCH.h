@@ -55,4 +55,7 @@
 #include <QAbstractItemModel>
 #include <QAbstractTableModel>
 #include <QAbstractListModel>
-
+#include <QFileSystemModel>
+#include <QFileSystemWatcher>
+#include <QFileIconProvider>
+#include <QSortFilterProxyModel>

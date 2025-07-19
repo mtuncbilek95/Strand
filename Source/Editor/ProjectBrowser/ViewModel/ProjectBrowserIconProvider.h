@@ -8,15 +8,20 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	enum class ProjectBrowserRole
+	class ProjectBrowserIconProvider : public QFileIconProvider
 	{
-		ObjectName = Qt::UserRole + 1,
-		ObjectType,
-		ObjectPath,
-		ObjectSize,
-		ObjectDateModified,
+	public:
+		ProjectBrowserIconProvider();
+		~ProjectBrowserIconProvider();
+
+		void setIcons();
+		QIcon icon(const QFileInfo& info) const override final;
+
+	private:
+		HashMap<String, QIcon> m_icons;
 	};
 }

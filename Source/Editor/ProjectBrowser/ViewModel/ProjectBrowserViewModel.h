@@ -12,8 +12,8 @@
 
 namespace Flax
 {
-	class ProjectBrowserModel;
-	class ProjectBrowserView;
+	class ProjectBrowserFilterProxy;
+	class ProjectBrowserIconProvider;
 
 	class ProjectBrowserViewModel : public ViewModelBase
 	{
@@ -22,18 +22,13 @@ namespace Flax
 		ProjectBrowserViewModel(QObject* pParent = nullptr);
 		~ProjectBrowserViewModel();
 
-		void SetModel(ProjectBrowserModel* model) { m_model = model; }
-		ProjectBrowserModel* Model() const { return m_model; }
-
-	signals:
-		void setCurrentIndex(const QModelIndex& index);
-
-	public slots:
-		void onItemSelected(const QModelIndex& index);
-		void onItemDoubleClicked(const QModelIndex& index);
-		void onItemContextMenuRequested(const QModelIndex& index);
+		ProjectBrowserIconProvider* IconProvider() const { return m_iconProvider; }
+		QFileSystemModel* Model() const { return m_fileModel; }
+		ProjectBrowserFilterProxy* Proxy() const { return m_proxy; }
 
 	private:
-		ProjectBrowserModel* m_model;
+		QFileSystemModel* m_fileModel;
+		ProjectBrowserFilterProxy* m_proxy;
+		ProjectBrowserIconProvider* m_iconProvider;
 	};
 }

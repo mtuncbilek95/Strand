@@ -25,6 +25,8 @@ namespace Flax
 		usize Count() const override final;
 		Ref<IVirtualFileNode> Child(usize row) const override final;
 		Ref<IVirtualFileNode> Child(const String& objName) const override final;
+		IVirtualFileNode* ChildRaw(usize row) const override final;
+		IVirtualFileNode* ChildRaw(const String& objName) const override final;
 		usize Index() const override final;
 		b8 IsFolder() const override final;
 		b8 IsFile() const override final;

@@ -49,7 +49,6 @@ namespace Flax
 		void Mount(const Path& mountPoint, Ref<IVirtualFileSystem> fileSystem);
 		void Unmount(const Path& mountPoint);
 
-		Ref<IFileStream> Open(const Path& virtPath, FileMode mode);
 		b8 Exists(const Path& path) const;
 		b8 IsDirectory(const Path& path) const;
 		b8 IsFile(const Path& path) const;
@@ -61,13 +60,11 @@ namespace Flax
 		void Copy(const Path& sourcePath, const Path& destinationPath);
 		void Move(const Path& sourcePath, const Path& destinationPath);
 
-		void ExternalCopy(const Path& sourcePath, const Path& destPath);
-
 		void ResetServiceField() override final;
 
-		Ref<IVirtualFileNode> RootNode(const Path& mountPoint) const;
-		Ref<IVirtualFileNode> Node(const Path& virtualPath) const;
 		Ref<IVirtualFileSystem> FileSystem(const Path& path) const;
+
+		Ref<IVirtualFileNode> Node(const Path& virtPath);
 
 	private:
 		Path ClearMountPath(const Path& path) const;
