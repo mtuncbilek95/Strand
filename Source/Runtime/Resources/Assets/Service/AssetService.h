@@ -11,6 +11,7 @@
 
 namespace Flax
 {
+	class VirtualFileService;
 	class AssetImportRegistry;
 	class AssetMetadataRegistry;
 
@@ -20,12 +21,9 @@ namespace Flax
 		AssetService();
 		~AssetService();
 
-		void ImportAsset(const Path& virtualPath);
+		void ImportAsset(const Path& srcPath, const Path& virtualPath);
 
+		void InitializeServiceField() override final;
 		void ResetServiceField() override final;
-
-	private:
-		AssetImportRegistry* m_importReg;
-		AssetMetadataRegistry* m_metaReg;
 	};
 }

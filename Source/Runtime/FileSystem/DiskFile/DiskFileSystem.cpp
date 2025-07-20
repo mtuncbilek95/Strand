@@ -107,6 +107,23 @@ namespace Flax
 		return FileSys::absolute(fullPath);
 	}
 
+	Path DiskFileSystem::VirtualPath(const Path& absolutePath) const
+	{
+		if (!absolutePath.is_absolute())
+		{
+			Log::Critical(LogType::FileSystem, "Absolute path '{}' must be absolute.", absolutePath.string());
+			return Path();
+		}
+
+		Path relativePath = absolutePath.lexically_relative(m_sourcePath);
+		if (relativePath.empty())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual path for '{}' is empty.", absolutePath.string());
+			return Path();
+		}
+		return relativePath;
+	}
+
 	void DiskFileSystem::Create(const Path& virtPath)
 	{
 		if (virtPath.is_absolute())
@@ -174,6 +191,11 @@ namespace Flax
 	Ref<IVirtualFileNode> DiskFileSystem::Node(const Path& virtPath) const
 	{
 		return FindNodeInTree(virtPath);
+	}
+
+	Ref<IFileStream> DiskFileSystem::Open(const Path& virtualPath, FileMode mode)
+	{
+		return nullptr;
 	}
 
 	Ref<DiskFileNode> DiskFileSystem::FindNodeInTree(const Path& virtPath) const

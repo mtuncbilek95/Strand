@@ -8,19 +8,12 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resources/Assets/AssetMetadata.h>
+#include <Runtime/Resources/Assets/IAssetImporter.h>
 
 namespace Flax
 {
-	struct SceneMetaExtension : public IAssetMetaExtension
+	struct TextureImporter : public IAssetImporter
 	{
-		String sceneName;
-		Path sceneDataPath;
-		
-		void Serialize(Toml& tomlOut) override;
-		void Deserialize(const Toml& tomlIn) override;
-
-	protected:
-		void InfoInternal(const Path& assetPath) override final;
+		void Import(const Path& absPath) override;
 	};
 }

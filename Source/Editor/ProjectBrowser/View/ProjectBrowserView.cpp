@@ -2,8 +2,8 @@
 
 #include <Runtime/FileSystem/Service/VirtualFileService.h>
 
-#include <Editor/Data/CustomPBV/CustomPBV.h>
 
+#include <Editor/ProjectBrowser/View/ProjectListView.h>
 #include <Editor/ProjectBrowser/View/ProjectWatcherView.h>
 #include <Editor/ProjectBrowser/Model/ProjectBrowserFilterProxy.h>
 #include <Editor/ProjectBrowser/ViewModel/ProjectBrowserViewModel.h>
@@ -14,7 +14,7 @@ namespace Flax
 	ProjectBrowserView::ProjectBrowserView(QWidget* pParent) : QWidget(pParent)
 	{
 		m_viewModel = ViewModelRegistry::Get().ViewModel<ProjectBrowserViewModel>().get();
-		m_listView = new CustomPBV(this);
+		m_listView = new ProjectListView(this);
 
 		auto* fsModel = m_viewModel->Model();
 		QString mountPoint = QString::fromStdString(RuntimeService::Get<VirtualFileService>()->AbsolutePath("Assets").string());
@@ -36,7 +36,8 @@ namespace Flax
 		layout->setStretch(0, 1);
 		layout->setStretch(1, 8);
 
-		connect(m_listView, &CustomPBV::activated, this, &ProjectBrowserView::onDoubleClicked);
+		connect(m_listView, &ProjectListView::activated, this, &ProjectBrowserView::onDoubleClicked);
+		connect(m_breadcrumbs, &ProjectWatcherView::onWatcherClicked, this, &ProjectBrowserView::onDoubleClicked);
 	}
 
 	ProjectBrowserView::~ProjectBrowserView()
@@ -53,6 +54,6 @@ namespace Flax
 			return;
 
 		m_listView->setRootIndex(index);
-		m_breadcrumbs->rebuildWatcher(modelIndex);
+		m_breadcrumbs->rebuildWatcher(index);
 	}
 }

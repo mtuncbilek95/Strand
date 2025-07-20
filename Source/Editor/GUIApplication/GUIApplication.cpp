@@ -14,23 +14,23 @@ namespace Flax
 		if (argC <= 1)
 		{
 			Log::Warn(LogType::Application, "Editor Application has no project to run! Closing the app...");
-
+			//std::exit(-1);
 		}
 
 		QStringList families = StyleManager::Get().LoadFontFamilies();
 		if (!families.isEmpty())
 		{
 			QFont font(families.first(), 12);
-			setFont(font);
+			//setFont(font);
 		}
 		setStyleSheet(StyleManager::Get().LoadStyle());
 
+		RuntimeService::InitializeServices();
 		auto vfm = RuntimeService::Get<VirtualFileService>();
 		// TODO: Path below needs to come from argV, but if not, it should use temporary project in engine.
 		vfm->Initialize(R"(D:\Projects\FlaxTestProject)");
 		vfm->Mount("Assets", NewRef<DiskFileSystem>());
 		vfm->Mount("Caches", NewRef<DiskFileSystem>());
-		vfm->Mount("Scripts", NewRef<DiskFileSystem>());
 		vfm->Mount("Intermediate", NewRef<DiskFileSystem>());
 
 		Path engineConfig = Path(PlatformPath::AppDataPath());

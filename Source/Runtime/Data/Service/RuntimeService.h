@@ -41,6 +41,14 @@ namespace Flax
 			return std::static_pointer_cast<T>(it->second);
 		}
 
+		static void InitializeServices()
+		{
+			auto& sVices = Services();
+
+			for (auto& el : sVices)
+				el.second->InitializeServiceField();
+		}
+
 		static void ClearServices()
 		{
 			auto& sVices = Services();

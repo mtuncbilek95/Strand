@@ -25,6 +25,13 @@ namespace Flax
 		void onWatcherClicked(const QModelIndex& index);
 
 	private:
+		void clearLayout();
+
+	private:
 		QHBoxLayout* m_layout;
+		QFileSystemModel* m_fsModel;
+		QSortFilterProxyModel* m_proxy;
+
+		Path m_mountPoint;
 	};
 }

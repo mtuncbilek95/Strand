@@ -8,19 +8,23 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resources/Assets/AssetMetadata.h>
 
 namespace Flax
 {
-	struct SceneMetaExtension : public IAssetMetaExtension
+	class ContentMenu : public QMenu
 	{
-		String sceneName;
-		Path sceneDataPath;
-		
-		void Serialize(Toml& tomlOut) override;
-		void Deserialize(const Toml& tomlIn) override;
+		Q_OBJECT
+	public:
+		ContentMenu(QWidget* pParent = nullptr);
+		~ContentMenu() override;
 
-	protected:
-		void InfoInternal(const Path& assetPath) override final;
+		void setModel(const QModelIndex& index) { m_modelIndex = index; }
+
+	private slots:
+		void onCreateFolder(b8 checked = false);
+
+	private:
+		HashMap<String, QAction*> m_actions;
+		QModelIndex m_modelIndex;
 	};
 }

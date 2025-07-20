@@ -8,19 +8,22 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resources/Assets/AssetMetadata.h>
 
 namespace Flax
 {
-	struct SceneMetaExtension : public IAssetMetaExtension
+	class CreateFolderAction : public QAction
 	{
-		String sceneName;
-		Path sceneDataPath;
-		
-		void Serialize(Toml& tomlOut) override;
-		void Deserialize(const Toml& tomlIn) override;
+		Q_OBJECT
+	public:
+		CreateFolderAction(const QString& text, QObject* pParent = nullptr);
+		~CreateFolderAction();
 
-	protected:
-		void InfoInternal(const Path& assetPath) override final;
+	signals:
+		void onTriggered(b8 checked = false);
+
+	public slots:
+		void onCreateFolder(const QModelIndex& index);
+
+	private:
 	};
 }

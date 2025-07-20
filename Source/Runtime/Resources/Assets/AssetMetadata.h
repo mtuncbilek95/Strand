@@ -13,10 +13,15 @@ namespace Flax
 {
 	struct IAssetMetaExtension
 	{
+		friend struct AssetMetadataRegistry;
+
 		virtual ~IAssetMetaExtension() = default;
 
 		virtual void Serialize(Toml& tomlOut) = 0;
 		virtual void Deserialize(const Toml& tomlIn) = 0;
+
+	protected:
+		virtual void InfoInternal(const Path& assetPath) = 0;
 	};
 
 	struct AssetMetadata
@@ -27,6 +32,7 @@ namespace Flax
 		Path assetPath;
 		usize assetSize;
 		DateTime lastModifiedDate;
+		b8 isVirtual;
 
 		Ref<IAssetMetaExtension> metaExtension;
 

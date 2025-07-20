@@ -27,6 +27,7 @@ namespace Flax
 		virtual b8 IsDirectory(const Path& virtualPath) const = 0;
 		virtual b8 IsFile(const Path& virtualPath) const = 0;
 		virtual Path AbsolutePath(const Path& virtualPath) const = 0;
+		virtual Path VirtualPath(const Path& absolutePath) const = 0;
 
 		virtual void Create(const Path& virtualPath) = 0;
 		virtual void Delete(const Path& virtualPath) = 0;
@@ -35,5 +36,6 @@ namespace Flax
 		virtual void Move(const Path& srcVirtual, const Path& dstVirtual) = 0;
 
 		virtual Ref<IVirtualFileNode> Node(const Path& virtualPath) const = 0;
+		virtual Ref<IFileStream> Open(const Path& virtualPath, FileMode mode) = 0;
 	};
 }

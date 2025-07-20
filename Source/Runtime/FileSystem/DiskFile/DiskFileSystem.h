@@ -24,6 +24,7 @@ namespace Flax
 		b8 IsDirectory(const Path& path) const override final;
 		b8 IsFile(const Path& path) const override final;
 		Path AbsolutePath(const Path& virtPath) const override final;
+		Path VirtualPath(const Path& absolutePath) const override final;
 
 		void Create(const Path& virtPath) override final;
 		void Delete(const Path& virtPath) override final;
@@ -32,6 +33,7 @@ namespace Flax
 		void Move(const Path& srcVirtual, const Path& dstVirtual) override final;
 
 		Ref<IVirtualFileNode> Node(const Path& virtPath) const override final;
+		Ref<IFileStream> Open(const Path& virtualPath, FileMode mode) override final;
 
 	private:
 		Ref<DiskFileNode> FindNodeInTree(const Path& virtPath) const;

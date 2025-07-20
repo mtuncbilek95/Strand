@@ -22,5 +22,8 @@ namespace Flax
 
 		void Serialize(Toml& tomlOut) override;
 		void Deserialize(const Toml& tomlIn) override;
+
+	protected:
+		void InfoInternal(const Path& assetPath) override;
 	};
 }

@@ -12,7 +12,7 @@
 
 namespace Flax
 {
-	class CustomPBV;
+	class ProjectListView;
 	class ProjectBrowserViewModel;
 	class ProjectWatcherView;
 
@@ -28,7 +28,7 @@ namespace Flax
 		void onDoubleClicked(const QModelIndex& index);
 
 	private:
-		CustomPBV* m_listView;
+		ProjectListView* m_listView;
 		ProjectBrowserViewModel* m_viewModel;
 		ProjectWatcherView* m_breadcrumbs;
 	};

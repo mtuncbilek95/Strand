@@ -1,6 +1,7 @@
 #include "SceneImporter.h"
 
 #include <Runtime/Resources/Assets/AssetImportRegistry.h>
+#include <Runtime/Resources/Assets/Scene/SceneMetadata.h>
 
 namespace Flax
 {
@@ -8,10 +9,4 @@ namespace Flax
 	{
 		Log::Info(LogType::Asset, "Importing scene from '{}'", virtualPath.string());
 	}
-
-	struct SceneImporterRegister
-	{
-		SceneImporterRegister() { AssetImportRegistry::Get().RegisterImporter<SceneImporter>(); }
-	};
-	static SceneImporterRegister gb_sceneImporterRegister;
 }

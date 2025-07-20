@@ -1,5 +1,9 @@
 #include "TextureMetadata.h"
 
+#include <Runtime/Resources/Assets/AssetMetadataRegistry.h>
+
+#include <stb_image.h>
+
 namespace Flax
 {
 	void TextureMetaExtension::Serialize(Toml& tomlOut)
@@ -25,4 +29,38 @@ namespace Flax
 		mipLevels = static_cast<u32>(tomlIn.at("MipLevels").as_integer()->get());
 		arrayLayers = static_cast<u32>(tomlIn.at("ArrayLayers").as_integer()->get());
 	}
+
+	void TextureMetaExtension::InfoInternal(const Path& assetPath)
+	{
+		i32 channels = 0, width = 0, height = 0;
+
+		stbi_info(assetPath.string().data(), &width, &height, &channels);
+
+		if (width <= 0 || height <= 0 || channels <= 0)
+		{
+			Log::Error(LogType::Asset, "Failed to read texture info from '{}'.", assetPath.string());
+			return;
+		}
+
+		imageSize = Math::Vec3u(static_cast<u32>(width), static_cast<u32>(height), 1);
+		mipLevels = 1; // Default to 1 mip level
+		arrayLayers = 1; // Default to 1 array layer
+		switch (channels)
+		{
+		case 1: imageFormat = ImageFormat::R8_UNorm; break;
+		case 2: imageFormat = ImageFormat::R8G8_UNorm; break;
+		case 3: imageFormat = ImageFormat::R8G8B8_UNorm; break;
+		case 4: imageFormat = ImageFormat::R8G8B8A8_UNorm; break;
+		default: imageFormat = ImageFormat::R8G8B8A8_UNorm; break;
+		}
+	}
+
+	struct TextureMetaExtensionRegister
+	{
+		TextureMetaExtensionRegister()
+		{
+			AssetMetadataRegistry::Get().RegisterMetaExtension<TextureMetaExtension>("texture", "png");
+		}
+	};
+	static TextureMetaExtensionRegister gb_textureMetaExtensionRegister;
 }

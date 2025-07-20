@@ -53,6 +53,7 @@ namespace Flax
 		b8 IsDirectory(const Path& path) const;
 		b8 IsFile(const Path& path) const;
 		Path AbsolutePath(const Path& path) const;
+		Path VirtualPath(const Path& path) const;
 
 		void Create(const Path& path);
 		void Delete(const Path& path);
@@ -60,10 +61,10 @@ namespace Flax
 		void Copy(const Path& sourcePath, const Path& destinationPath);
 		void Move(const Path& sourcePath, const Path& destinationPath);
 
+		void InitializeServiceField() override final;
 		void ResetServiceField() override final;
 
 		Ref<IVirtualFileSystem> FileSystem(const Path& path) const;
-
 		Ref<IVirtualFileNode> Node(const Path& virtPath);
 
 	private:

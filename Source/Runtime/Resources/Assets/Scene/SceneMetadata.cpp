@@ -16,9 +16,18 @@ namespace Flax
 		sceneDataPath = Path(tomlIn.at("SceneDataPath").as_string()->get());
 	}
 
+	void SceneMetaExtension::InfoInternal(const Path& assetPath)
+	{
+
+	}
+
 	struct SceneMetaExtensionRegister
 	{
-		SceneMetaExtensionRegister() { AssetMetadataRegistry::Get().RegisterMetaExtension<SceneMetaExtension>("scene"); }
+		SceneMetaExtensionRegister() 
+		{ 
+			AssetMetadataRegistry::Get().RegisterMetaExtension<SceneMetaExtension>("scene", "scene");
+			AssetMetadataRegistry::Get().RegisterMetaExtension<SceneMetaExtension>("scene", "usd"); 
+		}
 	};
 	static SceneMetaExtensionRegister gb_sceneMetaExtensionRegister;
 }

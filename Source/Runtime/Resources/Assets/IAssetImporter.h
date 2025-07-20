@@ -11,10 +11,13 @@
 
 namespace Flax
 {
+	struct IAssetMetaExtension;
+
 	struct IAssetImporter
 	{
 		virtual ~IAssetImporter() = default;
 
+		virtual String AssetType() const = 0;
 		virtual void Import(const Path& virtualPath) = 0;
 	};
 }

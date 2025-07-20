@@ -12,17 +12,25 @@
 
 namespace Flax
 {
-	class CustomPBV : public QListView
+	class ProjectListView : public QListView
 	{
 		Q_OBJECT
 	public:
-		CustomPBV(QWidget* pParent = nullptr);
-		~CustomPBV();
+		ProjectListView(QWidget* pParent = nullptr);
+		~ProjectListView();
 
+	signals:
+		void onCreateFolder(const QModelIndex& index);
+
+	private slots:
+		void onShowContextMenu(const QPoint& pos);
+
+	protected:
 		void dragEnterEvent(QDragEnterEvent* pEvent) override;
 		void dragMoveEvent(QDragMoveEvent* pEvent) override;
 		void dragLeaveEvent(QDragLeaveEvent* pEvent) override;
 		void dropEvent(QDropEvent* pEvent) override;
-		void startDrag(Qt::DropActions supportedActions) override;
+		void mousePressEvent(QMouseEvent* pEvent) override;
+		
 	};
 }

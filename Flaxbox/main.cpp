@@ -13,20 +13,22 @@
 
 using namespace Flax;
 
-// Recursive function to print the scene hierarchy with their component names
-void RecursiveScenePrint(Scene* scene)
-{
-
-}
-
 int main()
 {
+	RuntimeService::InitializeServices();
+
 	auto vfm = RuntimeService::Get<VirtualFileService>();
 	vfm->Initialize(R"(D:\Projects\FlaxTestProject)");
 	vfm->Mount("Assets", NewRef<DiskFileSystem>());
 	vfm->Mount("Caches", NewRef<DiskFileSystem>());
-	vfm->Mount("Scripts", NewRef<DiskFileSystem>());
 	vfm->Mount("Intermediate", NewRef<DiskFileSystem>());
+
+	Path test = "Assets/TestFolder2/TestScene.scene";
+	Path replaced = test.replace_extension(".meta");
+	std::cout << test.string() << std::endl;
+	std::cout << replaced.string() << std::endl;
+
+	std::cout << test.extension().string() << std::endl;
 
 	/*
 	auto aim = RuntimeService::Get<AssetService>();

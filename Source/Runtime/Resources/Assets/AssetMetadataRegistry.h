@@ -8,6 +8,7 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Resources/Assets/AssetMetadataDesc.h>
 #include <Runtime/Resources/Assets/AssetMetadata.h>
 
 namespace Flax
@@ -16,31 +17,55 @@ namespace Flax
 	{
 	public:
 		template<typename T, typename = std::enable_if_t<std::is_base_of_v<IAssetMetaExtension, T>>>
-		void RegisterMetaExtension(const String& assetType)
+		void RegisterMetaExtension(const String& assetType, const String& extension)
 		{
-			if (m_metaExtensions.find(assetType) != m_metaExtensions.end())
+			if (m_metaExtensions.find(assetType) == m_metaExtensions.end())
+				m_metaExtensions[assetType] = []() { return NewRef<T>(); };
+
+			if (!extension.empty())
 			{
-				Log::Error(LogType::Asset, "Meta extension for type '{}' is already registered.", assetType);
-				return;
+				u32 hashExt = Hash<String>()(extension);
+				m_assetTypeFromExt[hashExt] = assetType;
+				Log::Info(LogType::Asset, "Registered extension '{}' for asset '{}'", extension, assetType);
 			}
-			m_metaExtensions[assetType] = []() { return NewRef<T>(); };
+
 			Log::Info(LogType::Asset, "Registered meta extension for asset type '{}'", assetType);
 		}
 
-		Ref<AssetMetadata> CreateEmptyMetadata(const String& assetType)
+		Ref<AssetMetadata> CreateMetadata(const String& assetType, const AssetMetadataDesc& desc)
 		{
 			Ref<AssetMetadata> metadata = NewRef<AssetMetadata>();
+			metadata->assetGuid = UuidHelper::GenerateID();
+			metadata->assetName = desc.assetName;
+			metadata->assetPath = desc.dstPath;
 			metadata->assetType = assetType;
+			metadata->lastModifiedDate = desc.lastModifiedDate;
+
 			auto it = m_metaExtensions.find(assetType);
 			if (it != m_metaExtensions.end())
+			{
 				metadata->metaExtension = it->second();
+				metadata->metaExtension->InfoInternal(desc.srcPath);
+			}
 			else
 				Log::Warn(LogType::Asset, "No meta extension registered for asset type '{}'", assetType);
 
 			return metadata;
 		}
 
+		String AssetTypeFromExt(const String& ext)
+		{
+			u32 hashExt = Hash<String>()(ext);
+			auto it = m_assetTypeFromExt.find(hashExt);
+			if (it != m_assetTypeFromExt.end())
+				return it->second;
+
+			Log::Warn(LogType::Asset, "No asset type registered for extension '{}'", ext);
+			return String();
+		}
+
 	private:
 		HashMap<String, function<Ref<IAssetMetaExtension>()>> m_metaExtensions;
+		Map<u32, String> m_assetTypeFromExt;
 	};
 }

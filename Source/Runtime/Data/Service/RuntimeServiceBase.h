@@ -16,6 +16,7 @@ namespace Flax
 	class RuntimeServiceBase
 	{
 	public:
+		virtual void InitializeServiceField() = 0;
 		virtual void ResetServiceField() = 0;
 	};
 }

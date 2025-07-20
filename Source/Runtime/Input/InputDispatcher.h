@@ -20,6 +20,7 @@ namespace Flax
 		void RegisterListener(WindowPollEvent type, EventCallback callback);
 		void DispatchEvent(const InputEvent& event);
 
+		void InitializeServiceField() override final {}
 		void ResetServiceField() override final {}
 
 	private:

@@ -99,6 +99,35 @@ namespace Flax
 		return fileSystem->AbsolutePath(targetPath);
 	}
 
+	Path VirtualFileService::VirtualPath(const Path& path) const
+	{
+		Path targetPath = ClearMountPath(path);
+
+		// Split source path from path
+		if (!targetPath.is_absolute())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual path '{}' must be absolute.", targetPath.string());
+			return Path();
+		}
+
+		if (targetPath.empty())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual path '{}' is empty.", targetPath.string());
+			return Path();
+		}
+
+		Path relativePath = targetPath.lexically_relative(m_sourcePath);
+
+		auto fileSystem = FileSystem(relativePath);
+		if (!fileSystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", relativePath.string());
+			return Path();
+		}
+
+		return fileSystem->Exists(relativePath) ? relativePath : Path();
+	}
+
 	void VirtualFileService::Create(const Path& path)
 	{
 		Path targetPath = ClearMountPath(path);
@@ -218,6 +247,10 @@ namespace Flax
 		}
 		
 		fileSystem->Move(sourceTargetPath, destinationTargetPath);
+	}
+
+	void VirtualFileService::InitializeServiceField()
+	{
 	}
 
 	void VirtualFileService::ResetServiceField()

@@ -1,6 +1,6 @@
 #ProjectWatcherView_Button 
 {
-    font: italic 14px "Montserrat";
+    font: italic 14px;
     background: transparent;
 }
 
@@ -11,6 +11,6 @@
 
 #ProjectWatcherView_Separator
 {
-	font: italic 14px "Montserrat";
+	font: italic 14px;
 	background: transparent;
 }
