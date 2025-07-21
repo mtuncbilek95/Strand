@@ -7,15 +7,21 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	enum class EditorDirection
+	class SceneRendererView : public QWidget
 	{
-		DirectionTop,
-		DirectionLeft,
-		DirectionBottom,
-		DirectionRight
+		Q_OBJECT
+	public:
+		SceneRendererView(QWidget* pParent = nullptr);
+		~SceneRendererView();
+
+
+	protected:
+		void resizeEvent(QResizeEvent* event) override;
+
+	private:
 	};
 }

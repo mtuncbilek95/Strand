@@ -4,6 +4,8 @@
 #include <Runtime/FileSystem/IVirtualFileSystem.h>
 #include <Runtime/FileSystem/Service/VirtualFileService.h>
 
+#include <Editor/ImportWidget/TextureImportView.h>
+
 namespace Flax
 {
 	DomainListView::DomainListView(QWidget* pParent) : QListView(pParent)
@@ -73,6 +75,15 @@ namespace Flax
 
 	void DomainListView::dropEvent(QDropEvent* pEvent)
 	{
+		QString abs = pEvent->mimeData()->urls()[0].toLocalFile();
+
+		Path srcPath = abs.toStdString();
+		
+		if (srcPath.extension().string() == ".png")
+		{
+			TextureImportView* importView = new TextureImportView();
+			importView->showImportDialog(abs, "");
+		}
 	}
 
 	void DomainListView::contextMenuEvent(QContextMenuEvent* pEvent)

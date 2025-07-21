@@ -4,18 +4,25 @@ namespace Flax
 {
 	SceneRendererView::SceneRendererView(QWidget* pParent) : QWidget(pParent)
 	{
-		setMinimumSize(640, 480);
 		setContentsMargins(0, 0, 0, 0);
 		setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 		QFrame* frame = new QFrame(this);
-		frame->setStyleSheet("background-color: black;");
+		frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+		frame->setStyleSheet("background: black;");
 
 		QVBoxLayout* mainLayout = new QVBoxLayout(this);
+		mainLayout->setAlignment(Qt::AlignCenter);
 		mainLayout->addWidget(frame);
+
+		setLayout(mainLayout);
 	}
 
 	SceneRendererView::~SceneRendererView()
+	{
+	}
+
+	void SceneRendererView::resizeEvent(QResizeEvent* event)
 	{
 	}
 }

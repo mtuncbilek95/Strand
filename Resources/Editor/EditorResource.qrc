@@ -9,6 +9,10 @@
 		<file>Icons/ContentBrowser/PB_MoveBack.svg</file>
 		<file>Icons/ContentBrowser/PB_Scene.svg</file>
 		<file>Icons/ContentBrowser/PB_Texture.svg</file>
+		
+		<file>Icons/SceneRenderer/PB_Pause.svg</file>
+		<file>Icons/SceneRenderer/PB_Play.svg</file>
+		<file>Icons/SceneRenderer/PB_Stop.svg</file>
 
 		<file>Styles/ContentBrowser/DomainPathView.qss</file>
 

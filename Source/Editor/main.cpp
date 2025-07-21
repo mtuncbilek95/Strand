@@ -1,10 +1,11 @@
 #include <Editor/GUIApplication/GUIApplication.h>
 
-#include <Editor/EditorWindow/View/EditorWindow.h>
-#include <Editor/EditorWindow/ViewModel/EditorWindowViewModel.h>
+#include <Editor/EditorWindow/EditorWindow.h>
 #include <Editor/TerminalView/View/TerminalView.h>
 #include <Editor/SceneHierarchy/View/SceneHierarchyView.h>
 #include <Editor/DomainView/DomainViewWidget.h>
+
+#include <Editor/ImportWidget/TextureImportView.h>
 
 using namespace Flax;
 
@@ -14,9 +15,8 @@ int main(int argC, char** argV)
 
 	EditorWindow* wind = new EditorWindow();
 
-	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new DomainViewWidget(), "ContentBrowser");
-	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new TerminalView(), "Terminal");
-	//ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionLeft, new SceneHierarchyView(), "SceneHierarchy");
+	wind->addTabTo(TabDirection::Bottom, new DomainViewWidget(), "Content Browser");
+	wind->addTabTo(TabDirection::Bottom, new TerminalView(), "Terminal");
 
 	wind->show();
 

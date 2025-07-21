@@ -11,11 +11,24 @@
 
 namespace Flax
 {
-	class SceneViewModel : public ViewModelBase
+	enum class TabDirection
 	{
-		Q_OBJECT
+		Left,
+		Right,
+		Bottom,
+		Top
+	};
+
+	class EditorWindow : public QMainWindow
+	{
 	public:
-		SceneViewModel(QObject* pParent = nullptr);
-		~SceneViewModel();
+		EditorWindow(QWidget* pParent = nullptr);
+		~EditorWindow();
+
+		void addTabTo(TabDirection dir, QWidget* widget, const QString& titleName);
+	private:
+		QHash<TabDirection, QTabWidget*> m_tabWidgets;
+
+		QMenuBar* m_topMenuBar;
 	};
 }

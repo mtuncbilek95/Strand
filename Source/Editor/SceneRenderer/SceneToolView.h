@@ -11,15 +11,24 @@
 
 namespace Flax
 {
-	class EditorWindowViewModel;
-
-	class EditorWindow : public QMainWindow
+	class SceneToolView : public QWidget
 	{
+		Q_OBJECT
 	public:
-		EditorWindow(QWidget* pParent = nullptr);
-		~EditorWindow();
+		SceneToolView(QWidget* pParent = nullptr);
+		~SceneToolView();
+
+	signals:
+		void onPlaySignaled();
+		void onPauseSignaled();
+		void onStopSignaled();
 
 	private:
-		EditorWindowViewModel* m_viewModel;
+		void setupSignals();
+
+	private:
+		QPushButton* m_playButton;
+		QPushButton* m_pauseButton;
+		QPushButton* m_stopButton;
 	};
 }
