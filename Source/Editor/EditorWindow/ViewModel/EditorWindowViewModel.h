@@ -7,7 +7,6 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
 #include <Editor/Core/CoreMinimal.h>
 #include <Editor/EditorWindow/ViewModel/EditorDirection.h>
 

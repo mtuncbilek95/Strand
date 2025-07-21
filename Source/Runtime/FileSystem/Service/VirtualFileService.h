@@ -54,6 +54,7 @@ namespace Flax
 		b8 IsFile(const Path& path) const;
 		Path AbsolutePath(const Path& path) const;
 		Path VirtualPath(const Path& path) const;
+		void Refresh(const Path& virtPath) const;
 
 		void Create(const Path& path);
 		void Delete(const Path& path);

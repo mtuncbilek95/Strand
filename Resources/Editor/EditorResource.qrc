@@ -1,13 +1,16 @@
 <RCC>
 	<qresource prefix="/">
+		<file>Icons/ContentBrowser/PB_Add.svg</file>
 		<file>Icons/ContentBrowser/PB_File.svg</file>
 		<file>Icons/ContentBrowser/PB_Folder.svg</file>
+		<file>Icons/ContentBrowser/PB_Home.svg</file>
+		<file>Icons/ContentBrowser/PB_Import.svg</file>
 		<file>Icons/ContentBrowser/PB_Mesh.svg</file>
+		<file>Icons/ContentBrowser/PB_MoveBack.svg</file>
 		<file>Icons/ContentBrowser/PB_Scene.svg</file>
 		<file>Icons/ContentBrowser/PB_Texture.svg</file>
 
-		<file>Styles/ContentBrowser/ProjectBrowser.qss</file>
-		<file>Styles/ContentBrowser/ProjectWatcher.qss</file>
+		<file>Styles/ContentBrowser/DomainPathView.qss</file>
 
 		<file>Fonts/Montserrat/Montserrat-Bold.ttf</file>
 		<file>Fonts/Montserrat/Montserrat-BoldItalic.ttf</file>

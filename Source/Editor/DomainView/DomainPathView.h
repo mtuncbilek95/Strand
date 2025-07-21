@@ -7,21 +7,24 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
 #include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	class ProjectBrowserIconProvider : public QFileIconProvider
+	class DomainPathView : public QWidget
 	{
+		Q_OBJECT
 	public:
-		ProjectBrowserIconProvider();
-		~ProjectBrowserIconProvider();
+		DomainPathView(QWidget* pParent = nullptr);
+		~DomainPathView();
 
-		void setIcons();
-		QIcon icon(const QFileInfo& info) const override final;
+	signals:
+		void onPathViewClicked(const QString& path);
+
+	public slots:
+		void refreshPathView(const QString& path);
 
 	private:
-		HashMap<String, QIcon> m_icons;
+		void clearLayout();
 	};
 }

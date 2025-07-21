@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {

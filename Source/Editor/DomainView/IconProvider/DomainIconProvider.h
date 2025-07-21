@@ -7,22 +7,21 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
 #include <Editor/Core/CoreMinimal.h>
+
 
 namespace Flax
 {
-	class ProjectBrowserFilterProxy : public QSortFilterProxyModel
+	class DomainIconProvider : public QFileIconProvider
 	{
-		Q_OBJECT;
 	public:
-		ProjectBrowserFilterProxy(QObject* pParent = nullptr);
-		~ProjectBrowserFilterProxy();
+		DomainIconProvider();
+		~DomainIconProvider();
 
-	protected:
-		bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override final;
+		void setIcons();
+		QIcon icon(const QFileInfo& info) const override final;
 
 	private:
-		QStringList m_excluded;
+		HashMap<String, QIcon> m_icons;
 	};
 }

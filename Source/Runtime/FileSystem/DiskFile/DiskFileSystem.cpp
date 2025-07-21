@@ -170,12 +170,71 @@ namespace Flax
 
 	void DiskFileSystem::Delete(const Path& virtPath)
 	{
-		Log::Warn(LogType::FileSystem, "NOT IMPLEMENTED YET!");
+		if (virtPath.is_absolute())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual path '{}' must not be absolute.", virtPath.string());
+			return;
+		}
+
+		Path fullPath = m_sourcePath / virtPath;
+		if (!FileSys::exists(fullPath))
+		{
+			Log::Warn(LogType::FileSystem, "File or directory '{}' does not exist.", fullPath.string());
+			return;
+		}
+		
+		if (FileSys::is_directory(fullPath))
+		{
+			if (!FileSys::remove_all(fullPath))
+			{
+				Log::Error(LogType::FileSystem, "Failed to delete directory '{}'.", fullPath.string());
+				return;
+			}
+		}
+		else
+		{
+			if (!FileSys::remove(fullPath))
+			{
+				Log::Error(LogType::FileSystem, "Failed to delete file '{}'.", fullPath.string());
+				return;
+			}
+		}
+		
+		auto node = FindNodeInTree(virtPath.parent_path());
+		if (node)
+			node->Refresh();
 	}
 
 	void DiskFileSystem::Rename(const Path& oldVirtual, const Path& newVirtual)
 	{
-		Log::Warn(LogType::FileSystem, "NOT IMPLEMENTED YET!");
+		Path srcFullPath = ToRealPath(oldVirtual);
+		Path dstFullPath = ToRealPath(newVirtual);
+
+		if (srcFullPath.is_absolute() || dstFullPath.is_absolute())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual paths '{}' and '{}' must not be absolute.", oldVirtual.string(), newVirtual.string());
+			return;
+		}
+
+		if (srcFullPath.empty() || dstFullPath.empty())
+		{
+			Log::Critical(LogType::FileSystem, "Virtual paths '{}' and '{}' must not be empty.", oldVirtual.string(), newVirtual.string());
+			return;
+		}
+
+		if (!FileSys::exists(srcFullPath))
+		{
+			Log::Warn(LogType::FileSystem, "Source path '{}' does not exist.", srcFullPath.string());
+			return;
+		}
+
+		if (FileSys::exists(dstFullPath))
+		{
+			Log::Warn(LogType::FileSystem, "Destination path '{}' already exists.", dstFullPath.string());
+			return;
+		}
+
+		FileSys::rename(srcFullPath, dstFullPath);
 	}
 
 	void DiskFileSystem::Copy(const Path& srcVirtual, const Path& dstVirtual)

@@ -1,0 +1,22 @@
+#DomainPathView_Widget
+{
+	background-color: #2E2D32;
+}
+
+#DomainPathView_Button
+{
+    font: bold;
+    background-color: transparent;
+}
+
+#DomainPathView_Button:hover 
+{
+    text-decoration: underline;
+	background-color: transparent;
+}
+
+#DomainPathView_Separator
+{
+	font: bold;
+	background-color: transparent;
+}

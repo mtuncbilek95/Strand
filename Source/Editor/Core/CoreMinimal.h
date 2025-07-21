@@ -7,5 +7,12 @@
  */
 #pragma once
 
+#include <Runtime/Core/CoreMinimal.h>
+
+#include <Runtime/FileSystem/IFileStream.h>
+#include <Runtime/FileSystem/IVirtualFileNode.h>
+#include <Runtime/FileSystem/IVirtualFileSystem.h>
+#include <Runtime/FileSystem/Service/VirtualFileService.h>
+
 #include <Editor/Data/Registry/ViewModelBase.h>
 #include <Editor/Data/Registry/ViewModelRegistry.h>

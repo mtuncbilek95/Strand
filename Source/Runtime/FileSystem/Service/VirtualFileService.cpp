@@ -128,6 +128,25 @@ namespace Flax
 		return fileSystem->Exists(relativePath) ? relativePath : Path();
 	}
 
+	void VirtualFileService::Refresh(const Path& path) const
+	{
+		auto filesystem = FileSystem(path);
+		if (!filesystem)
+		{
+			Log::Critical(LogType::FileSystem, "File system for path '{}' is not found.", path.string());
+			return;
+		}
+
+		auto node = filesystem->Node(path);
+		if (!node)
+		{
+			Log::Critical(LogType::FileSystem, "Node for path '{}' is not found.", path.string());
+			return;
+		}
+
+		node->Refresh();
+	}
+
 	void VirtualFileService::Create(const Path& path)
 	{
 		Path targetPath = ClearMountPath(path);
@@ -159,9 +178,9 @@ namespace Flax
 			return;
 		}
 
-		if (fileSystem->Exists(targetPath))
+		if (!fileSystem->Exists(targetPath))
 		{
-			Log::Warn(LogType::FileSystem, "File '{}' already exists.", targetPath.string());
+			Log::Error(LogType::FileSystem, "File '{}' does not exist.", targetPath.string());
 			return;
 		}
 

@@ -1,17 +1,17 @@
-#include "ProjectBrowserFilterProxy.h"
+#include "DomainFilterProxy.h"
 
 namespace Flax
 {
-	ProjectBrowserFilterProxy::ProjectBrowserFilterProxy(QObject* pParent)
+	DomainFilterProxy::DomainFilterProxy(QObject* pParent)
 	{
 		m_excluded << "tmp" << "bin" << "obj" << "meta" << "odt";
 	}
 
-	ProjectBrowserFilterProxy::~ProjectBrowserFilterProxy()
+	DomainFilterProxy::~DomainFilterProxy()
 	{
 	}
 
-	bool ProjectBrowserFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
+	bool DomainFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 	{
 		QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
 

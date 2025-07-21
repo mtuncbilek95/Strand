@@ -2,9 +2,9 @@
 
 #include <Editor/EditorWindow/View/EditorWindow.h>
 #include <Editor/EditorWindow/ViewModel/EditorWindowViewModel.h>
-#include <Editor/TerminalConsole/View/TerminalView.h>
+#include <Editor/TerminalView/View/TerminalView.h>
 #include <Editor/SceneHierarchy/View/SceneHierarchyView.h>
-#include <Editor/ProjectBrowser/View/ProjectBrowserView.h>
+#include <Editor/DomainView/DomainViewWidget.h>
 
 using namespace Flax;
 
@@ -14,9 +14,9 @@ int main(int argC, char** argV)
 
 	EditorWindow* wind = new EditorWindow();
 
-	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new TerminalView(), "Console");
-	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new ProjectBrowserView(), "ContentBrowser");
-	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionLeft, new SceneHierarchyView(), "SceneHierarchy");
+	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new DomainViewWidget(), "ContentBrowser");
+	ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionBottom, new TerminalView(), "Terminal");
+	//ViewModelRegistry::Get().ViewModel<EditorWindowViewModel>()->AddTab(EditorDirection::DirectionLeft, new SceneHierarchyView(), "SceneHierarchy");
 
 	wind->show();
 

@@ -1,7 +1,7 @@
 #include "TerminalView.h"
 
-#include <Editor/TerminalConsole/Model/LogSinkModel.h>
-#include <Editor/TerminalConsole/ViewModel/LogSinkViewModel.h>
+#include <Editor/TerminalView/Model/LogSinkModel.h>
+#include <Editor/TerminalView/ViewModel/LogSinkViewModel.h>
 
 namespace Flax
 {

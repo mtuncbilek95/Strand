@@ -1,17 +1,17 @@
-#include "ProjectBrowserIconProvider.h"
+#include "DomainIconProvider.h"
 
 namespace Flax
 {
-	ProjectBrowserIconProvider::ProjectBrowserIconProvider()
+	DomainIconProvider::DomainIconProvider()
 	{
 		
 	}
 
-	ProjectBrowserIconProvider::~ProjectBrowserIconProvider()
+	DomainIconProvider::~DomainIconProvider()
 	{
 	}
 
-	void ProjectBrowserIconProvider::setIcons()
+	void DomainIconProvider::setIcons()
 	{
 		m_icons["folder"] = QIcon(":/Icons/ContentBrowser/PB_Folder.svg");
 		m_icons["file"] = QIcon(":/Icons/ContentBrowser/PB_File.svg");
@@ -22,7 +22,7 @@ namespace Flax
 		m_icons["gltf"] = QIcon(":/Icons/ContentBrowser/PB_Mesh.svg");
 	}
 
-	QIcon ProjectBrowserIconProvider::icon(const QFileInfo& info) const
+	QIcon DomainIconProvider::icon(const QFileInfo& info) const
 	{
 		if(info.isDir())
 			return m_icons.at("folder");

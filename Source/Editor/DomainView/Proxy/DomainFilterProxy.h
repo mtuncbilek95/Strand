@@ -7,23 +7,22 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
+#include <Editor/Core/CoreMinimal.h>
+
 
 namespace Flax
 {
-	class CreateFolderAction : public QAction
+	class DomainFilterProxy : public QSortFilterProxyModel
 	{
-		Q_OBJECT
+		Q_OBJECT;
 	public:
-		CreateFolderAction(const QString& text, QObject* pParent = nullptr);
-		~CreateFolderAction();
+		DomainFilterProxy(QObject* pParent = nullptr);
+		~DomainFilterProxy();
 
-	signals:
-		void onTriggered(b8 checked = false);
-
-	public slots:
-		void onCreateFolder(const QModelIndex& index);
+	protected:
+		bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override final;
 
 	private:
+		QStringList m_excluded;
 	};
 }

@@ -7,30 +7,34 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
 #include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	class ProjectListView : public QListView
+	class DomainListView : public QListView
 	{
 		Q_OBJECT
 	public:
-		ProjectListView(QWidget* pParent = nullptr);
-		~ProjectListView();
-
-	signals:
-		void onCreateFolder(const QModelIndex& index);
-
-	private slots:
-		void onShowContextMenu(const QPoint& pos);
+		DomainListView(QWidget* pParent = nullptr);
+		~DomainListView();
 
 	protected:
 		void dragEnterEvent(QDragEnterEvent* pEvent) override;
 		void dragMoveEvent(QDragMoveEvent* pEvent) override;
 		void dragLeaveEvent(QDragLeaveEvent* pEvent) override;
 		void dropEvent(QDropEvent* pEvent) override;
-		void mousePressEvent(QMouseEvent* pEvent) override;
-		
+		void contextMenuEvent(QContextMenuEvent* pEvent) override;
+		void keyPressEvent(QKeyEvent* pEvent) override;
+
+	private:
+		void startRenameForNewFolder(const Path& folderPath);
+
+	private slots:
+		void onCreateFolder(const QModelIndex& sourceIndex);
+		void onEditorCommitted(QWidget* pEditor);
+		void onEditorClosed(QWidget* pEditor, QAbstractItemDelegate::EndEditHint hint);
+
+	private:
+		QString m_newItemPath; // Used for renaming
 	};
 }

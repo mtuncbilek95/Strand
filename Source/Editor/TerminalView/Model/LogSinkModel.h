@@ -7,8 +7,8 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
-#include <Editor/TerminalConsole/ViewModel/LogSinkViewModel.h>
+#include <Editor/Core/CoreMinimal.h>
+#include <Editor/TerminalView/ViewModel/LogSinkViewModel.h>
 
 #include <spdlog/sinks/base_sink.h>
 

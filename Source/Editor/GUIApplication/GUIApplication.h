@@ -8,7 +8,6 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
@@ -18,8 +17,5 @@ namespace Flax
 	public:
 		GUIApplication(i32 argC, c8** argV);
 		~GUIApplication();
-
-	private:
-		QSettings m_settings;
 	};
 }
