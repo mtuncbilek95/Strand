@@ -94,7 +94,7 @@ namespace Flax
 		connect(m_miscView, &DomainMiscView::onAddClicked, this, &DomainViewWidget::onAddDomainClicked);
 		connect(m_miscView, &DomainMiscView::onImportClicked, this, &DomainViewWidget::onImportDomainClicked);
 		connect(m_miscView, &DomainMiscView::onBackClicked, this, &DomainViewWidget::onBackDomainClicked);
-		connect(this, &DomainViewWidget::onRefreshPathView, m_miscView, &DomainMiscView::onRefreshPathView);
-		connect(m_miscView, &DomainMiscView::onPathViewClicked, this, &DomainViewWidget::onPathViewClicked);
+		connect(this, &DomainViewWidget::onRefreshPathView, m_miscView, &DomainMiscView::onRefreshPathView); // Reset breadcrumbs
+		connect(m_miscView, &DomainMiscView::onPathViewClicked, this, &DomainViewWidget::onPathViewClicked); // Breadcrumbs clicked
 	}
 }
