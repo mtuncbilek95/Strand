@@ -11,20 +11,18 @@
 
 namespace Flax
 {
-	class SceneHierarchyModel;
-	class SceneHierarchyViewModel;
+	class SceneGraphTreeView;
+	class SceneGraphModel;
 
-	class SceneHierarchyView : public QWidget
+	class SceneGraphWidget : public QWidget
 	{
 		Q_OBJECT
 	public:
-		SceneHierarchyView(QWidget* pParent = nullptr);
-		~SceneHierarchyView();
-
-
+		SceneGraphWidget(QWidget* pParent = nullptr);
+		~SceneGraphWidget();
 
 	private:
-		QTreeView* m_view;
-		SceneHierarchyViewModel* m_viewModel;
+		SceneGraphTreeView* m_treeView;
+		SceneGraphModel* m_sgModel;
 	};
 }

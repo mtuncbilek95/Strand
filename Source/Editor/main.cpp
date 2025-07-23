@@ -2,7 +2,7 @@
 
 #include <Editor/EditorWindow/EditorWindow.h>
 #include <Editor/TerminalView/View/TerminalView.h>
-#include <Editor/SceneHierarchy/View/SceneHierarchyView.h>
+#include <Editor/SceneGraph/SceneGraphWidget.h>
 #include <Editor/DomainView/DomainViewWidget.h>
 
 #include <Editor/ImportWidget/TextureImportView.h>
@@ -17,6 +17,7 @@ int main(int argC, char** argV)
 
 	wind->addTabTo(TabDirection::Bottom, new DomainViewWidget(), "Content Browser");
 	wind->addTabTo(TabDirection::Bottom, new TerminalView(), "Terminal");
+	wind->addTabTo(TabDirection::Left, new SceneGraphWidget(), "Scene Graph");
 
 	wind->show();
 
@@ -37,3 +38,10 @@ int main(int argC, char** argV)
 
 	return app.exec();
 }
+
+class TestClass
+{
+private:
+	[[Reflection::Field]]
+	int testField = 0;
+};

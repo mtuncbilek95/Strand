@@ -14,12 +14,12 @@ namespace Flax
 	class Scene;
 	class Entity;
 
-	class SceneHierarchyModel : public QAbstractItemModel
+	class SceneGraphModel : public QAbstractItemModel
 	{
 		Q_OBJECT
 	public:
-		SceneHierarchyModel(QObject* pParent = nullptr);
-		~SceneHierarchyModel();
+		SceneGraphModel(QObject* pParent = nullptr);
+		~SceneGraphModel();
 
 		void addEntity(const QModelIndex& parent);
 		void renameEntity(const QModelIndex& index, const QString& newName);

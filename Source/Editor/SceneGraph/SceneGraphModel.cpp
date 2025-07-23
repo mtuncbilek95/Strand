@@ -1,22 +1,22 @@
-#include "SceneHierarchyModel.h"
+#include "SceneGraphModel.h"
 
-#include <Editor/SceneHierarchy/Model/SceneHierarchyCustomRole.h>
+#include <Editor/SceneGraph/SceneGraphRole.h>
 
 #include <Runtime/Scene/Scene.h>
 #include <Runtime/Scene/Entity.h>
 
 namespace Flax
 {
-	SceneHierarchyModel::SceneHierarchyModel(QObject* pParent) : QAbstractItemModel(pParent),
+	SceneGraphModel::SceneGraphModel(QObject* pParent) : QAbstractItemModel(pParent),
 		m_currentScene(nullptr)
 	{
 	}
 
-	SceneHierarchyModel::~SceneHierarchyModel()
+	SceneGraphModel::~SceneGraphModel()
 	{
 	}
 
-	void SceneHierarchyModel::addEntity(const QModelIndex& parent)
+	void SceneGraphModel::addEntity(const QModelIndex& parent)
 	{
 		Entity* parentEntity = parent.isValid()
 			? static_cast<Entity*>(parent.internalPointer())
@@ -29,7 +29,7 @@ namespace Flax
 		endInsertRows();
 	}
 
-	void SceneHierarchyModel::renameEntity(const QModelIndex& index, const QString& newName)
+	void SceneGraphModel::renameEntity(const QModelIndex& index, const QString& newName)
 	{
 		if (!index.isValid())
 		{
@@ -43,14 +43,14 @@ namespace Flax
 			return;
 		}
 		entity->SetName(newName.toStdString());
-		dataChanged(index, index, { i32(SceneHierarchyCustomRole::EntityName) });
+		dataChanged(index, index, { i32(SceneGraphRole::EntityName) });
 	}
 
-	void SceneHierarchyModel::duplicateEntity(const QModelIndex& index)
+	void SceneGraphModel::duplicateEntity(const QModelIndex& index)
 	{
 	}
 
-	void SceneHierarchyModel::removeEntity(const QModelIndex& index)
+	void SceneGraphModel::removeEntity(const QModelIndex& index)
 	{
 		if (!index.isValid())
 		{
@@ -80,7 +80,7 @@ namespace Flax
 		}
 	}
 
-	void SceneHierarchyModel::setCurrentScene(Scene* newScene)
+	void SceneGraphModel::setCurrentScene(Scene* newScene)
 	{
 		if (newScene == m_currentScene)
 		{
@@ -99,7 +99,7 @@ namespace Flax
 		endResetModel();
 	}
 
-	QModelIndex SceneHierarchyModel::indexOf(Entity* entity) const
+	QModelIndex SceneGraphModel::indexOf(Entity* entity) const
 	{
 		if (!entity)
 			return QModelIndex();
@@ -121,7 +121,7 @@ namespace Flax
 		return QModelIndex();
 	}
 
-	QModelIndex SceneHierarchyModel::index(int row, int column, const QModelIndex& parent) const
+	QModelIndex SceneGraphModel::index(int row, int column, const QModelIndex& parent) const
 	{
 		if (!m_currentScene)
 			return QModelIndex();
@@ -148,7 +148,7 @@ namespace Flax
 		return createIndex(row, column, child);
 	}
 
-	QModelIndex SceneHierarchyModel::parent(const QModelIndex& index) const
+	QModelIndex SceneGraphModel::parent(const QModelIndex& index) const
 	{
 		if (!m_currentScene || !index.isValid())
 			return QModelIndex();
@@ -184,7 +184,7 @@ namespace Flax
 		return QModelIndex();
 	}
 
-	int SceneHierarchyModel::rowCount(const QModelIndex& parent) const
+	int SceneGraphModel::rowCount(const QModelIndex& parent) const
 	{
 		if (!m_currentScene)
 			return 0;
@@ -196,12 +196,12 @@ namespace Flax
 		return ptr->Count();
 	}
 
-	int SceneHierarchyModel::columnCount(const QModelIndex& parent) const
+	int SceneGraphModel::columnCount(const QModelIndex& parent) const
 	{
 		return 1;
 	}
 
-	QVariant SceneHierarchyModel::data(const QModelIndex& index, int role) const
+	QVariant SceneGraphModel::data(const QModelIndex& index, int role) const
 	{
 		if (!m_currentScene)
 			return QVariant();
@@ -212,12 +212,12 @@ namespace Flax
 		switch (role)
 		{
 		case Qt::DisplayRole:
-		case i32(SceneHierarchyCustomRole::EntityName):
+		case i32(SceneGraphRole::EntityName):
 		{
 			Entity* ptr = static_cast<Entity*>(index.internalPointer());
 			return QString::fromStdString(ptr->Name());
 		}
-		case i32(SceneHierarchyCustomRole::EntityType):
+		case i32(SceneGraphRole::EntityType):
 			return "Entity";
 		default:
 			return QVariant();
@@ -226,7 +226,7 @@ namespace Flax
 		return QVariant();
 	}
 
-	QVariant SceneHierarchyModel::headerData(int section, Qt::Orientation orientation, int role) const
+	QVariant SceneGraphModel::headerData(int section, Qt::Orientation orientation, int role) const
 	{
 		if (!m_currentScene)
 			return QVariant("Empty Scene");
@@ -237,7 +237,7 @@ namespace Flax
 		return QVariant();
 	}
 
-	Qt::ItemFlags SceneHierarchyModel::flags(const QModelIndex& index) const
+	Qt::ItemFlags SceneGraphModel::flags(const QModelIndex& index) const
 	{
 		if (!index.isValid())
 			return Qt::ItemIsDropEnabled;
@@ -246,7 +246,7 @@ namespace Flax
 			Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable;
 	}
 
-	bool SceneHierarchyModel::setData(const QModelIndex& index, const QVariant& value, int role)
+	bool SceneGraphModel::setData(const QModelIndex& index, const QVariant& value, int role)
 	{
 		if (!index.isValid() || role != Qt::EditRole)
 			return false;

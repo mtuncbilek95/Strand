@@ -11,7 +11,7 @@
 
 namespace Flax
 {
-	enum class SceneHierarchyCustomRole
+	enum class SceneGraphRole
 	{
 		EntityName = Qt::UserRole + 1,
 		EntityType,
