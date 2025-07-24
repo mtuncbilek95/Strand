@@ -4,6 +4,8 @@
 #include <Runtime/FileSystem/IVirtualFileSystem.h>
 #include <Runtime/FileSystem/Service/VirtualFileService.h>
 
+#include <Editor/DomainView/ItemDelegate/NoExtensionDelegate.h>
+
 #include <Editor/ImportWidget/TextureImportView.h>
 
 namespace Flax
@@ -24,6 +26,8 @@ namespace Flax
 		setSelectionMode(QAbstractItemView::ExtendedSelection);
 		setEditTriggers(QAbstractItemView::EditKeyPressed |
 			QAbstractItemView::SelectedClicked);
+
+		setItemDelegate(new NoExtensionDelegate(this));
 	}
 
 	DomainListView::~DomainListView()

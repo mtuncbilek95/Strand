@@ -26,8 +26,18 @@ namespace Flax
 		void contextMenuEvent(QContextMenuEvent* pEvent) override;
 		void keyPressEvent(QKeyEvent* pEvent) override;
 
+	private:
+		void startRenameForEntity(const QString& folderPath);
+
 	private slots:
 		void onCreateEntity(const QModelIndex& index);
 		void onRemoveEntity(const QModelIndex& index);
+		void onRenameEntity(const QModelIndex& index, const QString& newName);
+
+		void onEditorCommitted(QWidget* pEditor);
+		void onEditorClosed(QWidget* pEditor, QAbstractItemDelegate::EndEditHint hint);
+
+	private:
+		QString m_newItemName; // Used for renaming entities
 	};
 }

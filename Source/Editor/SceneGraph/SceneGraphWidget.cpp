@@ -3,6 +3,8 @@
 #include <Editor/SceneGraph/SceneGraphModel.h>
 #include <Editor/SceneGraph/SceneGraphTreeView.h>
 
+#include <Runtime/Scene/Scene.h>
+
 namespace Flax
 {
 	SceneGraphWidget::SceneGraphWidget(QWidget* pParent) : QWidget(pParent)
@@ -12,7 +14,9 @@ namespace Flax
 		setContentsMargins(0, 0, 0, 0);
 
 		m_sgModel = new SceneGraphModel(this);
+		m_sgModel->setCurrentScene(new Scene());
 		m_treeView = new SceneGraphTreeView(this);
+		m_treeView->setModel(m_sgModel);
 
 		QHBoxLayout* mainLayout = new QHBoxLayout(this);
 		mainLayout->setContentsMargins(0, 0, 0, 0);

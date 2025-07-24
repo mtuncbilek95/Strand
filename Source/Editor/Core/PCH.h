@@ -59,3 +59,4 @@
 #include <QFileSystemWatcher>
 #include <QFileIconProvider>
 #include <QSortFilterProxyModel>
+#include <QStyledItemDelegate>

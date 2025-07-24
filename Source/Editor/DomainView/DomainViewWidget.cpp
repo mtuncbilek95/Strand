@@ -3,7 +3,9 @@
 #include <Editor/DomainView/IconProvider/DomainIconProvider.h>
 #include <Editor/DomainView/Proxy/DomainFilterProxy.h>
 #include <Editor/DomainView/DomainMiscView.h>
-#include <Editor/DomainView/DomainListView.h>
+#include <Editor/DomainView/DomainListView.h>s
+
+#include <Editor/SceneGraph/SceneGraphController.h>
 
 namespace Flax
 {
@@ -67,7 +69,12 @@ namespace Flax
 
 		QModelIndex sourceIndex = m_proxy->mapToSource(proxyIndex);
 		if (!m_fsModel.isDir(sourceIndex))
+		{
+			QFileInfo fileInfo(m_fsModel.filePath(sourceIndex));
+			qDebug() << fileInfo.baseName();
+			emit onFileActivated(m_fsModel.filePath(sourceIndex));
 			return;
+		}
 
 		m_listView->setRootIndex(proxyIndex);
 		emit onRefreshPathView(m_fsModel.fileInfo(sourceIndex).absoluteFilePath());
@@ -96,5 +103,13 @@ namespace Flax
 		connect(m_miscView, &DomainMiscView::onBackClicked, this, &DomainViewWidget::onBackDomainClicked);
 		connect(this, &DomainViewWidget::onRefreshPathView, m_miscView, &DomainMiscView::onRefreshPathView); // Reset breadcrumbs
 		connect(m_miscView, &DomainMiscView::onPathViewClicked, this, &DomainViewWidget::onPathViewClicked); // Breadcrumbs clicked
+
+		connect(this, &DomainViewWidget::onFileActivated, ControllerManager::Get<SceneGraphController>(), &SceneGraphController::onSceneLoadRequested);
+		// connect(this, &DomainViewWidget::onFileActivated, &TextureViewController::Get(), &TextureViewController::onTextureViewRequested);
+		// connect(this, &DomainViewWidget::onFileActivated, &MaterialViewController::Get(), &MaterialViewController::onMaterialGraphRequested);
+		// connect(this, &DomainViewWidget::onFileActivated, &MeshViewController::Get(), &MeshViewController::onMeshViewRequested);
+		// connect(this, &DomainViewWidget::onFileActivated, &AudioViewController::Get(), &AudioViewController::onAudioGraphRequested);
+		// connect(this, &DomainViewWidget::onFileActivated, &AnimationViewController::Get(), &AnimationViewController::onAnimationSequenceRequested);
+		// connect(this, &DomainViewWidget::onFileActivated, &RenderGraphController::Get(), &RenderGraphController::onRenderGraphRequested);
 	}
 }

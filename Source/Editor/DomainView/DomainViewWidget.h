@@ -25,6 +25,7 @@ namespace Flax
 
 	signals:
 		void onRefreshPathView(const QString& path);
+		void onFileActivated(const QString& filePath);
 
 	private slots:
 		void onAddDomainClicked();
@@ -35,7 +36,7 @@ namespace Flax
 		
 	private:
 		void setupSignals();
-
+		
 	private:
 		DomainListView* m_listView;
 		DomainMiscView* m_miscView;

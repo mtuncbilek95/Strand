@@ -16,3 +16,6 @@
 
 #include <Editor/Data/Registry/ViewModelBase.h>
 #include <Editor/Data/Registry/ViewModelRegistry.h>
+
+#include <Editor/Data/Controller/ControllerBase.h>
+#include <Editor/Data/Controller/ControllerManager.h>

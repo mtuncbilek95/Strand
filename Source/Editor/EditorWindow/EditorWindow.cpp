@@ -4,7 +4,7 @@
 
 namespace Flax
 {
-	EditorWindow::EditorWindow(QWidget* pParent)
+	EditorWindow::EditorWindow(QWidget* pParent) : QMainWindow(pParent)
 	{
 		setObjectName("EditorWindow");
 		setWindowTitle("Flax Editor");
