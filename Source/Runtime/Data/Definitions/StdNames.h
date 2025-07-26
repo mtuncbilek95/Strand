@@ -23,6 +23,10 @@ using Queue = std::queue<T>;
 template<typename T>
 using Span = std::span<T>;
 
+#include <array>
+template<typename T, usize N>
+using Array = std::array<T, N>;
+
 #include <vector>
 template<typename T>
 using Vector = std::vector<T>;
@@ -78,6 +82,10 @@ using TypeIndex = std::type_index;
 
 #include <any>
 using Any = std::any;
+
+#include <bitset>
+template<usize T>
+using Bitset = std::bitset<T>;
 
 #include <initializer_list>
 template<typename T>

@@ -33,13 +33,13 @@ namespace Flax
 	 * Example usage:
 	 * 
 	 * // Assuming that mount points are set up correctly
-	 * auto vfm = RuntimeService::Get<VirtualFileService>();
+	 * auto vfm = ServiceLocator::Get<VirtualFileService>();
 	 * 
 	 * // "Scripts" and "Assets" are mount points
 	 * vfm->Create("Scripts/Player/Enums/PlayerState.h");
 	 * vfm->Delete("Assets/Player/Mesh/Textures/AlbedoCharacter.tga");
 	 */
-	class VirtualFileService : public RuntimeServiceBase
+	class VirtualFileService : public Service
 	{
 	public:
 		VirtualFileService() = default;

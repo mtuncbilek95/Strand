@@ -7,15 +7,17 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Scene/Component.h>
+#include <Editor/Core/CoreMinimal.h>
 
 namespace Flax
 {
-	struct TransformComponent : Component<TransformComponent>
+	class DomainViewController final : public ControllerBase
 	{
-		Math::Vec3f position = { 0.f, 0.f, 0.f };
-		Math::Quatf rotation = { 0.f, 0.f, 0.f, 1.f };
-		Math::Vec3f scale = { 1.f, 1.f, 1.f };
+		Q_OBJECT
+	public:
+		void InitializeController() override final;
+		void ShutdownController() override final;
+
+
 	};
 }

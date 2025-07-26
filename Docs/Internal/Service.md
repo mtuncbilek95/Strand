@@ -13,7 +13,7 @@ need to register it to service registry within the source file as below.
 
 namespace Flax
 {
-	class ExampleService : public RuntimeServiceBase
+	class ExampleService : public Service
 	{
 	public:
 		ExampleService() = default;
@@ -44,7 +44,7 @@ namespace Flax
 
 	struct ExampleServiceRegister
 	{
-		ExampleServiceRegister() { RuntimeService::Register(NewRef<ExampleService>()); }
+		ExampleServiceRegister() { ServiceLocator::Register(NewRef<ExampleService>()); }
 	}
 	static ExampleServiceRegister gb_exampleServiceRegister;
 }
@@ -59,7 +59,7 @@ using namespace Flax;
 
 int main(i32 argC, c8** argV)
 {
-	auto service = RuntimeService::Get<ExampleService>();
+	auto service = ServiceLocator::Get<ExampleService>();
 	service->DoSomething();
 
 	return 0;

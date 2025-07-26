@@ -37,7 +37,7 @@ namespace Flax
 	void DomainListView::onCreateFolder(const QModelIndex& sourceIndex)
 	{
 		QFileSystemModel* sourceModel = qobject_cast<QFileSystemModel*>(qobject_cast<QSortFilterProxyModel*>(model())->sourceModel());
-		auto vfm = RuntimeService::Get<VirtualFileService>();
+		auto vfm = ServiceLocator::Get<VirtualFileService>();
 		Path virtualPath = vfm->VirtualPath(sourceModel->filePath(sourceIndex).toStdString());
 
 		String folderName = "New_Folder";
@@ -139,7 +139,7 @@ namespace Flax
 						QModelIndex sourceIndex = proxyModel->mapToSource(index);
 						QString absPath = fsModel->filePath(sourceIndex);
 
-						auto vfm = RuntimeService::Get<VirtualFileService>();
+						auto vfm = ServiceLocator::Get<VirtualFileService>();
 						Path virtualPath = vfm->VirtualPath(absPath.toStdString());
 						vfm->Delete(virtualPath);
 					}
@@ -156,7 +156,7 @@ namespace Flax
 	{
 		QSortFilterProxyModel* proxyModel = qobject_cast<QSortFilterProxyModel*>(this->model());
 		QFileSystemModel* sourceModel = qobject_cast<QFileSystemModel*>(proxyModel->sourceModel());
-		auto vfm = RuntimeService::Get<VirtualFileService>();
+		auto vfm = ServiceLocator::Get<VirtualFileService>();
 
 		if (!sourceModel || !proxyModel) 
 			return;
@@ -191,7 +191,7 @@ namespace Flax
 		oldDir.cdUp();
 		m_newItemPath = oldDir.absolutePath() + "/" + newName + "/";
 
-		auto vfm = RuntimeService::Get<VirtualFileService>();
+		auto vfm = ServiceLocator::Get<VirtualFileService>();
 		Path virtualPath = vfm->VirtualPath(m_newItemPath.toStdString());
 		vfm->Refresh(virtualPath.parent_path());
 
@@ -211,7 +211,7 @@ namespace Flax
 		{
 			if(hint == QAbstractItemDelegate::RevertModelCache)
 			{
-				auto vfm = RuntimeService::Get<VirtualFileService>();
+				auto vfm = ServiceLocator::Get<VirtualFileService>();
 				Path virtualPath = vfm->VirtualPath(m_newItemPath.toStdString());
 				vfm->Delete(virtualPath.parent_path());
 			}

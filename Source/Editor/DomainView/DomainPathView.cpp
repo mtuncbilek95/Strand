@@ -18,7 +18,7 @@ namespace Flax
 
 	void DomainPathView::refreshPathView(const QString& path)
 	{
-		auto vfm = RuntimeService::Get<VirtualFileService>();
+		auto vfm = ServiceLocator::Get<VirtualFileService>();
 		Path virtualPath = vfm->VirtualPath(path.toStdString());
 
 		Vector<QString> segments;

@@ -7,9 +7,16 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Resources/Assets/IAssetImporter.h>
+#include <Runtime/Data/Definitions/Definitions.h>
+#include <Runtime/Data/Definitions/StdNames.h>
+#include <Runtime/Logger/Logger.h>
 
 namespace Flax
 {
+	class Service
+	{
+	public:
+		virtual void InitializeServiceField() = 0;
+		virtual void ResetServiceField() = 0;
+	};
 }

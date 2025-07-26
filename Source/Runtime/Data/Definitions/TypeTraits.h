@@ -11,28 +11,10 @@
 
 namespace Flax
 {
-	namespace TypeUtil
-	{
-		template<typename T>
-		String TypeName()
-		{
-			String funcSig = __FUNCSIG__;
-			auto start = funcSig.find("TypeName<") + 9;
-			auto end = funcSig.find(">(void)", start);
-			return funcSig.substr(start, end - start);
-		}
-
-		template<typename T>
-		u64 GetTypeHash()
-		{
-			return Hash<TypeIndex>{}(TypeIndex(typeid(T)));
-		}
-	}
-
 	static Atomic<i32> uniqueTypeID;
 
 	template<typename T>
-	static i32 GetUniqueTypeId()
+	static i32 UniqueTypeId()
 	{
 		static const i32 id = uniqueTypeID++;
 		return id;

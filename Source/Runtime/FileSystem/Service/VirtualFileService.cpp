@@ -319,7 +319,7 @@ namespace Flax
 
 	struct VirtualFileSystemRegister
 	{
-		VirtualFileSystemRegister() { RuntimeService::Register(NewRef<VirtualFileService>()); }
+		VirtualFileSystemRegister() { ServiceLocator::Register(NewRef<VirtualFileService>()); }
 	};
 	static VirtualFileSystemRegister gb_virtualFileSystemRegister;
 }

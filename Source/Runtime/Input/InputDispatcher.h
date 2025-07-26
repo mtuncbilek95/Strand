@@ -12,7 +12,7 @@
 
 namespace Flax
 {
-	class InputDispatcher : public RuntimeServiceBase
+	class InputDispatcher : public Service
 	{
 		using EventCallback = function<void(const InputEvent&)>;
 

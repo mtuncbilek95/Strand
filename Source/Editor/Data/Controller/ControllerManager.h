@@ -8,7 +8,7 @@
 #pragma once
 
 #include <Runtime/Data/Definitions/StdNames.h>
-#include <Runtime/Data/Logger/Logger.h>
+#include <Runtime/Logger/Logger.h>
 #include <Editor/Data/Controller/ControllerBase.h>
 
 namespace Flax

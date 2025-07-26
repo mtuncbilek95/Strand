@@ -22,7 +22,7 @@ namespace Flax
         {
             InputDispactherRegistry()
             {
-                RuntimeService::Register<InputDispatcher>(NewRef<InputDispatcher>());
+                ServiceLocator::Register<InputDispatcher>(NewRef<InputDispatcher>());
             }
         };
 

@@ -22,7 +22,7 @@ namespace Flax
 
         InputEvent event;
         while (queue->PopEvent(event))
-            RuntimeService::Get<InputDispatcher>()->DispatchEvent(event);
+            ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
     }
 
     static void MouseButtonCallback(GLFWwindow* window, i32 button, i32 action, i32 mods)
@@ -45,7 +45,7 @@ namespace Flax
 
         InputEvent event;
         while (queue->PopEvent(event))
-            RuntimeService::Get<InputDispatcher>()->DispatchEvent(event);
+            ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
     }
 
     static void ResizeCallback(GLFWwindow* window, i32 width, i32 height)
@@ -60,7 +60,7 @@ namespace Flax
 
         InputEvent event;
         while (queue->PopEvent(event))
-            RuntimeService::Get<InputDispatcher>()->DispatchEvent(event);
+            ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
     }
 
     static void MouseWheelScrollCallback(GLFWwindow* window, f64 xoffset, f64 yoffset)
@@ -74,7 +74,7 @@ namespace Flax
 
         InputEvent event;
         while (queue->PopEvent(event))
-            RuntimeService::Get<InputDispatcher>()->DispatchEvent(event);
+            ServiceLocator::Get<InputDispatcher>()->DispatchEvent(event);
     }
 
     static void KeyboardCallback(GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods)

@@ -17,7 +17,7 @@ namespace Flax
 		m_miscView = new DomainMiscView(this);
 		m_listView = new DomainListView(this);
 
-		auto vfm = RuntimeService::Get<VirtualFileService>();
+		auto vfm = ServiceLocator::Get<VirtualFileService>();
 		QString rootPath = QString::fromStdString(vfm->AbsolutePath("Assets").string());
 		m_fsModel.setRootPath(rootPath);
 		m_fsModel.setReadOnly(false);
@@ -82,7 +82,7 @@ namespace Flax
 
 	void DomainViewWidget::onPathViewClicked(const QString& path)
 	{
-		auto vfm = RuntimeService::Get<VirtualFileService>();
+		auto vfm = ServiceLocator::Get<VirtualFileService>();
 		Path virtualPath = vfm->VirtualPath(path.toStdString());
 		if (virtualPath.empty())
 			return;

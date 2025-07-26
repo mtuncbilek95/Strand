@@ -1,6 +1,6 @@
 #include "GUIApplication.h"
 
-#include <Runtime/Data/Platform/PlatformPath.h>
+#include <Runtime/Platform/PlatformPath.h>
 #include <Runtime/Data/Config/RuntimeLoader.h>
 #include <Runtime/FileSystem/Service/VirtualFileService.h>
 #include <Runtime/FileSystem/DiskFile/DiskFileSystem.h>
@@ -25,8 +25,8 @@ namespace Flax
 		}
 		setStyleSheet(StyleManager::Get().LoadStyle());
 
-		RuntimeService::InitializeServices();
-		auto vfm = RuntimeService::Get<VirtualFileService>();
+		ServiceLocator::InitializeServices();
+		auto vfm = ServiceLocator::Get<VirtualFileService>();
 		// TODO: Path below needs to come from argV, but if not, it should use temporary project in engine.
 		vfm->Initialize(R"(D:\Projects\FlaxTestProject)");
 		vfm->Mount("Assets", NewRef<DiskFileSystem>());
@@ -34,17 +34,17 @@ namespace Flax
 		vfm->Mount("Intermediate", NewRef<DiskFileSystem>());
 
 		Path engineConfig = Path(PlatformPath::AppDataPath());
-		engineConfig /= "Neuvex/FlaxRuntime/EngineConfig.toml";
+		engineConfig /= "Neuvex/FlaxRuntime/EngineConfig.Json";
 		auto engineSettings = RuntimeLoader::LoadEngineSettings(engineConfig.string());
 
-		auto projectSettings = RuntimeLoader::LoadProjectSettings("/Caches/ProjectSettings.toml");
+		auto projectSettings = RuntimeLoader::LoadProjectSettings("/Caches/ProjectSettings.Json");
 		/*
 			1 - Check arguments to see if we have project to run
 				If have, check cache to see if there is a defaultProjectSettings. 
 				If not, warn and create one with defaultConfigs we have.
 				Those include:
 					- Creating Assets, Caches, Scripts and Intermediate folders if there isn't.
-					- Check if %AppData%/Roaming/ has Neuvex/FlaxRuntime/EngineConfig.toml
+					- Check if %AppData%/Roaming/ has Neuvex/FlaxRuntime/EngineConfig.Json
 			
 			2 - After this, Mount folders and load both engine + project configs.
 			3 - Load scene and project browser via settings above.

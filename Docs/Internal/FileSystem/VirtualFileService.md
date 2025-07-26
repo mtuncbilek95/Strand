@@ -23,7 +23,7 @@ mount point in your virtual path, then you may crash the application.
 
 #### For project example
 ```cpp
-// Assuming you already called RuntimeService to get the VirtualFileService
+// Assuming you already called ServiceLocator to get the VirtualFileService
 
 void Something()
 {

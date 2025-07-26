@@ -19,3 +19,9 @@
 
 #include <Editor/Data/Controller/ControllerBase.h>
 #include <Editor/Data/Controller/ControllerManager.h>
+
+#define EDITOR_NOT_IMPLEMENTED_YET(returnType) \
+	{ \
+		Log::Error(LogType::Editor, "'{}' This function is not implemented yet!", __FUNCTION__); \
+		return returnType; \
+	}

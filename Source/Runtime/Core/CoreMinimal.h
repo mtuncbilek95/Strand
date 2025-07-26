@@ -10,6 +10,7 @@
 #include <Runtime/Data/Containers/ReadArray.h>
 #include <Runtime/Data/Containers/Uuid.h>
 #include <Runtime/Data/Containers/Singleton.h>
+#include <Runtime/Data/Containers/DateTime.h>
 
 #include <Runtime/Data/Definitions/Definitions.h>
 #include <Runtime/Data/Definitions/StdHelpers.h>
@@ -17,12 +18,16 @@
 #include <Runtime/Data/Definitions/TypeTraits.h>
 
 #include <Runtime/Data/Tools/DataReader.h>
-#include <Runtime/Data/Service/RuntimeService.h>
-#include <Runtime/Data/Logger/Logger.h>
-#include <Runtime/Data/DateTime/DateTime.h>
+#include <Runtime/Service/ServiceLocator.h>
+
+#include <Runtime/Logger/Logger.h>
 
 #include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Data/Definitions/GlmNames.h>
 #include <Runtime/Data/Definitions/JsonNames.h>
-#include <Runtime/Data/Definitions/TomlNames.h>
-#include <Runtime/Data/Definitions/ReflectionNames.h>
+
+#define RUNTIME_NOT_IMPLEMENTED_YET(returnType) \
+	{ \
+		Log::Error(LogType::Engine, "'{}' This function is not implemented yet!", __FUNCTION__); \
+		return returnType; \
+	}
