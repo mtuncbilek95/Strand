@@ -26,6 +26,7 @@ namespace Flax
         GraphicsAPI,
         Render,
         Resource,
+		Reflection,
         Asset,
         ECS,
 		VFS,
