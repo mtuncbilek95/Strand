@@ -13,12 +13,12 @@ namespace Flax
 			if (info.superClass.empty())
 				ReflectionRegistry::DefineClass(info.className, std::move(info));
 			else
-				m_pending.emplace(std::move(info.superClass), std::move(info));
+				m_pending.push_back({ std::move(info.superClass), std::move(info) });
 		}
 
 		while (!m_pending.empty())
 		{
-			std::vector<decltype(m_pending)::iterator> toRemove;
+			Vector<decltype(m_pending)::iterator> toRemove;
 			toRemove.reserve(m_pending.size());
 
 			for (auto it = m_pending.begin(); it != m_pending.end(); ++it)

@@ -24,6 +24,6 @@ namespace Flax
 
 	private:
 		HashMap<String, ClassInfo> m_manifestOrder;
-		HashMap<String, ClassInfo> m_pending;
+		Vector<Pair<String, ClassInfo>> m_pending;
 	};
 }

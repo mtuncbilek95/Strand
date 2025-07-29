@@ -19,9 +19,10 @@ namespace Flax
 		{
 			auto& classes = ReflectedClasses();
 			if (classes.contains(className))
-				Log::Warn(LogType::Engine, "Class '{}' is already registered. Overwriting existing class info.", className);
+				Log::Warn(LogType::Reflection, "Class '{}' is already registered. Overwriting existing class info.", className);
 
 			classes[className] = classInfo;
+			Log::Info(LogType::Reflection, "'{}' has been registered to reflection system.", className);
 		}
 
 		static void UndefineClass(const String& className, const String& fieldName, const FieldInfo& fieldInfo)
@@ -29,13 +30,13 @@ namespace Flax
 			auto& classes = ReflectedClasses();
 			if (!classes.contains(className))
 			{
-				Log::Error(LogType::Engine, "Class '{}' is not registered. Cannot register field '{}'.", className, fieldName);
+				Log::Error(LogType::Reflection, "Class '{}' is not registered. Cannot register field '{}'.", className, fieldName);
 				return;
 			}
 
 			auto& classInfo = classes[className];
 			if (classInfo.fields.contains(fieldName))
-				Log::Warn(LogType::Engine, "Field '{}' in class '{}' is already registered. Overwriting existing field info.", fieldName, className);
+				Log::Warn(LogType::Reflection, "Field '{}' in class '{}' is already registered. Overwriting existing field info.", fieldName, className);
 			classInfo.fields[fieldName] = fieldInfo;
 		}
 
@@ -54,7 +55,7 @@ namespace Flax
 			auto it = classes.find(className);
 			if (it == classes.end()) [[unlikely]]
 			{
-				Log::Error(LogType::Engine, "Class '{}' is not registered.", className);
+				Log::Error(LogType::Reflection, "Class '{}' is not registered.", className);
 				return nullptr;
 			}
 
@@ -70,7 +71,7 @@ namespace Flax
 			auto it = classInfo->fields.find(fieldName);
 			if (it == classInfo->fields.end()) [[unlikely]]
 			{
-				Log::Error(LogType::Engine, "Field '{}' in class '{}' is not registered.", fieldName, className);
+				Log::Error(LogType::Reflection, "Field '{}' in class '{}' is not registered.", fieldName, className);
 				return nullptr;
 			}
 			return &it->second;

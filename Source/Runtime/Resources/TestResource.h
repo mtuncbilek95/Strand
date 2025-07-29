@@ -22,4 +22,37 @@ namespace Flax
 	private:
 		String m_newFuckery = "TestResource";
 	};
+
+	class ResourceOne : public TestResource
+	{
+		FLAX_OBJECT(ResourceOne)
+	public:
+		ResourceOne() = default;
+		~ResourceOne() = default;
+
+	private:
+		u64 m_oneU64 = 25;
+	};
+
+	class ResourceTwo : public ResourceOne
+	{
+		FLAX_OBJECT(ResourceTwo)
+	public:
+		ResourceTwo() = default;
+		~ResourceTwo() = default;
+
+	private:
+		u64 m_twoU64 = 1;
+	};
+
+	class ResourceThree : public ResourceBase
+	{
+		FLAX_OBJECT(ResourceThree)
+	public:
+		ResourceThree() = default;
+		~ResourceThree() = default;
+
+	private:
+		u64 m_threeU64 = 12;
+	};
 }
