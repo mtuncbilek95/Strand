@@ -36,6 +36,9 @@ namespace Flax
 
 		function<Ref<ObjectBase>()> constructor;
 
+		String superClass;
+		Vector<String> inheritances;
+
 		HashMap<String, FieldInfo> fields;
 		HashMap<String, Any> attributes;
 	};

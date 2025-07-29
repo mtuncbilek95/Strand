@@ -9,4 +9,8 @@ namespace Flax
 	ResourceBase::~ResourceBase()
 	{
 	}
+
+	BEGIN_REFLECT_CLASS(ResourceBase);
+	REFLECT_FIELD(ResourceBase, m_test);
+	END_REFLECT_CLASS(ResourceBase);
 }

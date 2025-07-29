@@ -4,7 +4,6 @@
 
 namespace Flax
 {
-
 	void JsonSerializer::SerializeImpl(const void* obj, const String& objName, OrderedJson& jsonOut)
 	{
 		auto classInfo = ReflectionRegistry::GetClass(objName);
@@ -16,6 +15,24 @@ namespace Flax
 
 		jsonOut = OrderedJson::object();
 		jsonOut["objectType"] = objName;
+
+		if (classInfo->inheritances.size() > 0)
+		{
+			auto& inheritances = classInfo->inheritances;
+			for (i32 i = inheritances.size() - 1; i >= 0; i--)
+			{
+				auto inheritInfo = ReflectionRegistry::GetClass(inheritances[i]);
+
+				for (const auto& [fieldName, fieldInfo] : inheritInfo->fields)
+				{
+					auto value = fieldInfo.getter(const_cast<void*>(obj));
+					auto jsonValue = JsonTypeUtils::ToJson(value, fieldInfo.typeName);
+
+					if (!jsonValue.is_null())
+						jsonOut[fieldName] = jsonValue;
+				}
+			}
+		}
 
 		for (const auto& [fieldName, fieldInfo] : classInfo->fields)
 		{

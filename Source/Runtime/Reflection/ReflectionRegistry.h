@@ -41,6 +41,9 @@ namespace Flax
 
 		static b8 HasClass(const String& className)
 		{
+			if (className.empty())
+				return false;
+
 			return ReflectedClasses().contains(className);
 		}
 
@@ -81,6 +84,24 @@ namespace Flax
 				returnVec.emplace_back(className);
 
 			return returnVec;
+		}
+
+		static Vector<String> GetInheritances(const String& className)
+		{
+			if (className.empty())
+				return Vector<String>();
+
+			auto classInfo = GetClass(className);
+			if (!classInfo)
+				return Vector<String>();
+
+			Vector<String> inheritList;
+			inheritList.emplace_back(className);
+
+			for (const auto& name : classInfo->inheritances)
+				inheritList.emplace_back(name);
+
+			return inheritList;
 		}
 
 	private:

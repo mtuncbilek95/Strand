@@ -8,18 +8,22 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Reflection/Reflection.h>
+#include <Runtime/Reflection/ReflectionInfo.h>
 
 namespace Flax
 {
-	class ResourceBase : public ObjectBase
+	class ReflectionManifest : public Singleton<ReflectionManifest>
 	{
-		FLAX_OBJECT(ResourceBase)
 	public:
-		ResourceBase();
-		~ResourceBase();
+		void RegisterDependency(const ClassInfo& classInfo)
+		{
+			m_manifestOrder[classInfo.className] = std::move(classInfo);
+		}
+
+		void Manifest();
 
 	private:
-		String m_test = "ResourceBase";
+		HashMap<String, ClassInfo> m_manifestOrder;
+		HashMap<String, ClassInfo> m_pending;
 	};
 }

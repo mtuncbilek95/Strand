@@ -8,18 +8,18 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Reflection/Reflection.h>
+#include <Runtime/Resources/ResourceBase.h>
 
 namespace Flax
 {
-	class ResourceBase : public ObjectBase
+	class TestResource : public ResourceBase
 	{
-		FLAX_OBJECT(ResourceBase)
+		FLAX_OBJECT(TestResource)
 	public:
-		ResourceBase();
-		~ResourceBase();
+		TestResource();
+		~TestResource();
 
 	private:
-		String m_test = "ResourceBase";
+		String m_newFuckery = "TestResource";
 	};
 }

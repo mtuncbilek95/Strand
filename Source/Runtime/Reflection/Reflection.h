@@ -9,6 +9,7 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Reflection/ReflectionRegistry.h>
+#include <Runtime/Reflection/ReflectionManifest.h>
 
 namespace Flax
 {
@@ -98,6 +99,11 @@ private:
                 return NewOwn<ClassName>(); \
             };
 
+#define REFLECT_INHERITANCE(ClassName, InheritanceName) \
+		{ \
+			classInfo.superClass = #InheritanceName; \
+		}
+
 #define REFLECT_FIELD(ClassName, FieldName) \
 		{ \
 			FieldInfo fieldInfo; \
@@ -120,7 +126,7 @@ private:
 		}
 
 #define END_REFLECT_CLASS(ClassName) \
-            ReflectionRegistry::DefineClass(#ClassName, std::move(classInfo)); \
+            ReflectionManifest::Get().RegisterDependency(std::move(classInfo)); \
         } \
     }; \
     \
