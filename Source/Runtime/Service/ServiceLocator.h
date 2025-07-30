@@ -34,8 +34,9 @@ namespace Flax
 
 			if (it == Services().end())
 			{
-				Register<T>(NewRef<T>());
-				return nullptr;
+				auto service = NewRef<T>();
+				Register<T>(service);
+				return service;
 			}
 
 			return std::static_pointer_cast<T>(it->second);
