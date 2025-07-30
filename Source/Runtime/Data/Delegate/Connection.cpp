@@ -6,6 +6,11 @@ namespace Flax
 	{
 	}
 
+	void Connection::SetConnection(voidFunc disconnect)
+	{
+		m_disconnectFunc = disconnect;
+	}
+
 	void Connection::Disconnect()
 	{
 		if (m_disconnectFunc)

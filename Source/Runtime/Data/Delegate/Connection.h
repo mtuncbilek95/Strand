@@ -18,10 +18,12 @@ namespace Flax
 		Connection() = default;
 		Connection(voidFunc disconnect);
 
+		void SetConnection(voidFunc disconnect);
+		
 		void Disconnect();
 		b8 IsConnected() const;
 
 	private:
-		voidFunc m_disconnectFunc;
+		voidFunc m_disconnectFunc = {};
 	};
 }
