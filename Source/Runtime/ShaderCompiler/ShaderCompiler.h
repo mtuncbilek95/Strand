@@ -13,6 +13,8 @@ namespace Flax
 {
 	struct ShaderCompiler final
 	{
+		ShaderCompiler() = delete; // Make a static utility class
+
 		static ReadArray<u32> CompileShader(const String& shaderPath, const String& includePath = "", const String& entryPoint = "main");
 	};
 }
