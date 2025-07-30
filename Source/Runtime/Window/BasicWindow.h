@@ -26,16 +26,22 @@ namespace Flax
         Math::Vec2u windowSize = { 1920, 1080 };
         WindowMode windowMode = WindowMode::Windowed;
 
-        WindowProps& setWindowName(const String& name) { windowName = name; return *this; }
-        WindowProps& setWindowSize(const Math::Vec2u& size) { windowSize = size; return *this; }
-        WindowProps& setWindowMode(WindowMode mode) { windowMode = mode; return *this; }
+        WindowProps& setWindowName(const String& name) noexcept { windowName = name; return *this; }
+        WindowProps& setWindowSize(const Math::Vec2u& size) noexcept { windowSize = size; return *this; }
+        WindowProps& setWindowMode(WindowMode mode) noexcept { windowMode = mode; return *this; }
     };
 
     class BasicWindow : public IObject
     {
     public:
         BasicWindow(const WindowProps& desc);
-        ~BasicWindow();
+        virtual ~BasicWindow();
+        
+		// Prevent copy and move
+        BasicWindow(const BasicWindow&) = delete;
+        BasicWindow& operator=(const BasicWindow&) = delete;
+        BasicWindow(BasicWindow&&) = delete;
+        BasicWindow& operator=(BasicWindow&&) = delete;
 
         void Show();
         void Hide();
