@@ -14,14 +14,14 @@ namespace Flax
 {
 	struct VirtualNodeDesc
 	{
-		String nodeName;
-		Path virtualPath;
-		Path sourcePath;
-		VirtualNodeType type;
+		String nodeName = {};
+		Path virtualPath = {};
+		Path sourcePath = {};
+		VirtualNodeType type = {};
 
-		VirtualNodeDesc& setName(const String& name) { nodeName = name; return *this; }
-		VirtualNodeDesc& setVirtualPath(const Path& path) { virtualPath = path; return *this; }
-		VirtualNodeDesc& setSourcePath(const Path& path) { sourcePath = path; return *this; }
-		VirtualNodeDesc& setType(VirtualNodeType nodeType) { type = nodeType; return *this; }
+		VirtualNodeDesc& setName(const String& name) noexcept { nodeName = name; return *this; }
+		VirtualNodeDesc& setVirtualPath(const Path& path) noexcept { virtualPath = path; return *this; }
+		VirtualNodeDesc& setSourcePath(const Path& path) noexcept { sourcePath = path; return *this; }
+		VirtualNodeDesc& setType(VirtualNodeType nodeType) noexcept { type = nodeType; return *this; }
 	};
 }
