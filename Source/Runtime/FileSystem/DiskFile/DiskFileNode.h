@@ -36,10 +36,10 @@ namespace Flax
 		void LoadChildren();
 
 	private:
-		VirtualNodeDesc m_desc;
-		IVirtualFileNode* m_parent;
+		VirtualNodeDesc m_desc = {};
+		IVirtualFileNode* m_parent = {};
 
-		Vector<Ref<IVirtualFileNode>> m_children;
-		b8 m_childrenLoaded;
+		Vector<Ref<IVirtualFileNode>> m_children = {};
+		b8 m_childrenLoaded = {};
 	};
 }

@@ -23,8 +23,8 @@ namespace Flax
 			{
 			}
 
-			slotFunction slot;
-			usize id;
+			slotFunction slot = {};
+			usize id = {};
 		};
 
 	public:
@@ -70,7 +70,7 @@ namespace Flax
 		usize Count() const { return m_slots.size(); }
 
 	private:
-		Vector<SlotData> m_slots;
-		usize m_nextId;
+		Vector<SlotData> m_slots = {};
+		usize m_nextId = {};
 	};
 }

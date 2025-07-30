@@ -11,7 +11,7 @@
 
 namespace Flax
 {
-	static Atomic<i32> uniqueTypeID;
+	static Atomic<i32> uniqueTypeID = {};
 
 	template<typename T>
 	static i32 UniqueTypeId()
