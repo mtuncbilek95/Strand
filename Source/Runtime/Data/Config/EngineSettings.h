@@ -48,21 +48,21 @@ namespace Flax
 		GeneralSettings general;
 		GraphicsSettings graphics;
 
-		EngineSettings& setGeneral(const GeneralSettings& settings) { general = settings; return *this; }
-		EngineSettings& setGraphics(const GraphicsSettings& settings) { graphics = settings; return *this; }
+		EngineSettings& setGeneral(const GeneralSettings& settings) noexcept { general = settings; return *this; }
+		EngineSettings& setGraphics(const GraphicsSettings& settings) noexcept { graphics = settings; return *this; }
 
 		static EngineSettings DefaultSettings()
 		{
 			EngineSettings engineSettings;
 			engineSettings.setGeneral(
-				GeneralSettings().setName("FlaxEngine").setVersion("1.0.0").setApplicationType(0))
+				GeneralSettings().setName("FlaxEngine").setVersion("1.0.0").setApplicationType(0)) // #CLEAN(@mateusdigital): Remove magic numbers...
 				.setGraphics(
 					GraphicsSettings()
-					.setGraphicsAPI(1)
-					.setImageCount(2)
-					.setPresentMode(2)
-					.setSwapFormat(16)
-					.setDepthFormat(30)
+					.setGraphicsAPI(1)  // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setImageCount(2)   // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setPresentMode(2)  // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setSwapFormat(16)  // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setDepthFormat(30) // #CLEAN(@mateusdigital): Remove magic numbers...
 					.setRenderThreadCount(4));
 
 			return engineSettings;
