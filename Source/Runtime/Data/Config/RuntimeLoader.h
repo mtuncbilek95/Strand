@@ -19,6 +19,8 @@ namespace Flax
 	 */
 	struct RuntimeLoader
 	{
+		RuntimeLoader() = delete; // Makes a static class
+
 		static EngineSettings LoadEngineSettings(const Path& path);
 		static ProjectSettings LoadProjectSettings(const Path& path);
 	};

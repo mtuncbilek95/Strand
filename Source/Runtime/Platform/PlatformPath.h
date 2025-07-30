@@ -13,6 +13,7 @@ namespace Flax
 {
 	struct PlatformPath
 	{
+		PlatformPath() = delete; // Makes a static class
 		static String AppDataPath();
 	};
 }
