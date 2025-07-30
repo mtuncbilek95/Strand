@@ -16,6 +16,9 @@ namespace Flax
 	class Service
 	{
 	public:
+		virtual ~Service() = default;
+
+	public:
 		virtual void InitializeServiceField() = 0;
 		virtual void ResetServiceField() = 0;
 	};
