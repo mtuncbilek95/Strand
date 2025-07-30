@@ -16,8 +16,10 @@ namespace Flax
 		std::istringstream ss(dateAsString);
 		ss >> std::get_time(&t, "%d.%m.%Y %H:%M:%S");
 
-		if (ss.fail())
+		if (ss.fail()) {
 			*this = GetCurrentDateTime();
+			return;
+		}
 
 		m_day = static_cast<u8>(t.tm_mday);
 		m_month = static_cast<u8>(t.tm_mon + 1);
