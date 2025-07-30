@@ -169,7 +169,7 @@ namespace Flax
 	DateTime DateTime::GetCurrentDateTime()
 	{
 		std::time_t now = std::time(nullptr);
-		std::tm* ltm = std::localtime(&now);
+		std::tm* ltm = std::localtime(&now); // @XXX: not thread-safe -- @mateusdigital
 
 		if (!ltm)
 			throw std::runtime_error("Failed to get current local time.");
