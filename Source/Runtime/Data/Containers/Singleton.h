@@ -24,5 +24,17 @@ namespace Flax
 			static T instance;
 			return instance;
 		}
+
+		// Prevent Copy 
+		Singleton(const Singleton&) = delete;
+		Singleton& operator=(const Singleton&) = delete;
+
+		// Prevent Move
+		Singleton(Singleton&&) = delete;
+		Singleton& operator=(Singleton&&) = delete;
+
+	protected:
+		Singleton() = default;
+		~Singleton() = default;
 	};
 }
