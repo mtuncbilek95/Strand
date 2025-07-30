@@ -8,10 +8,6 @@
 
 namespace Flax
 {
-	Uuid::Uuid() : m_a(0), m_b(0), m_c(0), m_d(0)
-	{
-	}
-
 	Uuid::Uuid(u32 a, u16 b, u16 c, u64 d) : m_a(a), m_b(b), m_c(c), m_d(d)
 	{
 	}
@@ -31,10 +27,6 @@ namespace Flax
         m_d = (high << 16) | low;
     }
 
-
-	Uuid::~Uuid()
-	{
-	}
 
 	String Uuid::ToString() const
 	{
