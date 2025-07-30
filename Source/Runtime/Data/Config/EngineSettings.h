@@ -17,9 +17,9 @@ namespace Flax
 		String engineVersion;
 		u32 applicationType;
 
-		GeneralSettings& setName(const String& name) { engineName = name; return *this; }
-		GeneralSettings& setVersion(const String& version) { engineVersion = version; return *this; }
-		GeneralSettings& setApplicationType(u32 type) { applicationType = type; return *this; }
+		GeneralSettings& setName(const String& name) noexcept { engineName = name; return *this; }
+		GeneralSettings& setVersion(const String& version) noexcept { engineVersion = version; return *this; }
+		GeneralSettings& setApplicationType(u32 type) noexcept { applicationType = type; return *this; }
 	};
 
 	struct GraphicsSettings
@@ -31,12 +31,12 @@ namespace Flax
 		u32 depthFormat;
 		u32 renderThreadCount;
 
-		GraphicsSettings& setGraphicsAPI(u32 api) { graphicsAPI = api; return *this; }
-		GraphicsSettings& setPresentMode(u32 mode) { presentMode = mode; return *this; }
-		GraphicsSettings& setImageCount(u32 count) { imageCount = count; return *this; }
-		GraphicsSettings& setSwapFormat(u32 format) { swapFormat = format; return *this; }
-		GraphicsSettings& setDepthFormat(u32 format) { depthFormat = format; return *this; }
-		GraphicsSettings& setRenderThreadCount(u32 count) { renderThreadCount = count; return *this; }
+		GraphicsSettings& setGraphicsAPI(u32 api) noexcept { graphicsAPI = api; return *this; }
+		GraphicsSettings& setPresentMode(u32 mode) noexcept { presentMode = mode; return *this; }
+		GraphicsSettings& setImageCount(u32 count) noexcept { imageCount = count; return *this; }
+		GraphicsSettings& setSwapFormat(u32 format) noexcept { swapFormat = format; return *this; }
+		GraphicsSettings& setDepthFormat(u32 format) noexcept { depthFormat = format; return *this; }
+		GraphicsSettings& setRenderThreadCount(u32 count) noexcept { renderThreadCount = count; return *this; }
 	};
 
 	/**
