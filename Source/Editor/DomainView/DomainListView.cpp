@@ -30,22 +30,18 @@ namespace Flax
 		setItemDelegate(new NoExtensionDelegate(this));
 	}
 
-	DomainListView::~DomainListView()
-	{
-	}
-
 	void DomainListView::onCreateFolder(const QModelIndex& sourceIndex)
 	{
 		QFileSystemModel* sourceModel = qobject_cast<QFileSystemModel*>(qobject_cast<QSortFilterProxyModel*>(model())->sourceModel());
 		auto vfm = ServiceLocator::Get<VirtualFileService>();
 		Path virtualPath = vfm->VirtualPath(sourceModel->filePath(sourceIndex).toStdString());
 
-		String folderName = "New_Folder";
+		String folderName = "New_Folder"; // !CLEAN(@mateusdigital): Remoe hardcoded values
 		Path folderPath = virtualPath / (folderName + "/");
 		i32 counter = 1;
 		while (vfm->Exists(folderPath))
 		{
-			folderName = "New_Folder_" + std::to_string(counter++);
+			folderName = "New_Folder_" + std::to_string(counter++); // !CLEAN(@mateusdigital) : Remoe hardcoded values
 			folderPath = virtualPath / (folderName + "/");
 		}
 
@@ -99,12 +95,12 @@ namespace Flax
 		if (!proxyIndex.isValid())
 			proxyIndex = rootIndex();
 
-		QAction* importAsset = contextMenu.addAction("Import Asset");
+		QAction* importAsset = contextMenu.addAction("Import Asset"); // !CLEAN(@mateusdigital) : Remove hardcoded values
 		contextMenu.addSeparator();
 
-		QAction* createFolder = contextMenu.addAction("Create Folder");
-		QAction* createScene = contextMenu.addAction("Create Scene");
-		QAction* createRenderGraph = contextMenu.addAction("Create Render Graph");
+		QAction* createFolder = contextMenu.addAction("Create Folder"); // !CLEAN(@mateusdigital) : Remove hardcoded values
+		QAction* createScene = contextMenu.addAction("Create Scene"); // !CLEAN(@mateusdigital) : Remove hardcoded values
+		QAction* createRenderGraph = contextMenu.addAction("Create Render Graph"); // !CLEAN(@mateusdigital) : Remove hardcoded values
 		contextMenu.addSeparator();
 
 		QAction* selectedAction = contextMenu.exec(pEvent->globalPos());

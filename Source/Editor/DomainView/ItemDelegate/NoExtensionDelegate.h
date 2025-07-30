@@ -16,7 +16,7 @@ namespace Flax
 		Q_OBJECT
 	public:
 		NoExtensionDelegate(QObject* pParent = nullptr);
-		~NoExtensionDelegate() = default;
+		~NoExtensionDelegate() override = default;
 
 		QString displayText(const QVariant& value, const QLocale& locale) const override;
 	};

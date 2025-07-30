@@ -18,7 +18,7 @@ namespace Flax
 		Q_OBJECT
 	public:
 		DomainMiscView(QWidget* pParent = nullptr);
-		~DomainMiscView();
+		~DomainMiscView() override = default;
 
 	signals:
 		void onAddClicked();
@@ -31,10 +31,10 @@ namespace Flax
 		void setupSignals();
 
 	private:
-		QPushButton* m_addButton;
-		QPushButton* m_importButton;
-		QPushButton* m_backButton;
+		QPushButton* m_addButton = {};
+		QPushButton* m_importButton = {};
+		QPushButton* m_backButton = {};
 
-		DomainPathView* m_pathView;
+		DomainPathView* m_pathView = {};
 	};
 }

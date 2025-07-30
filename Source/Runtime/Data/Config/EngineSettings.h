@@ -13,9 +13,9 @@ namespace Flax
 {
 	struct GeneralSettings
 	{
-		String engineName;
-		String engineVersion;
-		u32 applicationType;
+		String engineName = {};
+		String engineVersion = {};
+		u32 applicationType = {};
 
 		GeneralSettings& setName(const String& name) noexcept { engineName = name; return *this; }
 		GeneralSettings& setVersion(const String& version) noexcept { engineVersion = version; return *this; }
@@ -24,12 +24,12 @@ namespace Flax
 
 	struct GraphicsSettings
 	{
-		u32 graphicsAPI;
-		u32 presentMode;
-		u32 imageCount;
-		u32 swapFormat;
-		u32 depthFormat;
-		u32 renderThreadCount;
+		u32 graphicsAPI = {};
+		u32 presentMode = {};
+		u32 imageCount = {};
+		u32 swapFormat = {};
+		u32 depthFormat = {};
+		u32 renderThreadCount = {};
 
 		GraphicsSettings& setGraphicsAPI(u32 api) noexcept { graphicsAPI = api; return *this; }
 		GraphicsSettings& setPresentMode(u32 mode) noexcept { presentMode = mode; return *this; }
@@ -45,8 +45,8 @@ namespace Flax
 	 */
 	struct EngineSettings
 	{
-		GeneralSettings general;
-		GraphicsSettings graphics;
+		GeneralSettings general = {};
+		GraphicsSettings graphics = {};
 
 		EngineSettings& setGeneral(const GeneralSettings& settings) noexcept { general = settings; return *this; }
 		EngineSettings& setGraphics(const GraphicsSettings& settings) noexcept { graphics = settings; return *this; }

@@ -43,10 +43,6 @@ namespace Flax
 		setupSignals();
 	}
 
-	DomainMiscView::~DomainMiscView()
-	{
-	}
-
 	void DomainMiscView::setupSignals()
 	{
 		connect(m_addButton, &QPushButton::clicked, this, &DomainMiscView::onAddClicked);

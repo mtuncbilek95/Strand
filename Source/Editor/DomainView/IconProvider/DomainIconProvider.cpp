@@ -2,15 +2,6 @@
 
 namespace Flax
 {
-	DomainIconProvider::DomainIconProvider()
-	{
-		
-	}
-
-	DomainIconProvider::~DomainIconProvider()
-	{
-	}
-
 	void DomainIconProvider::setIcons()
 	{
 		m_icons["folder"] = QIcon(":/Icons/ContentBrowser/PB_Folder.svg");
