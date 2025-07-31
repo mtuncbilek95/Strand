@@ -1,0 +1,55 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) 2024 Metehan Tuncbilek
+ */
+#pragma once
+
+#include <Runtime/Data/Definitions/Definitions.h>
+#include <Runtime/Data/Definitions/StdNames.h>
+
+namespace Flax
+{
+	enum class TypeCategory
+	{
+		Signed8,		// i8
+		Signed16,		// i16
+		Signed32,		// i32
+		Signed64,		// i64
+		Unsigned8,		// u8
+		Unsigned16,		// u16
+		Unsigned32,		// u32
+		Unsigned64,		// u64
+		UnsignedSize,	// usize
+		Float32,		// f32
+		Float64,		// f64
+		Boolean,		// b8
+		Char,			// c8
+		String,			// String
+		Class,			// class
+		Struct,			// struct
+		Enum,			// Enum
+		Pointer		 	// *
+	};
+
+	/**
+	 * @class TypeInfo
+	 * @brief Core information for runtime reflection system. TypeInfo
+	 * should be able to define every type of the primitives we can have
+	 * in our runtime system. So if we design a new class which will be used
+	 * only as fields but should be reflectable, will send its information
+	 * via TypeInfo into the runtime reflection system.
+	 */
+	struct TypeInfo
+	{
+		String typeName;
+		u32 typeHash;
+		usize typeSize;
+		TypeCategory category;
+
+		b8 isConst;
+		b8 isRef;
+	};
+}

@@ -73,6 +73,5 @@ namespace Flax
 		u8 m_hour;
 		u8 m_min;
 		u8 m_sec;
-
 	};
 }

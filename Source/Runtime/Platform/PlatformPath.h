@@ -7,12 +7,12 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Data/Definitions/StdNames.h>
 
 namespace Flax
 {
 	struct PlatformPath
 	{
-		static String AppDataPath();
+		static Path AppDataPath();
 	};
 }

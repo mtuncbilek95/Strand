@@ -16,10 +16,5 @@ namespace Flax
 	{
 		static String WStringToString(const WString& wstr);
 		static WString StringToWString(const String& str);
-        static String RemoveExtension(const String& file);
-        static String GenerateStringHash(const String& path);
-        static String StripExtension(const String& str);
-		static String NameWithoutExt(const String& path);
-		static String FileExtension(const String& path);
 	};
 }

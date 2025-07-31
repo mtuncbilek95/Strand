@@ -8,18 +8,11 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Reflection/Reflection.h>
 
 namespace Flax
 {
-	class ResourceBase : public ObjectBase
+	struct Win32Path
 	{
-		FLAX_OBJECT(ResourceBase)
-	public:
-		ResourceBase();
-		~ResourceBase();
-
-	private:
-		String m_test = "ResourceBase";
+		static Path AppDataPath();
 	};
 }

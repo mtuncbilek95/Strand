@@ -7,6 +7,8 @@
  */
 #pragma once
 
+#include <Runtime/Data/Definitions/Definitions.h>
+
 #include <string>
 using String = std::string;
 using WString = std::wstring;
