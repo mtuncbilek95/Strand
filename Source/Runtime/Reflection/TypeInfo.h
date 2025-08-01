@@ -21,8 +21,7 @@ namespace Flax
 		Unsigned8,		// u8
 		Unsigned16,		// u16
 		Unsigned32,		// u32
-		Unsigned64,		// u64
-		UnsignedSize,	// usize
+		Unsigned64,		// u64 || usize
 		Float32,		// f32
 		Float64,		// f64
 		Boolean,		// b8

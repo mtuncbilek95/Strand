@@ -20,33 +20,177 @@ namespace Flax
 	class ReflectionRegistry : public Singleton<ReflectionRegistry>
 	{
 	public:
+		template<typename T, typename U = void>
+		void RegisterClassInfo()
+		{
+			ClassInfo classInfo = {};
+
+			classInfo.className = T::StaticClassName();
+			classInfo.classHash = GenerateHash(classInfo.className);
+			classInfo.classSize = sizeof(T);
+			classInfo.classAlignment = alignof(T);
+
+			classInfo.constructors.clear();
+			classInfo.constructorLookup.clear();
+			classInfo.superClassNames.clear();
+			classInfo.fields.clear();
+
+			if constexpr (!std::is_void<U>::value)
+				classInfo.firstSuperClass = U::StaticClassName();
+
+			m_classRegistry[classInfo.classHash] = std::move(classInfo);
+		}
+
+		template<typename T, typename... Args>
+		void RegisterConstructor()
+		{
+			String className = T::StaticClassName();
+			u32 classHash = GenerateHash(className);
+			ClassInfo& classInfo = m_classRegistry[classHash];
+
+			ConstructorInfo ctorInfo = {};
+			ctorInfo.parameterTypes = { GetTypeInfo<Args>()... };
+			ctorInfo.parameterHash = GenerateParameterHash<Args...>();
+			ctorInfo.constructorPtr = &ConstructorWrapper<T, Args...>;
+
+			usize index = classInfo.constructors.size();
+			classInfo.constructors.push_back(ctorInfo);
+			classInfo.constructorLookup[ctorInfo.parameterHash] = index;
+		}
+
+		// TODO: Ignore Method for now I'm mentally tired
+		/*
+		 * template<typename T, typename... Args>
+		 * void RegisterMethodInfo()
+		 * {
+		 * }
+		 */
+
 		template<typename T>
-		void RegisterReflectionType()
+		void RegisterFieldInfo(const String& className, const String& fieldName, usize offset, const TypeInfo& typeInfo)
+		{
+			u32 classHash = typeid(T).hash_code();
+			ClassInfo& classInfo = m_classRegistry[classHash];
+
+			FieldInfo fieldInfo = {};
+			fieldInfo.fieldName = fieldName;
+			fieldInfo.fieldTypeInfo = typeInfo;
+			fieldInfo.offset = offset;
+
+			classInfo.fields[fieldName] = std::move(fieldInfo);
+		}
+
+		template<typename T>
+		void RegisterTypeInfo()
 		{
 			auto& typeID = typeid(T);
 			auto it = m_typeRegistry.find(typeID.hash_code());
 			if (it != m_typeRegistry.end())
 			{
-				Log::Warn(LogType::Reflection, "'{}' -- '{}' has been already registered!", typeID.name(), typeID.hash_code());
+				Log::Warn(LogType::Reflection, "'{}' has been registered already!", typeID.name());
 				return;
 			}
 
-			TypeInfo info;
+			TypeInfo info = {};
 			info.typeName = typeID.name();
 			info.typeHash = typeID.hash_code();
 			info.typeSize = sizeof(T);
-			info.category = FindCategory<T>();
 			info.isConst = std::is_const<T>::value;
 			info.isRef = std::is_reference<T>::value;
+			info.category = FindCategory<T>();
 			
-			m_typeRegistry[info.typeHash] = std::move(info);
-			Log::Info(LogType::Reflection, "'{}' has been registered to runtime reflection with '{}' hash.", typeID.name(), typeID.hash_code());
+			m_typeRegistry[typeID.hash_code()] = std::move(info);
 		}
-	private:
+
 		template<typename T>
-		TypeCategory FindCategory() { return TypeCategory::Struct; }
+		b8 IsTypeRegistered()
+		{
+			auto& typeID = typeid(T);
+			auto it = m_typeRegistry.find(typeID.hash_code());
+			if (it != m_typeRegistry.end())
+				return true;
+
+			return false;
+		}
+
+		b8 IsClassRegistered(const String& className)
+		{
+			u32 hash = GenerateHash(className);
+			auto it = m_classRegistry.find(hash);
+			if (it != m_classRegistry.end())
+				return true;
+
+			return false;
+		}
+
+		ClassInfo* GetClassInfo(const String& className)
+		{
+			u32 hash = GenerateHash(className);
+			auto it = m_classRegistry.find(hash);
+			if (it != m_classRegistry.end())
+				return &it->second;
+
+			return nullptr;
+		}
+
+		template<typename T>
+		TypeInfo* GetTypeInfo()
+		{
+			return nullptr;
+		}
+
+	private:
+		u32 GenerateHash(const String& specialName) { return u32(); } // TODO: Ask georg for a decent algorithm (GEORG! I DONT WANT LIBRARY PLEASE!)
+
+		template<typename T, typename... Args>
+		static void* ConstructorWrapper(void* params) { return new T(ExtractParams<Args>(params, GetParamIndex<Args>())...); }
+
+		template<typename... Args>
+		u32 GenerateParameterHash()
+		{
+			String combined;
+			((combined += typeid(Args).name() + "|"), ...);
+			return Hash<String>{}(combined);
+		}
+
+		template<typename T>
+		T ExtractParam(void* params, usize index)
+		{
+			void** paramArray = static_cast<void**>(params);
+			return *static_cast<T*>(paramArray[index]);
+		}
+
+		template<typename T>
+		constexpr usize GetParamIndex() 
+		{
+			static usize index = 0;
+			return index++;
+		}
+
+		template<typename T>
+		TypeCategory FindCategory() 
+		{
+			if constexpr (std::is_same<T, b8>::value) return TypeCategory::Boolean;
+			else if constexpr (std::is_same<T, c8>::value) return TypeCategory::Char;
+			else if constexpr (std::is_same<T, i8>::value) return TypeCategory::Signed8;
+			else if constexpr (std::is_same<T, i16>::value) return TypeCategory::Signed16;
+			else if constexpr (std::is_same<T, i32>::value) return TypeCategory::Signed32;
+			else if constexpr (std::is_same<T, i64>::value) return TypeCategory::Signed64;
+			else if constexpr (std::is_same<T, u8>::value) return TypeCategory::Unsigned8;
+			else if constexpr (std::is_same<T, u16>::value) return TypeCategory::Unsigned16;
+			else if constexpr (std::is_same<T, u32>::value) return TypeCategory::Unsigned32;
+			else if constexpr (std::is_same<T, u64>::value) return TypeCategory::Unsigned64;
+			else if constexpr (std::is_same<T, f32>::value) return TypeCategory::Float32;
+			else if constexpr (std::is_same<T, f64>::value) return TypeCategory::Float64;
+			else if constexpr (std::is_same<T, String>::value) return TypeCategory::String;
+			else if constexpr (std::is_same<T, Path>::value) return TypeCategory::String;
+			else if constexpr (std::is_enum<T>::value) return TypeCategory::Enum;
+			else if constexpr (std::is_class<T>::value) return TypeCategory::Class;
+			else return TypeCategory::Struct;
+		}
 
 	private:
 		HashMap<u32, TypeInfo> m_typeRegistry;
+		HashMap<u32, ClassInfo> m_classRegistry;
 	};
 }
