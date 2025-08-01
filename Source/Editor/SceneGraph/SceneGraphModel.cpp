@@ -14,27 +14,27 @@ namespace Flax
 
 	void SceneGraphModel::addEntity(const QModelIndex& parent)
 	{
-		EDITOR_NOT_IMPLEMENTED_YET();
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneGraphModel::renameEntity(const QModelIndex& index, const QString& newName)
 	{
-		EDITOR_NOT_IMPLEMENTED_YET();
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneGraphModel::duplicateEntity(const QModelIndex& index)
 	{
-		EDITOR_NOT_IMPLEMENTED_YET();
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneGraphModel::removeEntity(const QModelIndex& index)
 	{
-		EDITOR_NOT_IMPLEMENTED_YET();
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneGraphModel::setCurrentScene(Scene* newScene)
 	{
-		EDITOR_NOT_IMPLEMENTED_YET();
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	QModelIndex SceneGraphModel::indexOf(Entity* entity) const

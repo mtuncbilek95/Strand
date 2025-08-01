@@ -8,11 +8,21 @@ include(SetupGLFW)
 # ---------------------- FILE ADDITION -----------------------
 file(GLOB_RECURSE SUBDIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SUBDIRECTORIES})
-add_library(Runtime STATIC ${SUBDIRECTORIES})
+
+file(GLOB_RECURSE INTERMEDIATE "${CMAKE_SOURCE_DIR}/Intermediate/*.cpp")
+source_group(TREE "${CMAKE_SOURCE_DIR}/Intermediate" FILES ${INTERMEDIATE})
+
+message(STATUS "SUBDIRECTORIES files found: ${SUBDIRECTORIES}")
+message(STATUS "INTERMEDIATE files found: ${INTERMEDIATE}")
+message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+
+add_library(Runtime STATIC ${INTERMEDIATE} ${SUBDIRECTORIES})
 # ------------------------------------------------------------
 
 # ------------------- INCLUDE DIRECTORIES --------------------
 target_include_directories(Runtime PRIVATE "${CMAKE_SOURCE_DIR}/Source")
+target_include_directories(Runtime PUBLIC "${CMAKE_SOURCE_DIR}/Intermediate")
 target_link_libraries(Runtime PUBLIC glm::glm fmt spdlog magic_enum stb assimp glfw EnTT::EnTT nlohmann_json)
 
 DefineGlmMacros(Runtime)

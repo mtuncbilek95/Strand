@@ -11,12 +11,23 @@
 #include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Data/Containers/Singleton.h>
 #include <Runtime/Logger/Logger.h>
-#include <Runtime/Reflection/TypeInfo.h>
-#include <Runtime/Reflection/FieldInfo.h>
-#include <Runtime/Reflection/ClassInfo.h>
+#include <Runtime/Reflection/ReflectionRegistry.h>
 
 namespace Flax
 {
-	template<typename T>
-	class TypeAccessor {};
+#define FLAX_OBJECT(ClassName) \
+	private: \
+		friend class TypeAccessor<ClassName>; \
+		static String StaticClassName() \
+		{ \
+			String func = __FUNCTION__; \
+			usize index = func.find(':'); \
+			return func.substr(0, index); \
+		} \
+	public:
+
+#define FLAX_CLASS(...)
+#define FLAX_ENUM(...)
+#define FLAX_FIELD(...)
+#define FLAX_METHOD(...)
 }

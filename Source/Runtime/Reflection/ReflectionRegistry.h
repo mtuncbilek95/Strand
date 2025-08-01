@@ -26,7 +26,7 @@ namespace Flax
 			ClassInfo classInfo = {};
 
 			classInfo.className = T::StaticClassName();
-			classInfo.classHash = GenerateHash(classInfo.className);
+			classInfo.classHash = typeid(T).hash_code();
 			classInfo.classSize = sizeof(T);
 			classInfo.classAlignment = alignof(T);
 
@@ -38,14 +38,14 @@ namespace Flax
 			if constexpr (!std::is_void<U>::value)
 				classInfo.firstSuperClass = U::StaticClassName();
 
-			m_classRegistry[classInfo.classHash] = std::move(classInfo);
+			m_classRegistry[classInfo.classHash] = classInfo;
 		}
 
 		template<typename T, typename... Args>
 		void RegisterConstructor()
 		{
 			String className = T::StaticClassName();
-			u32 classHash = GenerateHash(className);
+			u32 classHash = typeid(T).hash_code();
 			ClassInfo& classInfo = m_classRegistry[classHash];
 
 			ConstructorInfo ctorInfo = {};
@@ -113,20 +113,20 @@ namespace Flax
 			return false;
 		}
 
-		b8 IsClassRegistered(const String& className)
+		template<typename T>
+		b8 IsClassRegistered()
 		{
-			u32 hash = GenerateHash(className);
-			auto it = m_classRegistry.find(hash);
+			auto it = m_classRegistry.find(typeid(T).hash_code());
 			if (it != m_classRegistry.end())
 				return true;
 
 			return false;
 		}
 
-		ClassInfo* GetClassInfo(const String& className)
+		template<typename T>
+		ClassInfo* GetClassInfo()
 		{
-			u32 hash = GenerateHash(className);
-			auto it = m_classRegistry.find(hash);
+			auto it = m_classRegistry.find(typeid(T).hash_code());
 			if (it != m_classRegistry.end())
 				return &it->second;
 
@@ -136,12 +136,14 @@ namespace Flax
 		template<typename T>
 		TypeInfo* GetTypeInfo()
 		{
+			auto it = m_typeRegistry.find(typeid(T).hash_code());
+			if (it != m_typeRegistry.end())
+				return &it->second;
+
 			return nullptr;
 		}
 
 	private:
-		u32 GenerateHash(const String& specialName) { return u32(); } // TODO: Ask georg for a decent algorithm (GEORG! I DONT WANT LIBRARY PLEASE!)
-
 		template<typename T, typename... Args>
 		static void* ConstructorWrapper(void* params)
 		{
@@ -166,11 +168,15 @@ namespace Flax
 		T ExtractParams(void* params, usize index)
 		{
 			void** paramArray = static_cast<void**>(params);
+
+			if (!paramArray || !paramArray[index])
+				throw std::runtime_error("Invalid parameter");
+
 			return *static_cast<T*>(paramArray[index]);
 		}
 
 		template<typename T>
-		constexpr usize GetParamIndex() 
+		usize GetParamIndex() 
 		{
 			static usize index = 0;
 			return index++;
@@ -201,5 +207,6 @@ namespace Flax
 	private:
 		HashMap<u32, TypeInfo> m_typeRegistry;
 		HashMap<u32, ClassInfo> m_classRegistry;
+		HashMap<String, u32> m_classNameToHash;
 	};
 }

@@ -1,7 +1,8 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Reflection/ReflectionRegistry.h>
 
-using namespace Flax;
+#include <Runtime/TestClass.h>
+
 int main()
 {
 }

@@ -14,7 +14,7 @@
 
 namespace Flax
 {
-	/**
+	 /**
 	 * @class ConstructorInfo
 	 * @brief Defines all the constructors' information that belongs
 	 * to the class in the runtime reflection.
