@@ -143,18 +143,27 @@ namespace Flax
 		u32 GenerateHash(const String& specialName) { return u32(); } // TODO: Ask georg for a decent algorithm (GEORG! I DONT WANT LIBRARY PLEASE!)
 
 		template<typename T, typename... Args>
-		static void* ConstructorWrapper(void* params) { return new T(ExtractParams<Args>(params, GetParamIndex<Args>())...); }
+		static void* ConstructorWrapper(void* params)
+		{
+			return ConstructorWrapperImpl<T, Args...>(params, std::index_sequence_for<Args...>{});
+		}
+
+		template<typename T, typename... Args, usize... I>
+		static void* ConstructorWrapperImpl(void* params, std::index_sequence<I...>)
+		{
+			return new T(ExtractParams<Args>(params, I)...);
+		}
 
 		template<typename... Args>
 		u32 GenerateParameterHash()
 		{
 			String combined;
-			((combined += typeid(Args).name() + "|"), ...);
+			((combined += String(typeid(Args).name()) + "|"), ...);
 			return Hash<String>{}(combined);
 		}
 
 		template<typename T>
-		T ExtractParam(void* params, usize index)
+		T ExtractParams(void* params, usize index)
 		{
 			void** paramArray = static_cast<void**>(params);
 			return *static_cast<T*>(paramArray[index]);
