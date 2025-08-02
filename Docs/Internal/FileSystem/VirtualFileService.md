@@ -14,10 +14,10 @@ on manipulating your files.
 ### ` void VirtualFileService::Mount(const Path& mountPoint, Ref<IVirtualFileSystem> fileSystem)`
 This function above is to mount the folders of the project and game. E.g you created a project by using the launcher. 
 The launcher will automatically create the `Assets`, `Cached`, `Scripts`, `Intermediate` folders for you inside of 
-your project folder. Then, Flax engine will catch those folders and bind itself with those 4 folders.
+your project folder. Then, Strand engine will catch those folders and bind itself with those 4 folders.
 
 ### `Ref<IFileStream> VirtualFileSystem::Open(const Path& virtPath, FileMode mode)`
-This function above opens your file with `std::fstream`. But to make it convenient, flax engine suggests you to use 
+This function above opens your file with `std::fstream`. But to make it convenient, strand engine suggests you to use 
 `FileStream`. The function checks your mount point in your path, and decides which fileSystem to use. If you don't add 
 mount point in your virtual path, then you may crash the application.
 

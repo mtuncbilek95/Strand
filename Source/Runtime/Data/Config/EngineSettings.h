@@ -55,7 +55,7 @@ namespace Strand
 		{
 			EngineSettings engineSettings;
 			engineSettings.setGeneral(
-				GeneralSettings().setName("FlaxEngine").setVersion("1.0.0").setApplicationType(0))
+				GeneralSettings().setName("StrandEngine").setVersion("1.0.0").setApplicationType(0))
 				.setGraphics(
 					GraphicsSettings()
 					.setGraphicsAPI(1)

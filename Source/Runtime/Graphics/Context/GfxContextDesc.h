@@ -17,7 +17,7 @@ namespace Strand
 {
 	struct GfxContextDesc
 	{
-		String appName = "Flax";
+		String appName = "Strand";
 		Math::Vec3u appVer = { 1, 0, 0 };
 		GfxType type = GfxType::Vulkan;
 

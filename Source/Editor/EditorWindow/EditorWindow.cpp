@@ -7,7 +7,7 @@ namespace Strand
 	EditorWindow::EditorWindow(QWidget* pParent) : QMainWindow(pParent)
 	{
 		setObjectName("EditorWindow");
-		setWindowTitle("Flax Editor");
+		setWindowTitle("Strand Editor");
 		setMinimumSize(1920, 1080);
 		setAttribute(Qt::WA_DeleteOnClose, true);
 		setContentsMargins(4, 4, 4, 4);

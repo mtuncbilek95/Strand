@@ -1,6 +1,6 @@
 # Strand Engine Documentation
 
-## How to run Flax Engine from source code
+## How to run Strand Engine from source code
 
 To run the engine, you need a couple of SDKs installed on your system. The engine supports the following SDKs:
 
@@ -34,5 +34,5 @@ Visual Studio will automatically detect the CMake files and generate build files
 
 ### Run Engine
 
-The engine has two different executables. One is the Editor and the other is Flaxbox. You can choose Editor and run it to see the editor interface. Flaxbox is
+The engine has two different executables. One is the Editor and the other is Strandbox. You can choose Editor and run it to see the editor interface. Strandbox is
 there to test the engine runtime without the editor. You may find it empty or filled with some sample code.

@@ -4,7 +4,7 @@ It is a custom made game engine structured in C++. The main goal of this project
 flexible, and easy-to-develop engine for game developers who are experienced in both games and graphics. The engine 
 is designed to be modular, allowing developers to easily extend its functionality.
 
-Flax Engine, has no built-in rendering pipeline solution, it is designed to be used as sandbox for developers to create their own
+Strand Engine, has no built-in rendering pipeline solution, it is designed to be used as sandbox for developers to create their own
 rendering optimizations and rendering pipelines. There will be a couple of free-to-use rendering pipelines available as 
 plugins, but the main goal is to provide visual framework.
 

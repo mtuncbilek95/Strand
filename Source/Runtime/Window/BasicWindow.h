@@ -22,7 +22,7 @@ namespace Strand
 
     struct WindowProps final
     {
-        String windowName = "Flax";
+        String windowName = "Strand";
         Math::Vec2u windowSize = { 1920, 1080 };
         WindowMode windowMode = WindowMode::Windowed;
 
