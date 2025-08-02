@@ -12,11 +12,6 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SUBDIRECTORIES})
 file(GLOB_RECURSE INTERMEDIATE "${CMAKE_SOURCE_DIR}/Intermediate/*.cpp")
 source_group(TREE "${CMAKE_SOURCE_DIR}/Intermediate" FILES ${INTERMEDIATE})
 
-message(STATUS "SUBDIRECTORIES files found: ${SUBDIRECTORIES}")
-message(STATUS "INTERMEDIATE files found: ${INTERMEDIATE}")
-message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-
 add_library(Runtime STATIC ${INTERMEDIATE} ${SUBDIRECTORIES})
 # ------------------------------------------------------------
 
