@@ -1,5 +1,5 @@
 #include "LogSinkModel.h"
 
-namespace Flax
+namespace Strand
 {
 }

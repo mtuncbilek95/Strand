@@ -2,7 +2,7 @@
 
 #include <Runtime/FileSystem/Service/VirtualFileService.h>
 
-namespace Flax
+namespace Strand
 {
 	EngineSettings RuntimeLoader::LoadEngineSettings(const Path& path)
 	{

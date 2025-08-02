@@ -1,6 +1,6 @@
 #include "Connection.h"
 
-namespace Flax
+namespace Strand
 {
 	Connection::Connection(voidFunc disconnect) : m_disconnectFunc(disconnect)
 	{

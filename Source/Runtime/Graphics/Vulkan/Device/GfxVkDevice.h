@@ -14,7 +14,7 @@
 #include <vma/vk_mem_alloc.h>
 #include <Volk/volk.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxVkDevice final : public GfxDevice
 	{

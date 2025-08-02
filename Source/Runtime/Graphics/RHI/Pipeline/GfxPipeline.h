@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Object/GfxObject.h>
 #include <Runtime/Graphics/RHI/Pipeline/GfxPipelineDesc.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxPipeline : public GfxObject
 	{

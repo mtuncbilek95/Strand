@@ -3,7 +3,7 @@
 #include <Editor/SceneGraph/SceneGraphModel.h>
 #include <Editor/SceneGraph/SceneGraphRole.h>
 
-namespace Flax
+namespace Strand
 {
 	SceneGraphTreeView::SceneGraphTreeView(QWidget* pParent) : QTreeView(pParent)
 	{

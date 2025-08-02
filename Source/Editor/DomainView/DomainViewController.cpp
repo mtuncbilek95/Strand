@@ -1,6 +1,6 @@
 #include "DomainViewController.h"
 
-namespace Flax
+namespace Strand
 {
 	void DomainViewController::InitializeController()
 	{

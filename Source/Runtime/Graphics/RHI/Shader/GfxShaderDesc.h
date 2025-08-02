@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Graphics/RHI/Util/ShaderStage.h>
 
-namespace Flax
+namespace Strand
 {
 	struct GfxShaderDesc
 	{

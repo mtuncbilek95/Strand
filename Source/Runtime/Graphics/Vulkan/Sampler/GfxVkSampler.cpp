@@ -5,7 +5,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkSamplerUtils.h>
 #include <Runtime/Graphics/Vulkan/Util/VkPipelineUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkSampler::GfxVkSampler(const GfxSamplerDesc& desc, GfxDevice* pDevice) : GfxSampler(desc, pDevice)
 	{

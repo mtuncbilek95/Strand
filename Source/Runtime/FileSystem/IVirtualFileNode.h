@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/FileSystem/VirtualNodeDesc.h>
 
-namespace Flax
+namespace Strand
 {
 	class IVirtualFileNode
 	{

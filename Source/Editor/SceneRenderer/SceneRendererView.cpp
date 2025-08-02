@@ -1,6 +1,6 @@
 #include "SceneRendererView.h"
 
-namespace Flax
+namespace Strand
 {
 	SceneRendererView::SceneRendererView(QWidget* pParent) : QWidget(pParent)
 	{

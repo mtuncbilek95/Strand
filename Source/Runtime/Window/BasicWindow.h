@@ -11,7 +11,7 @@
 #include <Runtime/Data/Containers/IObject.h>
 #include <Runtime/Input/InputQueue.h>
 
-namespace Flax
+namespace Strand
 {
     enum class WindowMode
     {

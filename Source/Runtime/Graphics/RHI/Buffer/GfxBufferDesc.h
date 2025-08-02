@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Util/BufferFormat.h>
 #include <Runtime/Graphics/RHI/Util/MemoryFormat.h>
 
-namespace Flax
+namespace Strand
 {
 	struct GfxBufferDesc
 	{

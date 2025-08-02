@@ -1,6 +1,6 @@
 #include "FileMenu.h"
 
-namespace Flax
+namespace Strand
 {
 	FileMenu::FileMenu(QWidget* pParent) : QMenu(pParent)
 	{

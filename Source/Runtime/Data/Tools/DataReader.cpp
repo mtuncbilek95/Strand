@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iostream>
 
-namespace Flax
+namespace Strand
 {
     ReadArray<c8> DataReader::ReadData(const String& filePath, b8 emptyOnMissing, b8 nullTerminateString)
     {

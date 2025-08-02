@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Util/SamplerFormat.h>
 #include <Runtime/Graphics/RHI/Util/PipelineFormat.h>
 
-namespace Flax
+namespace Strand
 {
 	struct GfxSamplerDesc
 	{

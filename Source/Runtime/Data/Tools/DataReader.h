@@ -9,7 +9,7 @@
 
 #include <Runtime/Data/Containers/ReadArray.h>
 
-namespace Flax
+namespace Strand
 {
 	/**
 	 * @class DataReader

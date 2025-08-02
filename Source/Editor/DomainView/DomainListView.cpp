@@ -8,7 +8,7 @@
 
 #include <Editor/ImportWidget/TextureImportView.h>
 
-namespace Flax
+namespace Strand
 {
 	DomainListView::DomainListView(QWidget* pParent) : QListView(pParent)
 	{

@@ -1,6 +1,6 @@
 #include "InputDispatcher.h"
 
-namespace Flax
+namespace Strand
 {
     void InputDispatcher::RegisterListener(WindowPollEvent type, EventCallback callback)
     {

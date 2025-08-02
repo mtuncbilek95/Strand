@@ -11,7 +11,7 @@
 #include <Runtime/Window/WindowPollEvent.h>
 #include <Runtime/Input/MouseButton.h>
 
-namespace Flax
+namespace Strand
 {
     struct EventPayload
     {

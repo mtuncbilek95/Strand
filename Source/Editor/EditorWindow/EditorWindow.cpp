@@ -2,7 +2,7 @@
 
 #include <Editor/SceneRenderer/SceneRendererWidget.h>
 
-namespace Flax
+namespace Strand
 {
 	EditorWindow::EditorWindow(QWidget* pParent) : QMainWindow(pParent)
 	{

@@ -3,7 +3,7 @@
 #include <Editor/SceneRenderer/SceneRendererView.h>
 #include <Editor/SceneRenderer/SceneToolView.h>
 
-namespace Flax
+namespace Strand
 {
 	SceneRendererWidget::SceneRendererWidget(QWidget* pParent) : QWidget(pParent)
 	{

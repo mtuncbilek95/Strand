@@ -10,7 +10,7 @@
 #include <Runtime/Data/Definitions/Definitions.h>
 #include <Runtime/Data/Definitions/StdNames.h>
 
-namespace Flax
+namespace Strand
 {
     /*
      * @class Uuid

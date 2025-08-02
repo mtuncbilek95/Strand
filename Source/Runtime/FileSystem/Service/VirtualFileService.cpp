@@ -3,7 +3,7 @@
 #include <Runtime/FileSystem/IVirtualFileSystem.h>
 #include <Runtime/FileSystem/IVirtualFileNode.h>
 
-namespace Flax
+namespace Strand
 {
 	void VirtualFileService::Initialize(const Path& sourcePath)
 	{

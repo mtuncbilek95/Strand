@@ -5,7 +5,7 @@
 #include <Runtime/Graphics/Vulkan/Image/GfxVkImageView.h>
 #include <Runtime/Graphics/Vulkan/RenderPass/GfxVkRenderPass.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkFramebuffer::GfxVkFramebuffer(const GfxFramebufferDesc& desc, GfxDevice* pDevice) : GfxFramebuffer(desc, pDevice)
 	{

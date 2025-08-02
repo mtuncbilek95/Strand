@@ -12,7 +12,7 @@
 
 #include <vulkan/vulkan.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxVkQueue final : public GfxQueue
 	{

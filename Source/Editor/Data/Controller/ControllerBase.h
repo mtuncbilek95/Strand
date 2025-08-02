@@ -7,7 +7,7 @@
  */
 #pragma once
 
-namespace Flax
+namespace Strand
 {
 	class ControllerBase : public QObject
 	{

@@ -1,6 +1,6 @@
 #include "GfxSwapchain.h"
 
-namespace Flax
+namespace Strand
 {
 	GfxSwapchain::GfxSwapchain(const GfxSwapchainDesc& desc, GfxDevice* pDevice) : GfxObject(pDevice),
 		m_desc(desc)

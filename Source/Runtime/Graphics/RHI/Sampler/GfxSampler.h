@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Object/GfxObject.h>
 #include <Runtime/Graphics/RHI/Sampler/GfxSamplerDesc.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxSampler : public GfxObject
 	{

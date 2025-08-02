@@ -6,7 +6,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkMemoryUtils.h>
 #include <Runtime/Graphics/Vulkan/Image/GfxVkImageView.h>
 
-namespace Flax
+namespace Strand
 {
     static ImageViewType CastType(ImageType type, u32 layerCount)
     {

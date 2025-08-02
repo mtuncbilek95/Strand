@@ -10,7 +10,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkImageUtils.h>
 #include <Runtime/Graphics/Vulkan/Util/VkMemoryUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkSwapchain::GfxVkSwapchain(const GfxSwapchainDesc& desc, GfxDevice* pDevice) : GfxSwapchain(desc, pDevice), 
 		m_swapchain(VK_NULL_HANDLE)

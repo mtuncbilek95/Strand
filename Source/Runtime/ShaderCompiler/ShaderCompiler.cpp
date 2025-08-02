@@ -5,7 +5,7 @@
 #include <shaderc/shaderc.hpp>
 #include <magic_enum/magic_enum.hpp>
 
-namespace Flax
+namespace Strand
 {
 	void ShaderAssert(shaderc_compilation_status status, const String& title, const String& message)
 	{

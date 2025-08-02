@@ -6,7 +6,7 @@
 #include <objbase.h>
 #endif
 
-namespace Flax
+namespace Strand
 {
 	Uuid::Uuid() : m_a(0), m_b(0), m_c(0), m_d(0)
 	{

@@ -1,6 +1,6 @@
 #include "DomainFilterProxy.h"
 
-namespace Flax
+namespace Strand
 {
 	DomainFilterProxy::DomainFilterProxy(QObject* pParent)
 	{

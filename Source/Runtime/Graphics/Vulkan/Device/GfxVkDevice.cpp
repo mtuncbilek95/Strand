@@ -21,7 +21,7 @@
 #include <Runtime/Graphics/Vulkan/Framebuffer/GfxVkFramebuffer.h>
 #include <Runtime/Graphics/Vulkan/RenderPass/GfxVkRenderPass.h>
 
-namespace Flax
+namespace Strand
 {
 	VkQueue GfxVkDevice::QueueFamily::GetFreeQueue()
 	{

@@ -4,7 +4,7 @@
 #include <Editor/SceneGraph/SceneGraphTreeView.h>
 
 
-namespace Flax
+namespace Strand
 {
 	SceneGraphWidget::SceneGraphWidget(QWidget* pParent) : QWidget(pParent)
 	{

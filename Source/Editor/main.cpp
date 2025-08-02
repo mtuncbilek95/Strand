@@ -7,7 +7,7 @@
 
 #include <Editor/ImportWidget/TextureImportView.h>
 
-using namespace Flax;
+using namespace Strand;
 
 int main(int argC, char** argV)
 {

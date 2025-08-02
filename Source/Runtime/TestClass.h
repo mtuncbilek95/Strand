@@ -4,7 +4,7 @@
 #include <Runtime/Reflection/TypeAccessor.h>
 #include <Runtime/Reflection/Reflection.h>
 
-namespace Flax
+namespace Strand
 {
 	class TestClass
 	{

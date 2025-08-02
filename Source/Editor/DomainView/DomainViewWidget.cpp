@@ -3,11 +3,11 @@
 #include <Editor/DomainView/IconProvider/DomainIconProvider.h>
 #include <Editor/DomainView/Proxy/DomainFilterProxy.h>
 #include <Editor/DomainView/DomainMiscView.h>
-#include <Editor/DomainView/DomainListView.h>s
+#include <Editor/DomainView/DomainListView.h>
 
 #include <Editor/SceneGraph/SceneGraphController.h>
 
-namespace Flax
+namespace Strand
 {
 	DomainViewWidget::DomainViewWidget(QWidget* pParent) : QWidget(pParent)
 	{

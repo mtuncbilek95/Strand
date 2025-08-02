@@ -9,7 +9,7 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 
-namespace Flax
+namespace Strand
 {
 	class GUIApplication : public QApplication
 	{

@@ -10,7 +10,7 @@
 #include <Runtime/Data/Definitions/Definitions.h>
 #include <Runtime/Data/Definitions/StdNames.h>
 
-namespace Flax
+namespace Strand
 {
 	template<typename T>
 	constexpr std::enable_if_t<std::is_enum_v<T>, T>

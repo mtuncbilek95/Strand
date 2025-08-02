@@ -6,7 +6,7 @@
 #include <atlbase.h>
 #endif
 
-namespace Flax
+namespace Strand
 {
 	Path Win32Path::AppDataPath()
 	{

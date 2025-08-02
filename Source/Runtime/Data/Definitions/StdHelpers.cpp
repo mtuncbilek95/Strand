@@ -5,7 +5,7 @@
 #include <sstream>
 #include <iomanip>
 
-namespace Flax
+namespace Strand
 {
     String StringHelpers::WStringToString(const WString& wstr)
     {

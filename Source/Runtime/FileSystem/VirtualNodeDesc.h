@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/FileSystem/VirtualNodeType.h>
 
-namespace Flax
+namespace Strand
 {
 	struct VirtualNodeDesc
 	{

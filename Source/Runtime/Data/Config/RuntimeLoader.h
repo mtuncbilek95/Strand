@@ -11,7 +11,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Data/Config/EngineSettings.h>
 #include <Runtime/Data/Config/ProjectSettings.h>
-namespace Flax
+namespace Strand
 {
 	/**
 	 * @struct RuntimeLoader

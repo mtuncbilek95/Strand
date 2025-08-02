@@ -1,6 +1,6 @@
 #include "DiskFileStream.h"
 
-namespace Flax
+namespace Strand
 {
 	DiskFileStream::DiskFileStream(const Path& filePath, FileMode mode)
 	{

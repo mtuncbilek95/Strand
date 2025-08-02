@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Util/DescriptorFormat.h>
 #include <Runtime/Graphics/RHI/Util/ShaderStage.h>
 
-namespace Flax
+namespace Strand
 {
     struct DescriptorBinding
     {

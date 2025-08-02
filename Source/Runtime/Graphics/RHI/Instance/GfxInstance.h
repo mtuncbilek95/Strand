@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Instance/GfxInstanceDesc.h>
 #include <Runtime/Graphics/RHI/Device/GfxDeviceDesc.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxDevice;
 

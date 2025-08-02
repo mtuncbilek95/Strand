@@ -7,7 +7,7 @@
 
 #include <Editor/Style/StyleManager.h>
 
-namespace Flax
+namespace Strand
 {
 	GUIApplication::GUIApplication(i32 argC, c8** argV) : QApplication(argC, argV)
 	{

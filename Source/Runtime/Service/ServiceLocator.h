@@ -12,7 +12,7 @@
 #include <Runtime/Logger/Logger.h>
 #include <Runtime/Service/Service.h>
 
-namespace Flax
+namespace Strand
 {
 	class ServiceLocator
 	{

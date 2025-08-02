@@ -13,7 +13,7 @@
 #include <Runtime/Graphics/RHI/Util/ImageFormat.h>
 #include <Runtime/Graphics/RHI/Util/PresentMode.h>
 
-namespace Flax
+namespace Strand
 {
 	struct GfxContextDesc
 	{

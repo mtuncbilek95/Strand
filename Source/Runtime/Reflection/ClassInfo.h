@@ -12,7 +12,7 @@
 #include <Runtime/Reflection/TypeInfo.h>
 #include <Runtime/Reflection/FieldInfo.h>
 
-namespace Flax
+namespace Strand
 {
 	 /**
 	 * @class ConstructorInfo

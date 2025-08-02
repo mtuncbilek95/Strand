@@ -15,7 +15,7 @@
 #include <Runtime/Reflection/FieldInfo.h>
 #include <Runtime/Reflection/ClassInfo.h>
 
-namespace Flax
+namespace Strand
 {
 	class ReflectionRegistry : public Singleton<ReflectionRegistry>
 	{

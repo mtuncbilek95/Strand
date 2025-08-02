@@ -1,6 +1,6 @@
 #include "ReflectionRegistry.h"
 
-namespace Flax
+namespace Strand
 {
 	struct GeneralPrimitiveRegister
 	{

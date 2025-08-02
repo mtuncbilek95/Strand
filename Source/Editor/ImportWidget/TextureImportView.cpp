@@ -5,7 +5,7 @@
 
 #include <magic_enum/magic_enum.hpp>
 
-namespace Flax
+namespace Strand
 {
 	TextureImportView::TextureImportView(QWidget* pParent) : QDialog(pParent)
 	{

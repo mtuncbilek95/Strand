@@ -2,7 +2,7 @@
 
 #include <Editor/SceneGraph/SceneGraphRole.h>
 
-namespace Flax
+namespace Strand
 {
 	SceneGraphModel::SceneGraphModel(QObject* pParent) : QAbstractItemModel(pParent)
 	{

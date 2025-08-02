@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace Flax
+namespace Strand
 {
 	DateTime::DateTime()
 	{

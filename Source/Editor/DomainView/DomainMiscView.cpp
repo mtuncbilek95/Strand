@@ -2,7 +2,7 @@
 
 #include <Editor/DomainView/DomainPathView.h>
 
-namespace Flax
+namespace Strand
 {
 	DomainMiscView::DomainMiscView(QWidget* pParent) : QWidget(pParent)
 	{

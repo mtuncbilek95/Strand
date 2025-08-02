@@ -8,7 +8,7 @@
 
 #include <magic_enum/magic_enum.hpp>
 
-namespace Flax
+namespace Strand
 {
 	void VDebug::VkAssert(VkResult result, const String& objectTitle)
 	{

@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Thread/JobQueue.h>
 
-namespace Flax
+namespace Strand
 {
 	class ThreadPool
 	{

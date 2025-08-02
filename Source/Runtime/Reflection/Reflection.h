@@ -13,7 +13,7 @@
 #include <Runtime/Logger/Logger.h>
 #include <Runtime/Reflection/ReflectionRegistry.h>
 
-namespace Flax
+namespace Strand
 {
 #define FLAX_OBJECT(ClassName) \
 	private: \

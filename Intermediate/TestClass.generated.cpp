@@ -2,7 +2,7 @@
 
 #include <Runtime/Reflection/TypeAccessor.h>
 
-namespace Flax
+namespace Strand
 {
 	template<>
 	class TypeAccessor<TestClass>
@@ -13,5 +13,5 @@ namespace Flax
 		}
 	};
 
-	static TypeAccessor<TestClass> tttt;
+	static TypeAccessor<TestClass> gb_typeAccessorTestClass;
 }

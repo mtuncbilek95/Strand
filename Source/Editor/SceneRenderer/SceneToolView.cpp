@@ -1,6 +1,6 @@
 #include "SceneToolView.h"
 
-namespace Flax
+namespace Strand
 {
 	SceneToolView::SceneToolView(QWidget* pParent) : QWidget(pParent)
 	{

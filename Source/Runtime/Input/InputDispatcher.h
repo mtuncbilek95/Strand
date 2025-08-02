@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Input/InputEvent.h>
 
-namespace Flax
+namespace Strand
 {
 	class InputDispatcher : public Service
 	{

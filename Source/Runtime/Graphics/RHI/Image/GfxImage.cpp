@@ -1,6 +1,6 @@
 #include "GfxImage.h"
 
-namespace Flax
+namespace Strand
 {
 	GfxImage::GfxImage(const GfxImageDesc& desc, GfxDevice* pDevice) : GfxObject(pDevice), 
 		m_desc(desc), m_isSwapchain(false)

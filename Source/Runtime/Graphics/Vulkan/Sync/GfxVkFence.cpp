@@ -3,7 +3,7 @@
 #include <Runtime/Graphics/Vulkan/Device/GfxVkDevice.h>
 #include <Runtime/Graphics/Vulkan/Debug/VDebug.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkFence::GfxVkFence(const GfxFenceDesc& desc, GfxDevice* pDevice) : GfxFence(desc, pDevice)
 	{

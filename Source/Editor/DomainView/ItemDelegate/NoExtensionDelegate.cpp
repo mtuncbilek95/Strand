@@ -1,6 +1,6 @@
 #include "NoExtensionDelegate.h"
 
-namespace Flax
+namespace Strand
 {
 	NoExtensionDelegate::NoExtensionDelegate(QObject* pParent) : QStyledItemDelegate(pParent)
 	{

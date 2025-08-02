@@ -10,7 +10,7 @@
 #include <Editor/Core/CoreMinimal.h>
 
 
-namespace Flax
+namespace Strand
 {
 	class DomainIconProvider : public QFileIconProvider
 	{

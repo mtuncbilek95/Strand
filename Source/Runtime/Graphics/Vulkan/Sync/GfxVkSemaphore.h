@@ -13,7 +13,7 @@
 
 #include <vulkan/vulkan.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxVkSemaphore final : public GfxSemaphore
 	{
