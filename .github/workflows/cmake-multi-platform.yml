@@ -24,65 +24,11 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: Cache Vulkan SDK
-      id: cache-vulkan
-      uses: actions/cache@v4
-      with:
-        path: C:\VulkanSDK
-        key: vulkan-sdk-1.4.313.0-windows
-        
     - name: Install Vulkan SDK
-      if: steps.cache-vulkan.outputs.cache-hit != 'true'
-      run: |
-        $ProgressPreference = 'SilentlyContinue'
-        # Install Vulkan SDK with silent installation
-        Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.4.313.0/windows/vulkansdk-windows-X64-1.4.313.0.exe" -OutFile VulkanSDK-Installer.exe
-        .\VulkanSDK-Installer.exe /S
-        Start-Sleep -Seconds 60
-        
-        # Manually install VMA (Vulkan Memory Allocator)
-        Write-Host "Installing Vulkan Memory Allocator..."
-        New-Item -ItemType Directory -Force -Path "C:\VulkanSDK\1.4.313.0\Include"
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator/master/include/vk_mem_alloc.h" -OutFile "C:\VulkanSDK\1.4.313.0\Include\vk_mem_alloc.h"
-        
-        # Install Volk (Vulkan meta-loader)
-        Write-Host "Installing Volk..."
-        New-Item -ItemType Directory -Force -Path "C:\VulkanSDK\1.4.313.0\Include\volk"
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/zeux/volk/master/volk.h" -OutFile "C:\VulkanSDK\1.4.313.0\Include\volk\volk.h"
-        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/zeux/volk/master/volk.c" -OutFile "C:\VulkanSDK\1.4.313.0\Include\volk\volk.c"
-        
-        # Install SPIRV-Cross headers if needed
-        Write-Host "Installing SPIRV-Cross headers..."
-        New-Item -ItemType Directory -Force -Path "C:\VulkanSDK\1.4.313.0\Include\spirv_cross"
-        try {
-          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/KhronosGroup/SPIRV-Cross/main/spirv_cross.hpp" -OutFile "C:\VulkanSDK\1.4.313.0\Include\spirv_cross\spirv_cross.hpp"
-        } catch {
-          Write-Host "SPIRV-Cross headers not needed or already available"
-        }
-        
-        # Verify installation
-        Write-Host "Verifying Vulkan SDK installation..."
-        if (Test-Path "C:\VulkanSDK\1.4.313.0\Include\vulkan\vulkan.h") {
-          Write-Host "✓ Vulkan headers found"
-        } else {
-          Write-Host "✗ Vulkan headers missing"
-        }
-        
-        if (Test-Path "C:\VulkanSDK\1.4.313.0\Include\vk_mem_alloc.h") {
-          Write-Host "✓ VMA header found"
-        } else {
-          Write-Host "✗ VMA header missing"
-        }
-        
-        if (Test-Path "C:\VulkanSDK\1.4.313.0\Include\volk\volk.h") {
-          Write-Host "✓ Volk header found"
-        } else {
-          Write-Host "✗ Volk header missing"
-        }
-        
-        # List what's actually installed
-        Write-Host "Vulkan SDK contents:"
-        Get-ChildItem "C:\VulkanSDK\1.4.313.0" -Recurse -Name | Select-Object -First 20
+      uses: humbletim/install-vulkan-sdk@v1.1.1
+      with:
+        version: 1.4.313.0
+        cache: true
         
     - name: Set Vulkan Environment Variables
       run: |
