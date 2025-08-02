@@ -30,11 +30,6 @@ jobs:
         version: 1.4.313.0
         cache: true
         
-    - name: Set Vulkan Environment Variables
-      run: |
-        echo "VULKAN_SDK=C:\VulkanSDK\1.4.313.0" >> $env:GITHUB_ENV
-        echo "C:\VulkanSDK\1.4.313.0\Bin" >> $env:GITHUB_PATH
-        
     - name: Cache Qt 6.9.0
       id: cache-qt
       uses: actions/cache@v4
