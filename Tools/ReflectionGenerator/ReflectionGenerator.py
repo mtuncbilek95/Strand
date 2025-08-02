@@ -1,3 +1,11 @@
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2024 Metehan Tuncbilek
+#
+
 import sys
 import os
 import re
@@ -5,9 +13,9 @@ import re
 # This path has been excluded, since this path is here to generate the 
 # macros and function for the reflection system.
 excludedPaths = [
-    "/Source/Runtime/Data/Definitions/ReflectionNames.h",
     "/External",
     "/Resources",
+	"/Intermediate"
     "/Shaders",
     "/Build",
     "/Tools",
@@ -19,8 +27,10 @@ excludedPaths = [
 # This generator will look for those items below and use those to generate
 # reflection code automatically.
 includedItems = [
-    "[[Reflection::Method]]",
-    "[[Reflection::Field]]"
+    "STRAND_CLASS()",
+    "STRAND_METHOD()",
+    "STRAND_FIELD()",
+    "STRAND_ENUM()",
 ]
 
 # Global list to collect matched files.
