@@ -51,40 +51,11 @@ jobs:
         # Fetch full history for better performance with large repos
         fetch-depth: 0
         
-    - name: Cache Vulkan SDK
-      uses: actions/cache@v4
-      id: cache-vulkan
-      with:
-        path: |
-          C:\VulkanSDK
-          ${{ runner.temp }}/vulkan
-        key: vulkan-sdk-1.4.313.0-${{ runner.os }}
-        restore-keys: |
-          vulkan-sdk-1.4.313.0-
-
     - name: Install Vulkan SDK
-      if: steps.cache-vulkan.outputs.cache-hit != 'true'
-      shell: powershell
-      run: |
-        $url = "https://sdk.lunarg.com/sdk/download/1.4.313.0/windows/VulkanSDK-1.4.313.0-Installer.exe"
-        $installer = "${{ runner.temp }}/VulkanSDK-Installer.exe"
-        Write-Host "Downloading Vulkan SDK..."
-        Invoke-WebRequest -Uri $url -OutFile $installer
-        Write-Host "Installing Vulkan SDK..."
-        Start-Process -FilePath $installer -ArgumentList "/S" -Wait
-        Write-Host "Vulkan SDK installed successfully"
-
-    - name: Set Vulkan Environment
-      shell: powershell
-      run: |
-        $vulkanPath = "C:\VulkanSDK\1.4.313.0"
-        if (Test-Path $vulkanPath) {
-          echo "VULKAN_SDK=$vulkanPath" >> $env:GITHUB_ENV
-          echo "$vulkanPath\Bin" >> $env:GITHUB_PATH
-          Write-Host "Vulkan SDK path set to: $vulkanPath"
-        } else {
-          Write-Error "Vulkan SDK not found at expected location"
-        }
+      uses: jakoch/install-vulkan-sdk-action@v1.0.0
+      with:
+        vulkan-query-version: 1.4.313.0
+        vulkan-use-cache: true
 
     - name: Setup MSVC
       if: matrix.os == 'windows-latest'
