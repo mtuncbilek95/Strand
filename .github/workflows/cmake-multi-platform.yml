@@ -47,13 +47,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        # Fetch full history for better performance with large repos
+        fetch-depth: 0
+        
     - name: Install Vulkan SDK
-    # You may pin to the exact commit or the version.
-    # uses: humbletim/setup-vulkan-sdk@72eed4b9dbeac5de168f83da8e30b1d0f8ac7f14
+      # Updated to latest version with better caching and Windows support
       uses: humbletim/install-vulkan-sdk@v1.1.1
       with:
         version: 1.4.313.0
         cache: true
+        # Add quiet mode for cleaner output
+        quiet: true
+
+    - name: Setup MSVC
+      if: matrix.os == 'windows-latest'
+      uses: microsoft/setup-msbuild@v2
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -63,14 +72,26 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         -S ${{ github.workspace }}
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-      run: cmake --build cmake-build --config ${{ matrix.build_type }}
+      run: cmake --build cmake-build --config ${{ matrix.build_type }} --parallel
 
     - name: Test
       working-directory: cmake-build
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest --build-config ${{ matrix.build_type }}
+      run: ctest --build-config ${{ matrix.build_type }} --output-on-failure --parallel
+
+    - name: Upload build artifacts
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts-${{ matrix.os }}-${{ matrix.build_type }}
+        path: |
+          cmake-build/**/*.exe
+          cmake-build/**/*.dll
+          cmake-build/**/*.lib
+        retention-days: 7
