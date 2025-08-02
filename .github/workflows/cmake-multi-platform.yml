@@ -49,10 +49,6 @@ jobs:
         modules: 'qtwebengine qtwebchannel qtpositioning'
         cache: 'true'
         
-    - name: Setup MSVC
-      if: matrix.os == 'windows-latest'
-      uses: ilammy/msvc-dev-cmd@v1
-
     - name: Configure CMake
       run: |
         cmake -B cmake-build
