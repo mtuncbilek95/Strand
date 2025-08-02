@@ -51,11 +51,28 @@ jobs:
         # Fetch full history for better performance with large repos
         fetch-depth: 0
         
-    - name: Install Vulkan SDK
-      uses: humbletim/install-vulkan-sdk@v1.2
+    - name: Setup Vulkan SDK
+      run: |
+        # Download and install Vulkan SDK using winget (Windows Package Manager)
+        winget install --id=LunarG.VulkanSDK --exact --silent --accept-package-agreements --accept-source-agreements
+        
+        # Find installed Vulkan SDK path
+        $vulkanPath = Get-ChildItem "C:\VulkanSDK" | Sort-Object Name -Descending | Select-Object -First 1 -ExpandProperty FullName
+        
+        if ($vulkanPath -and (Test-Path $vulkanPath)) {
+          echo "VULKAN_SDK=$vulkanPath" >> $env:GITHUB_ENV
+          echo "$vulkanPath\Bin" >> $env:GITHUB_PATH
+          Write-Host "Vulkan SDK installed at: $vulkanPath"
+        } else {
+          Write-Error "Vulkan SDK installation failed"
+        }
+      shell: powershell
+
+    - name: Setup Ninja
+      uses: ashutoshvarma/setup-ninja@master
       with:
-        version: 1.4.313.0
-        cache: true
+        # ninja version to download. Default: 1.10.0
+        version: 1.11.1
 
     - name: Setup MSVC
       if: matrix.os == 'windows-latest'
@@ -69,18 +86,17 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         -S ${{ github.workspace }}
 
     - name: Build
-      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-      run: cmake --build cmake-build --config ${{ matrix.build_type }} --parallel
+      # Build your program with the given configuration. Ninja is a single-config generator so --config is not needed.
+      run: cmake --build cmake-build --parallel
 
     - name: Test
       working-directory: cmake-build
-      # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      # Execute tests defined by the CMake configuration. Ninja is a single-config generator so --build-config is not needed.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest --build-config ${{ matrix.build_type }} --output-on-failure --parallel
+      run: ctest --output-on-failure --parallel
 
     - name: Upload build artifacts
       if: success()
