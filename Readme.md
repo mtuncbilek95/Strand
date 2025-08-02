@@ -19,6 +19,26 @@ it because the documentations below will help you to understand how to create yo
 | GPU:      |     Nvidia RTX 2060     |     Nvidia RTX 3060     |
 | OS:       |        Windows 10       |         Windows 11      |
 
+## Dependencies
+The dependencies below are already handled by cmake's fetch content feature. So you don't need to do any kind of git call
+or something else.
+
+- [Assimp](https://github.com/assimp/assimp)
+- [Catch2](https://github.com/catchorg/Catch2)
+- [Entt](https://github.com/skypjack/entt)
+- [Fmt](https://github.com/fmtlib/fmt)
+- [Ftxui](https://github.com/ArthurSonzogni/FTXUI)
+- [Glfw](https://github.com/glfw/glfw)
+- [Glm](https://github.com/g-truc/glm)
+- [ImGui](https://github.com/ocornut/imgui)
+- [Magic-enum](https://github.com/Neargye/magic_enum)
+- [Nlohmann](https://github.com/nlohmann/json)
+- [Spdlog](https://github.com/gabime/spdlog)
+- [Stb](https://github.com/nothings/stb)
+- [Usd](https://github.com/PixarAnimationStudios/OpenUSD)
+- [Volk](https://github.com/zeux/volk)
+- [ZLib](https://github.com/madler/zlib)
+
 ## Other Documentations
 - [Build Documentation](./Docs/HowToInstall.md)
 - [Roadmap](./Docs/RoadMap.md)
