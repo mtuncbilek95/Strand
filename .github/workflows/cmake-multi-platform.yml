@@ -48,25 +48,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        # Fetch full history for better performance with large repos
         fetch-depth: 0
         
-    - name: Setup Vulkan SDK
-      run: |
-        # Download and install Vulkan SDK using winget (Windows Package Manager)
-        winget install --id=LunarG.VulkanSDK --exact --silent --accept-package-agreements --accept-source-agreements
-        
-        # Find installed Vulkan SDK path
-        $vulkanPath = Get-ChildItem "C:\VulkanSDK" | Sort-Object Name -Descending | Select-Object -First 1 -ExpandProperty FullName
-        
-        if ($vulkanPath -and (Test-Path $vulkanPath)) {
-          echo "VULKAN_SDK=$vulkanPath" >> $env:GITHUB_ENV
-          echo "$vulkanPath\Bin" >> $env:GITHUB_PATH
-          Write-Host "Vulkan SDK installed at: $vulkanPath"
-        } else {
-          Write-Error "Vulkan SDK installation failed"
-        }
-      shell: powershell
+    - name: Install Vulkan SDK
+      uses: humbletim/install-vulkan-sdk@v1.2
+      with:
+        version: 1.4.313.0
+        cache: true
 
     - name: Setup Ninja
       uses: ashutoshvarma/setup-ninja@master
