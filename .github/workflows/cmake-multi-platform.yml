@@ -40,7 +40,7 @@ jobs:
       if: steps.cache-vulkan.outputs.cache-hit != 'true'
       run: |
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/download/1.4.313.0/windows/VulkanSDK-1.4.313.0-Installer.exe" -OutFile VulkanSDK-Installer.exe
+        Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.4.313.0/windows/vulkansdk-windows-X64-1.4.313.0.exe" -OutFile VulkanSDK-Installer.exe
         .\VulkanSDK-Installer.exe --accept-licenses --default-answer --confirm-command install
         Start-Sleep -Seconds 10
 
