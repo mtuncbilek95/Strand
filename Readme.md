@@ -1,4 +1,4 @@
-# Flax Engine
+# Strand Engine
 
 It is a custom made game engine structured in C++. The main goal of this project is to provide a high-performance, 
 flexible, and easy-to-develop engine for game developers who are experienced in both games and graphics. The engine 

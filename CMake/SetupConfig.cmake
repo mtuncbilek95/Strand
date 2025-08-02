@@ -1,8 +1,8 @@
 function(SetupConfig)
 	if(WIN32)
-		add_compile_definitions(FLAX_WINDOWS)
+		add_compile_definitions(STRAND_WINDOWS)
 	elseif(UNIX)
-		add_compile_definitions(FLAX_LINUX)
+		add_compile_definitions(STRAND_LINUX)
 	endif()
 
 	if(WIN32)
@@ -22,10 +22,10 @@ function(SetupConfig)
 	endif()
 
 	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-		add_compile_definitions(FLAX_DEBUG)
+		add_compile_definitions(STRAND_DEBUG)
 	endif()
 
 	if(CMAKE_BUILD_TYPE STREQUAL "Release")
-		add_compile_definitions(FLAX_RELEASE)
+		add_compile_definitions(STRAND_RELEASE)
 	endif()
 endfunction()

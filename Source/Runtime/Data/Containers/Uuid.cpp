@@ -2,7 +2,7 @@
 
 #include <format>
 
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
 #include <objbase.h>
 #endif
 
@@ -60,7 +60,7 @@ namespace Strand
 
     Uuid UuidHelper::GenerateID()
     {
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
 		Uuid guid = {};
 		HRESULT hr = CoCreateGuid((GUID*)(&guid.m_a));
 		return guid;

@@ -1,6 +1,6 @@
 #include "PlatformPath.h"
 
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
 #include <Runtime/Platform/Win32/Win32Path.h>
 typedef Strand::Win32Path DependencyPath;
 #else

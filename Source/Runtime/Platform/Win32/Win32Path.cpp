@@ -1,6 +1,6 @@
 #include "Win32Path.h"
 
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
 #include <ShlObj.h>
 #include <KnownFolders.h>
 #include <atlbase.h>
@@ -10,7 +10,7 @@ namespace Strand
 {
 	Path Win32Path::AppDataPath()
 	{
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
 		PWSTR path = nullptr;
 		HRESULT hr = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &path);
 

@@ -8,7 +8,7 @@ namespace Strand
 {
     ReadArray<c8> DataReader::ReadData(const String& filePath, b8 emptyOnMissing, b8 nullTerminateString)
     {
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
         std::ifstream file(filePath, std::ios::ate | std::ios::binary);
 
         if (!file.is_open())

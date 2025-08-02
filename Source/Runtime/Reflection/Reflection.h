@@ -15,7 +15,7 @@
 
 namespace Strand
 {
-#define FLAX_OBJECT(ClassName) \
+#define STRAND_OBJECT(ClassName) \
 	private: \
 		friend class TypeAccessor<ClassName>; \
 		static String StaticClassName() \
@@ -26,8 +26,8 @@ namespace Strand
 		} \
 	public:
 
-#define FLAX_CLASS(...)
-#define FLAX_ENUM(...)
-#define FLAX_FIELD(...)
-#define FLAX_METHOD(...)
+#define STRAND_CLASS(...)
+#define STRAND_ENUM(...)
+#define STRAND_FIELD(...)
+#define STRAND_METHOD(...)
 }

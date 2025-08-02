@@ -29,7 +29,7 @@ namespace Strand
 		VkFenceCreateInfo fenceInfo = { VK_STRUCTURE_TYPE_FENCE_CREATE_INFO };
 		VDebug::VkAssert(vkCreateFence(VkDevice(Root()->Device()), &fenceInfo, nullptr, &m_barrierFence), "GfxVkSwapchain");
 
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
 		VkWin32SurfaceCreateInfoKHR surfaceInfo = { VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR };
 		surfaceInfo.hinstance = GetModuleHandle(nullptr);
 		surfaceInfo.hwnd = (HWND)desc.windowHandler;

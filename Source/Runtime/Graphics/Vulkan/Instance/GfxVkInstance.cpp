@@ -37,7 +37,7 @@ namespace Strand
 	{
         VDebug::VkAssert(volkInitialize(), "GfxVkInstance");
 
-#if defined(FLAX_DEBUG)
+#if defined(STRAND_DEBUG)
         m_debugMessenger = VK_NULL_HANDLE;
 #endif
 
@@ -53,11 +53,11 @@ namespace Strand
         extensions.push_back({ VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME, false });
         extensions.push_back({ VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME, false });
 
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
         extensions.push_back({ VK_KHR_WIN32_SURFACE_EXTENSION_NAME, false });
 #endif
 
-#if defined(FLAX_DEBUG)
+#if defined(STRAND_DEBUG)
         extensions.push_back({ VK_EXT_DEBUG_UTILS_EXTENSION_NAME, false });
         extensions.push_back({ VK_EXT_DEBUG_REPORT_EXTENSION_NAME, false });
 #endif
@@ -95,7 +95,7 @@ namespace Strand
 
         Vector<ExtensionEntry> wantedLayers;
         Vector<const char*> workingLayers;
-#if defined(FLAX_DEBUG)
+#if defined(STRAND_DEBUG)
         wantedLayers.push_back({ "VK_LAYER_KHRONOS_validation", false });
         wantedLayers.push_back({ "VK_LAYER_LUNARG_screenshot" , false });
         wantedLayers.push_back({ "VK_LAYER_LUNARG_monitor", false });
@@ -141,7 +141,7 @@ namespace Strand
         
         volkLoadInstance(m_instance);
 
-#if defined(FLAX_DEBUG)
+#if defined(STRAND_DEBUG)
         VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
         debugCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
         debugCreateInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
@@ -217,7 +217,7 @@ namespace Strand
 
 	GfxVkInstance::~GfxVkInstance()
 	{
-#if defined(FLAX_DEBUG)
+#if defined(STRAND_DEBUG)
         if (m_debugMessenger != VK_NULL_HANDLE)
         {
             vkDestroyDebugUtilsMessengerEXT(m_instance, m_debugMessenger, nullptr);
