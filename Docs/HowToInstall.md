@@ -23,8 +23,8 @@ Since the source code expects you to use CMake v3.26 or higher, I will highly re
 To build the engine, you don't need to use CMake's GUI or command line. You can use the series of commands below in your Powershell terminal.
 
 ```powershell
-git clone https://github.com/mtuncbilek95/Flax.git
-cd Flax
+git clone https://github.com/mtuncbilek95/Strand.git
+cd Strand
 Start-Process "devenv.exe" -ArgumentList "."
 ```
 
