@@ -44,14 +44,22 @@ namespace Flax
 		template<typename T, typename... Args>
 		void RegisterConstructor()
 		{
-			String className = T::StaticClassName();
 			u32 classHash = typeid(T).hash_code();
 			ClassInfo& classInfo = m_classRegistry[classHash];
 
 			ConstructorInfo ctorInfo = {};
 			ctorInfo.parameterTypes = { GetTypeInfo<Args>()... };
 			ctorInfo.parameterHash = GenerateParameterHash<Args...>();
-			ctorInfo.constructorPtr = &ConstructorWrapper<T, Args...>;
+			if constexpr (sizeof...(Args) == 0) {
+				ctorInfo.constructorPtr = [](const void* const*) -> void* {
+					return new T();
+					};
+			}
+			else {
+				ctorInfo.constructorPtr = [](const void* const* args) -> void* {
+					return GenerateConstructFunc<T, Args...>(args, std::index_sequence_for<Args...>{});
+					};
+			}
 
 			usize index = classInfo.constructors.size();
 			classInfo.constructors.push_back(ctorInfo);
@@ -134,52 +142,35 @@ namespace Flax
 		}
 
 		template<typename T>
-		TypeInfo* GetTypeInfo()
+		TypeInfo GetTypeInfo()
 		{
 			auto it = m_typeRegistry.find(typeid(T).hash_code());
-			if (it != m_typeRegistry.end())
-				return &it->second;
+			if (it == m_typeRegistry.end())
+				RegisterTypeInfo<T>();
 
-			return nullptr;
+			auto it = m_typeRegistry.find(typeid(T).hash_code());
+			if (it == m_typeRegistry.end())
+			{
+				Log::Critical(LogType::Reflection, "Something unexpected is happening in the reflection system for type '{}' when getting.", typeid(T).name());
+				return TypeInfo();
+			}
+
+			return it->second;
 		}
 
 	private:
-		template<typename T, typename... Args>
-		static void* ConstructorWrapper(void* params)
+		template<typename T, typename... Args, usize... Is>
+		void* GenerateConstructFunc(const void* const* args, std::index_sequence<Is...>)
 		{
-			return ConstructorWrapperImpl<T, Args...>(params, std::index_sequence_for<Args...>{});
-		}
-
-		template<typename T, typename... Args, usize... I>
-		static void* ConstructorWrapperImpl(void* params, std::index_sequence<I...>)
-		{
-			return new T(ExtractParams<Args>(params, I)...);
+			return new T(*static_cast<const std::remove_reference_t<Args>*>(args[Is])...);
 		}
 
 		template<typename... Args>
 		u32 GenerateParameterHash()
 		{
-			String combined;
-			((combined += String(typeid(Args).name()) + "|"), ...);
-			return Hash<String>{}(combined);
-		}
-
-		template<typename T>
-		T ExtractParams(void* params, usize index)
-		{
-			void** paramArray = static_cast<void**>(params);
-
-			if (!paramArray || !paramArray[index])
-				throw std::runtime_error("Invalid parameter");
-
-			return *static_cast<T*>(paramArray[index]);
-		}
-
-		template<typename T>
-		usize GetParamIndex() 
-		{
-			static usize index = 0;
-			return index++;
+			u32 hash = 0;
+			((hash ^= Hash<std::type_index>{}(TypeIndex(typeid(Args))) + 0x9e3779b9 + (hash << 6) + (hash >> 2)), ...);
+			return hash;
 		}
 
 		template<typename T>

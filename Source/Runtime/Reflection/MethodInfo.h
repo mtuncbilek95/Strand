@@ -9,7 +9,7 @@
 
 #include <Runtime/Data/Definitions/Definitions.h>
 #include <Runtime/Data/Definitions/StdNames.h>
-#include <Runtime/Serialization/TypeInfo.h>
+#include <Runtime/Reflection/TypeInfo.h>
 
 namespace Flax
 {

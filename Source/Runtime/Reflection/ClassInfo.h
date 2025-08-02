@@ -23,7 +23,7 @@ namespace Flax
 	{
 		u32 parameterHash;
 		Vector<TypeInfo> parameterTypes;
-		void* (*constructorPtr)(void*);
+		function<void* (const void* const*)> constructorPtr;
 	};
 
 	/**
