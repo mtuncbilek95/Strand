@@ -54,8 +54,8 @@ jobs:
     - name: Install Vulkan SDK
       uses: jakoch/install-vulkan-sdk-action@v1.0.0
       with:
-        vulkan-query-version: 1.4.313.0
-        vulkan-use-cache: true
+        vulkan_version: 1.4.313.0
+        cache: true
 
     - name: Setup MSVC
       if: matrix.os == 'windows-latest'
