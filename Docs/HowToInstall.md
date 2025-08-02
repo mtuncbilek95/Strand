@@ -1,4 +1,4 @@
-# Flax Engine Documentation
+# Strand Engine Documentation
 
 ## How to run Flax Engine from source code
 
