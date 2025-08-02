@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
 include(FetchContent)
 
 add_subdirectory(assimp)
-add_subdirectory(imgui)
+#add_subdirectory(imgui)
 add_subdirectory(glm)
 add_subdirectory(glfw)
 add_subdirectory(stb)
