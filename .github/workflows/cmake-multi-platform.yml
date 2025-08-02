@@ -62,13 +62,12 @@ jobs:
       
     - name: Configure CMake
       run: >
+        run: >
         cmake -B cmake-build
-        -G Ninja
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
         -DCMAKE_PREFIX_PATH=${{ env.Qt6_DIR }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -S ${{ github.workspace }}
         
     - name: Build
@@ -77,14 +76,3 @@ jobs:
     - name: Test
       working-directory: cmake-build
       run: ctest --output-on-failure --parallel
-      
-    - name: Upload build artifacts
-      if: success()
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-artifacts-${{ matrix.os }}-${{ matrix.build_type }}
-        path: |
-          cmake-build/**/*.exe
-          cmake-build/**/*.dll
-          cmake-build/**/*.lib
-        retention-days: 7
