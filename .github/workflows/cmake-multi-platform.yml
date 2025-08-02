@@ -30,13 +30,6 @@ jobs:
         version: 1.4.313.0
         cache: true
     
-    - name: Set Vulkan Environment Variables
-      run: |
-        echo "VULKAN_SDK=${{ env.VULKAN_SDK }}" >> $GITHUB_ENV
-        echo "VK_SDK_PATH=${{ env.VULKAN_SDK }}" >> $GITHUB_ENV
-        echo "${{ env.VULKAN_SDK }}/bin" >> $GITHUB_PATH
-      shell: bash
-      
     - name: Cache Qt 6.9.0
       id: cache-qt
       uses: actions/cache@v4
@@ -56,32 +49,21 @@ jobs:
         modules: 'qtwebengine qtwebchannel qtpositioning'
         cache: 'true'
         
-    - name: Setup Ninja
-      uses: ashutoshvarma/setup-ninja@master
-      with:
-        # ninja version to download. Default: 1.10.0
-        version: 1.11.1
-        
-    # Use the newer setup-msbuild action that properly initializes the MSVC environment
     - name: Setup MSVC
       if: matrix.os == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1
 
     - name: Configure CMake
       run: |
-        cmake -B cmake-build `
-          -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" `
-          -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" `
-          -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}" `
-          -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" `
-          -DVulkan_ROOT="${{ env.VULKAN_SDK }}" `
-          -DVulkan_LIBRARY="${{ env.VULKAN_SDK }}/Lib/vulkan-1.lib" `
-          -DVulkan_INCLUDE_DIR="${{ env.VULKAN_SDK }}/Include" `
-          -S "${{ github.workspace }}"
+        cmake -B cmake-build
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
         
     - name: Build
-      run: cmake --build cmake-build --parallel
+      run: cmake --build cmake-build --parallel --config ${{ matrix.build_type }}
       
     - name: Test
       working-directory: cmake-build
-      run: ctest --output-on-failure --parallel
+      run: ctest --build-config ${{ matrix.build_type }}
