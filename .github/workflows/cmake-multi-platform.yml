@@ -68,16 +68,16 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
       
     - name: Configure CMake
-      run: >
-        cmake -B cmake-build
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_PREFIX_PATH=${{ env.Qt6_DIR }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
-        -DVulkan_ROOT="${{ env.VULKAN_SDK }}"
-        -DVulkan_LIBRARY="${{ env.VULKAN_SDK }}/lib/vulkan-1.lib"
-        -DVulkan_INCLUDE_DIR="${{ env.VULKAN_SDK }}/include"
+      run: |
+        cmake -B cmake-build \
+        -DCMAKE_CXX_COMPILER="${{ matrix.cpp_compiler }}" \
+        -DCMAKE_C_COMPILER="${{ matrix.c_compiler }}" \
+        -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}" \
+        -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" \
+        -DVulkan_ROOT="${{ env.VULKAN_SDK }}" \
+        -DVulkan_LIBRARY="${{ env.VULKAN_SDK }}/lib/vulkan-1.lib" \
+        -DVulkan_INCLUDE_DIR="${{ env.VULKAN_SDK }}/include" \
+        -S "${{ github.workspace }}"
         
     - name: Build
       run: cmake --build cmake-build --parallel
