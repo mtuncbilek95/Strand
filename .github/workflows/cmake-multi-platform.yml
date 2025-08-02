@@ -29,11 +29,25 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: Install Vulkan SDK
-      uses: humbletim/install-vulkan-sdk@v1.2
+    - name: Cache Vulkan SDK
+      id: cache-vulkan
+      uses: actions/cache@v4
       with:
-        version: 1.4.313.0
-        cache: true
+        path: C:\VulkanSDK
+        key: vulkan-sdk-1.4.313.0-windows
+
+    - name: Install Vulkan SDK
+      if: steps.cache-vulkan.outputs.cache-hit != 'true'
+      run: |
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/download/1.4.313.0/windows/VulkanSDK-1.4.313.0-Installer.exe" -OutFile VulkanSDK-Installer.exe
+        .\VulkanSDK-Installer.exe --accept-licenses --default-answer --confirm-command install
+        Start-Sleep -Seconds 10
+
+    - name: Set Vulkan Environment Variables
+      run: |
+        echo "VULKAN_SDK=C:\VulkanSDK\1.4.313.0" >> $env:GITHUB_ENV
+        echo "C:\VulkanSDK\1.4.313.0\Bin" >> $env:GITHUB_PATH
 
     - name: Setup Ninja
       uses: ashutoshvarma/setup-ninja@master
