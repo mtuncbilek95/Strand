@@ -67,61 +67,6 @@ jobs:
       if: matrix.os == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1
 
-    - name: Explore Vulkan SDK Directory
-      shell: bash
-      run: |
-        echo "==================== VULKAN SDK EXPLORER ===================="
-        echo "Exploring: ${{ env.VULKAN_SDK }}"
-        echo "=============================================================="
-        if [ ! -d "${{ env.VULKAN_SDK }}" ]; then
-          echo "❌ ERROR: Directory does not exist: ${{ env.VULKAN_SDK }}"
-          exit 1
-        fi
-        echo "✅ Directory exists!"
-        echo ""
-        echo "📋 ROOT CONTENTS:"
-        ls -la "${{ env.VULKAN_SDK }}"
-        echo ""
-        echo "📁 BIN DIRECTORY:"
-        if [ -d "${{ env.VULKAN_SDK }}/bin" ]; then
-          ls -la "${{ env.VULKAN_SDK }}/bin"
-        else
-          echo "❌ bin directory not found"
-        fi
-        echo ""
-        echo "📁 LIB DIRECTORY:"
-        if [ -d "${{ env.VULKAN_SDK }}/lib" ]; then
-          ls -la "${{ env.VULKAN_SDK }}/lib"
-        else
-          echo "❌ lib directory not found"
-        fi
-        echo ""
-        echo "📁 INCLUDE DIRECTORY:"
-        if [ -d "${{ env.VULKAN_SDK }}/include" ]; then
-          ls -la "${{ env.VULKAN_SDK }}/include"
-          echo ""
-          echo "📁 INCLUDE/VULKAN:"
-        if [ -d "${{ env.VULKAN_SDK }}/include/vulkan" ]; then
-            ls -la "${{ env.VULKAN_SDK }}/include/vulkan"
-        fi
-        else
-          echo "❌ include directory not found"
-        fi
-        echo ""
-        echo "🌳 COMPLETE DIRECTORY TREE:"
-        find "${{ env.VULKAN_SDK }}" -type d 2>/dev/null | head -20
-        echo ""
-        echo "🔍 SEARCHING FOR VULKAN LIBRARIES:"
-        find "${{ env.VULKAN_SDK }}" -name "*vulkan*" -type f 2>/dev/null | head -10
-        echo ""
-        echo "🔧 ENVIRONMENT VARIABLES:"
-        echo "VULKAN_SDK: ${{ env.VULKAN_SDK }}"
-        echo "VULKAN_SDK_VERSION: ${{ env.VULKAN_SDK_VERSION }}"
-        echo "VULKAN_SDK_PLATFORM: ${{ env.VULKAN_SDK_PLATFORM }}"
-        echo ""
-        echo "=============================================================="
-        echo "Exploration complete!"
-      
     - name: Configure CMake
       run: |
         cmake -B cmake-build `
@@ -130,8 +75,8 @@ jobs:
           -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}" `
           -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" `
           -DVulkan_ROOT="${{ env.VULKAN_SDK }}" `
-          -DVulkan_LIBRARY="${{ env.VULKAN_SDK }}/lib/vulkan-1.lib" `
-          -DVulkan_INCLUDE_DIR="${{ env.VULKAN_SDK }}/include" `
+          -DVulkan_LIBRARY="${{ env.VULKAN_SDK }}/Lib/vulkan-1.lib" `
+          -DVulkan_INCLUDE_DIR="${{ env.VULKAN_SDK }}/Include" `
           -S "${{ github.workspace }}"
         
     - name: Build
