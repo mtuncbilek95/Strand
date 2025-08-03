@@ -48,7 +48,7 @@ namespace Strand
 			ClassInfo& classInfo = m_classRegistry[classHash];
 
 			ConstructorInfo ctorInfo = {};
-			ctorInfo.parameterTypes = { GetTypeInfo<Args>()... };
+			ctorInfo.parameterTypes = GetTypeInfos<Args...>(std::index_sequence_for<Args...>{});
 			ctorInfo.parameterHash = GenerateParameterHash<Args...>();
 			if constexpr (sizeof...(Args) == 0) {
 				ctorInfo.constructorPtr = [](const void* const*) -> void* {
@@ -56,7 +56,7 @@ namespace Strand
 					};
 			}
 			else {
-				ctorInfo.constructorPtr = [](const void* const* args) -> void* {
+				ctorInfo.constructorPtr = [&](const void* const* args) -> void* {
 					return GenerateConstructFunc<T, Args...>(args, std::index_sequence_for<Args...>{});
 					};
 			}
@@ -66,16 +66,22 @@ namespace Strand
 			classInfo.constructorLookup[ctorInfo.parameterHash] = index;
 		}
 
-		// TODO: Ignore Method for now I'm mentally tired
-		/*
-		 * template<typename T, typename... Args>
-		 * void RegisterMethodInfo()
-		 * {
-		 * }
-		 */
+		template<typename T>
+		void RegisterInheritanceInfo()
+		{
+			u32 classHash = typeid(T).hash_code();
+			ClassInfo& classInfo = m_classRegistry[classHash];
+		}
+
+		template<typename T, typename... Args>
+		void RegisterMethodInfo()
+		{
+			u32 classHash = typeid(T).hash_code();
+			ClassInfo& classInfo = m_classRegistry[classHash];
+		}
 
 		template<typename T>
-		void RegisterFieldInfo(const String& className, const String& fieldName, usize offset, const TypeInfo& typeInfo)
+		void RegisterFieldInfo(const String& fieldName, usize offset, const TypeInfo& typeInfo)
 		{
 			u32 classHash = typeid(T).hash_code();
 			ClassInfo& classInfo = m_classRegistry[classHash];
@@ -103,10 +109,8 @@ namespace Strand
 			info.typeName = typeID.name();
 			info.typeHash = typeID.hash_code();
 			info.typeSize = sizeof(T);
-			info.isConst = std::is_const<T>::value;
-			info.isRef = std::is_reference<T>::value;
 			info.category = FindCategory<T>();
-			
+
 			m_typeRegistry[typeID.hash_code()] = std::move(info);
 		}
 
@@ -148,7 +152,7 @@ namespace Strand
 			if (it == m_typeRegistry.end())
 				RegisterTypeInfo<T>();
 
-			auto it = m_typeRegistry.find(typeid(T).hash_code());
+			it = m_typeRegistry.find(typeid(T).hash_code());
 			if (it == m_typeRegistry.end())
 			{
 				Log::Critical(LogType::Reflection, "Something unexpected is happening in the reflection system for type '{}' when getting.", typeid(T).name());
@@ -173,25 +177,41 @@ namespace Strand
 			return hash;
 		}
 
-		template<typename T>
-		TypeCategory FindCategory() 
+		template<typename... Args, usize... Is>
+		Vector<TypeInfo> GetTypeInfos(std::index_sequence<Is...>)
 		{
-			if constexpr (std::is_same<T, b8>::value) return TypeCategory::Boolean;
-			else if constexpr (std::is_same<T, c8>::value) return TypeCategory::Char;
-			else if constexpr (std::is_same<T, i8>::value) return TypeCategory::Signed8;
-			else if constexpr (std::is_same<T, i16>::value) return TypeCategory::Signed16;
-			else if constexpr (std::is_same<T, i32>::value) return TypeCategory::Signed32;
-			else if constexpr (std::is_same<T, i64>::value) return TypeCategory::Signed64;
-			else if constexpr (std::is_same<T, u8>::value) return TypeCategory::Unsigned8;
-			else if constexpr (std::is_same<T, u16>::value) return TypeCategory::Unsigned16;
-			else if constexpr (std::is_same<T, u32>::value) return TypeCategory::Unsigned32;
-			else if constexpr (std::is_same<T, u64>::value) return TypeCategory::Unsigned64;
-			else if constexpr (std::is_same<T, f32>::value) return TypeCategory::Float32;
-			else if constexpr (std::is_same<T, f64>::value) return TypeCategory::Float64;
-			else if constexpr (std::is_same<T, String>::value) return TypeCategory::String;
-			else if constexpr (std::is_same<T, Path>::value) return TypeCategory::String;
-			else if constexpr (std::is_enum<T>::value) return TypeCategory::Enum;
-			else if constexpr (std::is_class<T>::value) return TypeCategory::Class;
+			Vector<TypeInfo> result;
+			result.reserve(sizeof...(Args));
+
+			auto processType = [this, &result](auto index)
+				{
+					using Type = std::tuple_element_t<index, std::tuple<Args...>>;
+					result.push_back(GetTypeInfo<Type>());
+				};
+
+			(processType(std::integral_constant<usize, Is>{}), ...);
+			return result;
+		}
+
+		template<typename T>
+		TypeCategory FindCategory()
+		{
+			if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<b8>>::value) return TypeCategory::Boolean;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<c8>>::value) return TypeCategory::Char;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<i8>>::value) return TypeCategory::Signed8;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<i16>>::value) return TypeCategory::Signed16;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<i32>>::value) return TypeCategory::Signed32;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<i64>>::value) return TypeCategory::Signed64;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<u8>>::value) return TypeCategory::Unsigned8;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<u16>>::value) return TypeCategory::Unsigned16;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<u32>>::value) return TypeCategory::Unsigned32;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<u64>>::value) return TypeCategory::Unsigned64;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<f32>>::value) return TypeCategory::Float32;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<f64>>::value) return TypeCategory::Float64;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<String>>::value) return TypeCategory::String;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<Path>>::value) return TypeCategory::String;
+			else if constexpr (std::is_enum<RemoveCVRef<T>>::value) return TypeCategory::Enum;
+			else if constexpr (std::is_class<RemoveCVRef<T>>::value) return TypeCategory::Class;
 			else return TypeCategory::Struct;
 		}
 

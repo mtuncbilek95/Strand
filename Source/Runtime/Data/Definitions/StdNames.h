@@ -140,3 +140,9 @@ using NumericLimits = std::numeric_limits<T>;
 
 using OpenMode = std::ios_base::openmode;
 using IosBase = std::ios_base;
+
+template<typename T>
+using RemoveRef = std::remove_reference_t<T>;
+
+template<typename T>
+using RemoveCVRef = std::remove_cvref_t<T>;

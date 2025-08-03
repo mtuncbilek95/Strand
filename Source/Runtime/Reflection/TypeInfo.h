@@ -47,8 +47,5 @@ namespace Strand
 		u32 typeHash;
 		usize typeSize;
 		TypeCategory category;
-
-		b8 isConst;
-		b8 isRef;
 	};
 }

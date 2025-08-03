@@ -11,25 +11,12 @@
 #include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Data/Containers/Singleton.h>
 #include <Runtime/Logger/Logger.h>
-#include <Runtime/Reflection/TypeAccessor.h>
-#include <Runtime/Reflection/ReflectionRegistry.h>
 
 namespace Strand
 {
-#define STRAND_OBJECT(ClassName) \
-	private: \
-		friend class TypeAccessor<ClassName>; \
-	public: \
-		static String StaticClassName() \
-		{ \
-			String func = __FUNCTION__; \
-			usize index = func.find(':'); \
-			return func.substr(0, index); \
-		} \
-	private:
-
-#define STRAND_CLASS(...)
-#define STRAND_ENUM(...)
-#define STRAND_FIELD(...)
-#define STRAND_METHOD(...)
+	class ReflectionManifest : public Singleton<ReflectionManifest>
+	{
+	public:
+		void Manifest();
+	};
 }
