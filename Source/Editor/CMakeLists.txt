@@ -45,9 +45,11 @@ target_precompile_headers(Editor PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Core/PCH.h
 # ------------------------------------------------------------
 
 # ---------------------- FILE ADDITION -----------------------
-add_custom_command(
-    TARGET Editor POST_BUILD
-    COMMAND $ENV{QT_DIR}/bin/windeployqt.exe
-    "\"$<TARGET_FILE:Editor>\""
-)
+if(NOT DEFINED ENV{GITHUB_ACTIONS})
+	add_custom_command(
+	    TARGET Editor POST_BUILD
+	    COMMAND $ENV{QT_DIR}/bin/windeployqt.exe
+	    "\"$<TARGET_FILE:Editor>\""
+	)
+endif()
 # ------------------------------------------------------------
