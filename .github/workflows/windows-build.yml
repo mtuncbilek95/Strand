@@ -57,7 +57,6 @@ jobs:
         tools: 'tools_ifw tools_qtcreator,qt.tools.qtcreator'
         set-env: 'true'
         add-tools-to-path: 'true'
-        extra: '--verbose'
 
     - name: Setup MSVC Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1.13.0
