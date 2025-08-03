@@ -51,6 +51,8 @@ jobs:
         install-deps: 'true'
         modules: 'qtwebengine qtwebchannel qtpositioning'
         cache: 'true'
+        tools: 'tools_ifw tools_qtcreator,qt.tools.qtcreator'
+        set-env: 'true'
     
     - name: Set reusable strings
       id: strings
