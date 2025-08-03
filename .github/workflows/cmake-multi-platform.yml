@@ -17,8 +17,8 @@ jobs:
         c_compiler: [cl]
         include:
           - os: windows-latest
-            c_compiler: cl.exe
-            cpp_compiler: cl.exe
+            c_compiler: cl
+            cpp_compiler: cl
     steps:
     - uses: actions/checkout@v4
       with:
@@ -48,10 +48,16 @@ jobs:
         install-deps: 'true'
         modules: 'qtwebengine qtwebchannel qtpositioning'
         cache: 'true'
+    
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         
     - name: Configure CMake
-      run: |
-        cmake -B cmake-build
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
