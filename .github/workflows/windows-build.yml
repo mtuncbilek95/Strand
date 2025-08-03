@@ -56,6 +56,8 @@ jobs:
         cache: 'true'
         tools: 'tools_ifw tools_qtcreator,qt.tools.qtcreator'
         set-env: 'true'
+        add-tools-to-path: 'true'
+        extra: '--verbose'
 
     - name: Setup MSVC Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -70,8 +72,6 @@ jobs:
       shell: cmd
       run: |
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        set PATH=${{ env.Qt6_Dir }}/bin;%PATH%
-        set CMAKE_PREFIX_PATH=${{ env.Qt6_Dir }}
         cmake -B ${{ steps.strings.outputs.build-output-dir }} -G Ninja -DCMAKE_CXX_COMPILER=cl.exe -DCMAKE_C_COMPILER=cl.exe -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }}
         
     - name: Build
