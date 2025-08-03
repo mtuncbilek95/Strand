@@ -75,7 +75,6 @@ jobs:
         
     - name: Build
       run: |
-        set PATH=${{ env.Qt6_Dir }}/bin;%PATH%
         cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel
       
     - name: Test
