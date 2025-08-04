@@ -20,6 +20,7 @@ accepted as core version of the roadmap.
 - [ ] Physics Engine (Jolt)
 - [ ] Scripting System (C++)
 - [ ] Skinned Mesh, 3DTexture etc.
+- [ ] Editor Animation Tools (Animation Sequence, Animation Blending, EventTrigger)
 - [ ] VFX Graph Node Editor
 - [ ] NeosisGUI implementation
 - [ ] PBR, IBL, Clustered Deferred Rendering
