@@ -3,8 +3,8 @@
 The roadmap that has been written below, can be changed during the development process. But it can be 
 accepted as core version of the roadmap.
 
-- [ ] Runtime Reflection System (W.I.P)
-- [ ] Better Entity Component System
+- [x] Runtime Reflection System
+- [ ] Better Entity Component System W.I.P
 - [ ] Editor Entity Component Bindings
 - [ ] Base resource implementations such as Mesh, Texture, Shader
 - [ ] Slang shader support
