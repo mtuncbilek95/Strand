@@ -94,6 +94,7 @@ namespace Strand
 		}
 		else if (selectedAction == renameEntt)
 		{
+			onRenameEntity(proxyIndex, m_newItemName);
 		}
 		else if (selectedAction == duplicateEntt)
 		{
@@ -104,6 +105,21 @@ namespace Strand
 
 	void SceneGraphTreeView::keyPressEvent(QKeyEvent* pEvent)
 	{
+		switch (pEvent->key())
+		{
+		case Qt::Key_F2:
+		{
+			if (currentIndex().isValid())
+				edit(currentIndex());
+			break;
+		}
+		case Qt::Key_Delete:
+		{
+		}
+		default:
+			QTreeView::keyPressEvent(pEvent);
+			break;
+		}
 	}
 
 	void SceneGraphTreeView::startRenameForEntity(const QString& folderPath)

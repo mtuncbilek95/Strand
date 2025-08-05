@@ -33,11 +33,9 @@ namespace Strand
 			auto it = Services().find(typeId);
 
 			if (it == Services().end())
-			{
 				Register<T>(NewRef<T>());
-				return nullptr;
-			}
 
+			it = Services().find(typeId);
 			return std::static_pointer_cast<T>(it->second);
 		}
 

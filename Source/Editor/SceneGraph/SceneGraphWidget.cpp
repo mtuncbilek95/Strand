@@ -2,7 +2,7 @@
 
 #include <Editor/SceneGraph/SceneGraphModel.h>
 #include <Editor/SceneGraph/SceneGraphTreeView.h>
-
+#include <Runtime/SceneGraph/Scene.h>
 
 namespace Strand
 {
@@ -13,7 +13,7 @@ namespace Strand
 		setContentsMargins(0, 0, 0, 0);
 
 		m_sgModel = new SceneGraphModel(this);
-		m_sgModel->setCurrentScene(nullptr);
+		m_sgModel->setCurrentScene(new Scene("TestScene"));
 		m_treeView = new SceneGraphTreeView(this);
 		m_treeView->setModel(m_sgModel);
 
