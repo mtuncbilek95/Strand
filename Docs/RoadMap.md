@@ -3,8 +3,8 @@
 The roadmap that has been written below, can be changed during the development process. But it can be 
 accepted as core version of the roadmap.
 
-- [ ] Runtime Reflection System (W.I.P)
-- [ ] Better Entity Component System
+- [x] Runtime Reflection System
+- [ ] Better Entity Component System W.I.P
 - [ ] Editor Entity Component Bindings
 - [ ] Base resource implementations such as Mesh, Texture, Shader
 - [ ] Slang shader support
@@ -20,6 +20,7 @@ accepted as core version of the roadmap.
 - [ ] Physics Engine (Jolt)
 - [ ] Scripting System (C++)
 - [ ] Skinned Mesh, 3DTexture etc.
+- [ ] Editor Animation Tools (Animation Sequence, Animation Blending, EventTrigger)
 - [ ] VFX Graph Node Editor
 - [ ] NeosisGUI implementation
 - [ ] PBR, IBL, Clustered Deferred Rendering
