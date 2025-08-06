@@ -1,10 +1,11 @@
-# Flax Engine
+# Strand Engine
+![example event parameter](https://github.com/mtuncbilek95/Strand/actions/workflows/windows-build.yml/badge.svg)
 
 It is a custom made game engine structured in C++. The main goal of this project is to provide a high-performance, 
 flexible, and easy-to-develop engine for game developers who are experienced in both games and graphics. The engine 
 is designed to be modular, allowing developers to easily extend its functionality.
 
-Flax Engine, has no built-in rendering pipeline solution, it is designed to be used as sandbox for developers to create their own
+Strand Engine, has no built-in rendering pipeline solution, it is designed to be used as sandbox for developers to create their own
 rendering optimizations and rendering pipelines. There will be a couple of free-to-use rendering pipelines available as 
 plugins, but the main goal is to provide visual framework.
 
@@ -19,5 +20,26 @@ it because the documentations below will help you to understand how to create yo
 | GPU:      |     Nvidia RTX 2060     |     Nvidia RTX 3060     |
 | OS:       |        Windows 10       |         Windows 11      |
 
+## Dependencies
+The dependencies below are already handled by cmake's fetch content feature. So you don't need to do any kind of git call
+or something else.
+
+- [Assimp](https://github.com/assimp/assimp)
+- [Catch2](https://github.com/catchorg/Catch2)
+- [Entt](https://github.com/skypjack/entt)
+- [Fmt](https://github.com/fmtlib/fmt)
+- [Ftxui](https://github.com/ArthurSonzogni/FTXUI)
+- [Glfw](https://github.com/glfw/glfw)
+- [Glm](https://github.com/g-truc/glm)
+- [ImGui](https://github.com/ocornut/imgui)
+- [Magic-enum](https://github.com/Neargye/magic_enum)
+- [Nlohmann](https://github.com/nlohmann/json)
+- [Spdlog](https://github.com/gabime/spdlog)
+- [Stb](https://github.com/nothings/stb)
+- [Usd](https://github.com/PixarAnimationStudios/OpenUSD)
+- [Volk](https://github.com/zeux/volk)
+- [ZLib](https://github.com/madler/zlib)
+
 ## Other Documentations
 - [Build Documentation](./Docs/HowToInstall.md)
+- [Roadmap](./Docs/RoadMap.md)

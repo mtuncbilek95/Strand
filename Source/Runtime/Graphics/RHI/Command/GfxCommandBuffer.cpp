@@ -1,6 +1,6 @@
 #include "GfxCommandBuffer.h"
 
-namespace Flax
+namespace Strand
 {
 	GfxCommandBuffer::GfxCommandBuffer(const GfxCommandBufferDesc& desc, GfxDevice* pDevice) : GfxObject(pDevice),
 		m_desc(desc)

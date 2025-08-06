@@ -12,7 +12,7 @@
 #include <Runtime/Graphics/RHI/Swapchain/GfxSwapchainDesc.h>
 #include <Runtime/Graphics/RHI/Image/GfxImageDesc.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxImage;
 	class GfxImageView;

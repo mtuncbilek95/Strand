@@ -1,6 +1,6 @@
 #include "VkSamplerUtils.h"
 
-namespace Flax
+namespace Strand
 {
 	VkFilter VkSamplerUtils::GetVkFilter(SamplerFilter filter)
 	{

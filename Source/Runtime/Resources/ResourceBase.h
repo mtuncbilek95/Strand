@@ -8,18 +8,27 @@
 #pragma once
 
 #include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Reflection/Reflection.h>
+#include <Runtime/Resources/ResourceDesc.h>
 
-namespace Flax
+namespace Strand
 {
-	class ResourceBase : public ObjectBase
+	STRAND_CLASS()
+		class ResourceBase
 	{
-		FLAX_OBJECT(ResourceBase)
+		STRAND_OBJECT(ResourceBase)
 	public:
-		ResourceBase();
+		ResourceBase(const ResourceDesc& desc);
 		~ResourceBase();
 
-	private:
+		const String& GetResourceName() const { return m_resourceName; }
+		const Path& GetRelativePath() const { return m_relativePath; }
 
+	private:
+		STRAND_FIELD()
+		Uuid m_resourceId;
+		STRAND_FIELD()
+		String m_resourceName;
+		STRAND_FIELD()
+		Path m_relativePath;
 	};
 }

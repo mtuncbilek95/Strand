@@ -1,6 +1,6 @@
 #include "ThreadPool.h"
 
-namespace Flax
+namespace Strand
 {
 	ThreadPool::ThreadPool(usize count)
 	{

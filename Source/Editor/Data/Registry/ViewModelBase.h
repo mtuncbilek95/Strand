@@ -9,7 +9,7 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 
-namespace Flax
+namespace Strand
 {
 	class ViewModelBase : public QObject
 	{

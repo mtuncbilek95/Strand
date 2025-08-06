@@ -9,7 +9,7 @@
 
 #include <Editor/Core/CoreMinimal.h>
 
-namespace Flax
+namespace Strand
 {
 	class ModelImportView : public QDialog
 	{

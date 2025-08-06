@@ -9,7 +9,7 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 
-namespace Flax
+namespace Strand
 {
 	/**
 	 * @class DateTime
@@ -73,6 +73,5 @@ namespace Flax
 		u8 m_hour;
 		u8 m_min;
 		u8 m_sec;
-
 	};
 }

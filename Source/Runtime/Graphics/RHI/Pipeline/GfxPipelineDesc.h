@@ -12,7 +12,7 @@
 #include <Runtime/Graphics/RHI/Util/ShaderStage.h>
 #include <Runtime/Graphics/RHI/Util/PipelineFormat.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxDescriptorLayout;
 	class GfxShader;

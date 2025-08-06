@@ -1,6 +1,6 @@
 #include "DiskFileNode.h"
 
-namespace Flax
+namespace Strand
 {
 	DiskFileNode::DiskFileNode(const VirtualNodeDesc& desc, IVirtualFileNode* pParent) : m_desc(desc),
 		m_parent(pParent), m_childrenLoaded(desc.type == VirtualNodeType::File)

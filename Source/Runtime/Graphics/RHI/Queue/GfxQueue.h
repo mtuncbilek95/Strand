@@ -12,7 +12,7 @@
 #include <Runtime/Graphics/RHI/Queue/GfxQueueDesc.h>
 #include <Runtime/Graphics/RHI/Util/PipelineStageFlags.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxCommandBuffer;
 	class GfxFence;

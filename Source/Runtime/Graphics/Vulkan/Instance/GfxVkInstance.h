@@ -12,7 +12,7 @@
 
 #include <vulkan/vulkan.h>
 
-namespace Flax
+namespace Strand
 {
     class GfxVkInstance final : public GfxInstance
     {
@@ -28,7 +28,7 @@ namespace Flax
         VkInstance m_instance;
         VkPhysicalDevice m_physicalDevice;
 
-#if defined(FLAX_DEBUG)
+#if defined(STRAND_DEBUG)
         VkDebugUtilsMessengerEXT m_debugMessenger;
 #endif
     };

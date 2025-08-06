@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Graphics/RHI/Instance/GfxType.h>
 
-namespace Flax
+namespace Strand
 {
 	struct GfxInstanceDesc
 	{

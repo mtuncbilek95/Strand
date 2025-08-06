@@ -1,30 +1,16 @@
 #include "PlatformPath.h"
 
-#if defined(FLAX_WINDOWS)
-#include <ShlObj.h>
-#include <KnownFolders.h>
-#include <atlbase.h>
-#endif
-
-namespace Flax
-{
-	String PlatformPath::AppDataPath()
-	{
-#if defined(FLAX_WINDOWS)
-		PWSTR path = nullptr;
-		HRESULT hr = SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &path);
-
-		if (SUCCEEDED(hr))
-		{
-			String str = StringHelpers::WStringToString(path);
-			CoTaskMemFree(path);
-			return str;
-		}
-		else
-			return String();
+#if defined(STRAND_WINDOWS)
+#include <Runtime/Platform/Win32/Win32Path.h>
+typedef Strand::Win32Path DependencyPath;
 #else
-#warning "PlatformPath::AppDataPath is not implemented for this platform"
-		return String();
+#warning "Not Implemented Yet"
 #endif
+
+namespace Strand
+{
+	Path PlatformPath::AppDataPath()
+	{
+		return DependencyPath::AppDataPath();
 	}
 }

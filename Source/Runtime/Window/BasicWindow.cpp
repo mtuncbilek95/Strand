@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <glfw/glfw3native.h>
 
-namespace Flax
+namespace Strand
 {
     GLFWwindow* gWindow = nullptr;
     static InputEvent inputEvent;

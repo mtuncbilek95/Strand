@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Util/ImageFormat.h>
 #include <Runtime/Graphics/RHI/Util/PipelineFormat.h>
 
-namespace Flax
+namespace Strand
 {
     enum class AttachmentType : u8
     {

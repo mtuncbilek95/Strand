@@ -1,6 +1,6 @@
 #include "DomainTreeView.h"
 
-namespace Flax
+namespace Strand
 {
 	DomainTreeView::DomainTreeView(QWidget* pParent) : QTreeView(pParent)
 	{

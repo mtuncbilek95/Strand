@@ -5,7 +5,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkImageUtils.h>
 #include <Runtime/Graphics/Vulkan/Util/VkPipelineUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkRenderPass::GfxVkRenderPass(const GfxRenderPassDesc& desc, GfxDevice* pDevice) : GfxRenderPass(desc, pDevice)
 	{

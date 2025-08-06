@@ -3,7 +3,7 @@
 #include <Editor/SceneGraph/SceneGraphModel.h>
 #include <Editor/SceneGraph/SceneGraphRole.h>
 
-namespace Flax
+namespace Strand
 {
 	SceneGraphTreeView::SceneGraphTreeView(QWidget* pParent) : QTreeView(pParent)
 	{
@@ -94,6 +94,7 @@ namespace Flax
 		}
 		else if (selectedAction == renameEntt)
 		{
+			onRenameEntity(proxyIndex, m_newItemName);
 		}
 		else if (selectedAction == duplicateEntt)
 		{
@@ -104,6 +105,21 @@ namespace Flax
 
 	void SceneGraphTreeView::keyPressEvent(QKeyEvent* pEvent)
 	{
+		switch (pEvent->key())
+		{
+		case Qt::Key_F2:
+		{
+			if (currentIndex().isValid())
+				edit(currentIndex());
+			break;
+		}
+		case Qt::Key_Delete:
+		{
+		}
+		default:
+			QTreeView::keyPressEvent(pEvent);
+			break;
+		}
 	}
 
 	void SceneGraphTreeView::startRenameForEntity(const QString& folderPath)

@@ -6,7 +6,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkMemoryUtils.h>
 #include <Runtime/Graphics/Vulkan/Image/GfxVkImage.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkImageView::GfxVkImageView(const GfxImageViewDesc& desc, GfxDevice* pDevice) : GfxImageView(desc, pDevice)
 	{

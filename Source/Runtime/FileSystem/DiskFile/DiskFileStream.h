@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/FileSystem/IFileStream.h>
 
-namespace Flax
+namespace Strand
 {
 	class DiskFileStream : public IFileStream
 	{

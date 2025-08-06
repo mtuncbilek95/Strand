@@ -14,7 +14,7 @@
 #include <Runtime/Graphics/RHI/Sync/GfxSemaphore.h>
 #include <Runtime/Graphics/RHI/Sync/GfxFence.h>
 
-namespace Flax
+namespace Strand
 {
 	static Ref<GfxInstance> RegisterGfxInstance(const GfxInstanceDesc& desc)
 	{

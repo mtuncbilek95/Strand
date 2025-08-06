@@ -10,18 +10,28 @@
 #include <Runtime/Data/Definitions/Definitions.h>
 #include <Runtime/Data/Definitions/StdNames.h>
 
-namespace Flax
+namespace Strand
 {
-	class Connection 
+	class Connection
 	{
 	public:
 		Connection() = default;
-		Connection(voidFunc disconnect);
+		Connection(voidFunc disconnect) : m_disconnectFunc(disconnect) {}
+		~Connection()
+		{
+			m_disconnectFunc = nullptr;
+		}
 
-		void SetConnection(voidFunc disconnect);
-		
-		void Disconnect();
-		b8 IsConnected() const;
+		void Disconnect()
+		{
+			if (m_disconnectFunc)
+			{
+				m_disconnectFunc();
+				m_disconnectFunc = nullptr;
+			}
+		}
+
+		b8 IsConnected() const { return m_disconnectFunc != nullptr; }
 
 	private:
 		voidFunc m_disconnectFunc = {};

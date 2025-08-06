@@ -3,7 +3,7 @@
 #include <Runtime/Graphics/Vulkan/Device/GfxVkDevice.h>
 #include <Runtime/Graphics/Vulkan/Debug/VDebug.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkSemaphore::GfxVkSemaphore(const GfxSemaphoreDesc& desc, GfxDevice* pDevice) : GfxSemaphore(desc, pDevice)
 	{

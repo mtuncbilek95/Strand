@@ -1,6 +1,6 @@
-# Flax Engine Documentation
+# Strand Engine Documentation
 
-## How to run Flax Engine from source code
+## How to run Strand Engine from source code
 
 To run the engine, you need a couple of SDKs installed on your system. The engine supports the following SDKs:
 
@@ -23,8 +23,8 @@ Since the source code expects you to use CMake v3.26 or higher, I will highly re
 To build the engine, you don't need to use CMake's GUI or command line. You can use the series of commands below in your Powershell terminal.
 
 ```powershell
-git clone https://github.com/mtuncbilek95/Flax.git
-cd Flax
+git clone https://github.com/mtuncbilek95/Strand.git
+cd Strand
 Start-Process "devenv.exe" -ArgumentList "."
 ```
 
@@ -34,5 +34,5 @@ Visual Studio will automatically detect the CMake files and generate build files
 
 ### Run Engine
 
-The engine has two different executables. One is the Editor and the other is Flaxbox. You can choose Editor and run it to see the editor interface. Flaxbox is
+The engine has two different executables. One is the Editor and the other is Strandbox. You can choose Editor and run it to see the editor interface. Strandbox is
 there to test the engine runtime without the editor. You may find it empty or filled with some sample code.

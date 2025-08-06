@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Object/GfxObject.h>
 #include <Runtime/Graphics/RHI/Descriptor/GfxDescriptorLayoutDesc.h>
 
-namespace Flax
+namespace Strand
 {
 	/**
 	 * @class GfxDescriptorLayout

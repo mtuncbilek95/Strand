@@ -9,12 +9,12 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 
-namespace Flax
+namespace Strand
 {
-	class JsonTypeUtils
+	struct ResourceDesc
 	{
-	public:
-		static Json ToJson(const Any& value, const String& typeName);
-		static Any ToAny(const Json& jsonFile, const String& typeName);
+		Uuid resourceId;
+		String resourceName;
+		Path relativePath;
 	};
 }

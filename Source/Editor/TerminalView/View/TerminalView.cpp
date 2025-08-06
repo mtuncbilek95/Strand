@@ -3,7 +3,7 @@
 #include <Editor/TerminalView/Model/LogSinkModel.h>
 #include <Editor/TerminalView/ViewModel/LogSinkViewModel.h>
 
-namespace Flax
+namespace Strand
 {
 	TerminalView::TerminalView(QWidget* pParent) : QWidget(pParent)
 	{

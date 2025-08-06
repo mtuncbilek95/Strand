@@ -9,7 +9,7 @@
 
 #include <Editor/Core/CoreMinimal.h>
 
-namespace Flax
+namespace Strand
 {
 	enum class TabDirection
 	{

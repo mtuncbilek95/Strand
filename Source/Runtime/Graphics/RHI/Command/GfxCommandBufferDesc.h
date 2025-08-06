@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Graphics/RHI/Util/CommandFormat.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxBuffer;
 	class GfxCommandPool;

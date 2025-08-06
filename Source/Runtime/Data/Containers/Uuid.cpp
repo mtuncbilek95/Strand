@@ -2,11 +2,11 @@
 
 #include <format>
 
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
 #include <objbase.h>
 #endif
 
-namespace Flax
+namespace Strand
 {
 	Uuid::Uuid(u32 a, u16 b, u16 c, u64 d) : m_a(a), m_b(b), m_c(c), m_d(d)
 	{
@@ -52,7 +52,7 @@ namespace Flax
 
     Uuid UuidHelper::GenerateID()
     {
-#if defined(FLAX_WINDOWS)
+#if defined(STRAND_WINDOWS)
 		Uuid guid = {};
 		HRESULT hr = CoCreateGuid((GUID*)(&guid.m_a));
 		return guid;

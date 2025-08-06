@@ -1,6 +1,6 @@
 #include "DomainIconProvider.h"
 
-namespace Flax
+namespace Strand
 {
 	void DomainIconProvider::setIcons()
 	{

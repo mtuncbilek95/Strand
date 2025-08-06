@@ -6,7 +6,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkCommandUtils.h>
 #include <Runtime/Graphics/Vulkan/Command/GfxVkCommandBuffer.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkCommandPool::GfxVkCommandPool(const GfxCommandPoolDesc& desc, GfxDevice* pDevice) : GfxCommandPool(desc, pDevice)
 	{

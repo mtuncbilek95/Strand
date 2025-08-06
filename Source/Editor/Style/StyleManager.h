@@ -10,7 +10,7 @@
 #include <Editor/Core/CoreMinimal.h>
 
 
-namespace Flax
+namespace Strand
 {
 	class StyleManager final : public Singleton<StyleManager>
 	{

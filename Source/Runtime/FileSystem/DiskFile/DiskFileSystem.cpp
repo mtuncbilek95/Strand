@@ -3,7 +3,7 @@
 #include <Runtime/FileSystem/DiskFile/DiskFileNode.h>
 #include <Runtime/FileSystem/DiskFile/DiskFileStream.h>
 
-namespace Flax
+namespace Strand
 {
 	void DiskFileSystem::Mount(const Path& mountPoint, const Path& sourcePath)
 	{

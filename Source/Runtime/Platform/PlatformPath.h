@@ -7,9 +7,9 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Data/Definitions/StdNames.h>
 
-namespace Flax
+namespace Strand
 {
 	struct PlatformPath
 	{

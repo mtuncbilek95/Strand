@@ -5,7 +5,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkDescriptorUtils.h>
 #include <Runtime/Graphics/Vulkan/Util/VkPipelineUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkDescriptorLayout::GfxVkDescriptorLayout(const GfxDescriptorLayoutDesc& desc, GfxDevice* pDevice) : GfxDescriptorLayout(desc, pDevice)
 	{

@@ -13,7 +13,7 @@
 #include <vulkan/vulkan.h>
 #include <vma/vk_mem_alloc.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxImageView;
 

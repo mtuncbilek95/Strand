@@ -9,7 +9,7 @@
 
 #include <Runtime/Data/Containers/Uuid.h>
 
-namespace Flax
+namespace Strand
 {
     /*
      * @class IObject

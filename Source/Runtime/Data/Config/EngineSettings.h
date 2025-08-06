@@ -9,7 +9,7 @@
 
 #include <Runtime/Core/CoreMinimal.h>
 
-namespace Flax
+namespace Strand
 {
 	struct GeneralSettings
 	{
@@ -55,7 +55,7 @@ namespace Flax
 		{
 			EngineSettings engineSettings;
 			engineSettings.setGeneral(
-				GeneralSettings().setName("FlaxEngine").setVersion("1.0.0").setApplicationType(0)) // #CLEAN(@mateusdigital): Remove magic numbers...
+				GeneralSettings().setName("StrandEngine").setVersion("1.0.0").setApplicationType(0)) // #CLEAN(@mateusdigital): Remove magic numbers...
 				.setGraphics(
 					GraphicsSettings()
 					.setGraphicsAPI(1)  // #CLEAN(@mateusdigital): Remove magic numbers...
@@ -63,7 +63,8 @@ namespace Flax
 					.setPresentMode(2)  // #CLEAN(@mateusdigital): Remove magic numbers...
 					.setSwapFormat(16)  // #CLEAN(@mateusdigital): Remove magic numbers...
 					.setDepthFormat(30) // #CLEAN(@mateusdigital): Remove magic numbers...
-					.setRenderThreadCount(4));
+					.setRenderThreadCount(4)
+				);
 
 			return engineSettings;
 		}

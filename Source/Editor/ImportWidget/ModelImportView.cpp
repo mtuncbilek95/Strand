@@ -1,6 +1,6 @@
 #include "ModelImportView.h"
 
-namespace Flax
+namespace Strand
 {
 	ModelImportView::ModelImportView(QWidget* pParent) : QDialog(pParent)
 	{

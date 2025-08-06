@@ -7,121 +7,29 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
+#include <Runtime/Data/Definitions/Definitions.h>
+#include <Runtime/Data/Definitions/StdNames.h>
+#include <Runtime/Data/Containers/Singleton.h>
+#include <Runtime/Logger/Logger.h>
+#include <Runtime/Reflection/TypeAccessor.h>
 #include <Runtime/Reflection/ReflectionRegistry.h>
 
-namespace Flax
+namespace Strand
 {
-	class Reflection
-	{
-	public:
-		template<typename T>
-		static Vector<String> FieldNames(const T& obj)
-		{
-			return FieldNames(T::StaticClassName());
-		}
-
-		static Vector<String> FieldNames(const String& className)
-		{
-			auto classInfo = ReflectionRegistry::GetClass(className);
-			if (!classInfo)
-				return Vector<String>();
-
-			Vector<String> fieldNames;
-			for (const auto& [fieldName, _] : classInfo->fields)
-				fieldNames.emplace_back(fieldName);
-
-			return fieldNames;
-		}
-
-		template<typename T>
-		static Any GetFieldValue(const T& obj, const String& fieldName)
-		{
-			auto fieldInfo = ReflectionRegistry::GetField(T::StaticClassName(), fieldName);
-			if (!fieldInfo)
-				return Any();
-
-			return fieldInfo->getter(const_cast<T*>(&obj));
-		}
-
-		template<typename T>
-		static b8 SetFieldValue(T& obj, const String& fieldName, const Any& value)
-		{
-			auto fieldInfo = ReflectionRegistry::GetField(T::StaticClassName(), fieldName);
-			if (!fieldInfo)
-				return false;
-
-			try
-			{
-				fieldInfo->setter(&obj, value);
-				return true;
-			}
-			catch (...)
-			{
-				Log::Error(LogType::Engine, "Failed to set field '{}' in class '{}'.", fieldName, T::StaticClassName());
-				return false;
-			}
-		}
-
-		template<typename T>
-		static Ref<T> CreateInstance()
-		{
-			auto classInfo = ReflectionRegistry::GetClass(T::StaticClassName());
-			if (!classInfo)
-				return nullptr;
-
-			auto instance = classInfo->constructor();
-			return std::static_pointer_cast<T>(instance);
-		}
-	};
-
-}
-
-#define FLAX_OBJECT(ClassName) \
-	friend struct ClassName##_ReflectionRegister; \
-public: \
-	static String StaticClassName() \
-	{ \
-		static String sName = #ClassName; \
-		return sName; \
-	} \
-private:
-
-#define BEGIN_REFLECT_CLASS(ClassName) \
-    struct ClassName##_ReflectionRegister { \
-        ClassName##_ReflectionRegister() { \
-            ClassInfo classInfo; \
-            classInfo.className = #ClassName; \
-            classInfo.size = sizeof(ClassName); \
-            \
-            classInfo.constructor = []() -> Owned<ObjectBase> { \
-                return NewOwn<ClassName>(); \
-            };
-
-#define REFLECT_FIELD(ClassName, FieldName) \
+#define STRAND_OBJECT(ClassName) \
+	private: \
+		friend class TypeAccessor<ClassName>; \
+	public: \
+		static String StaticClassName() \
 		{ \
-			FieldInfo fieldInfo; \
-			fieldInfo.fieldName = #FieldName; \
-			fieldInfo.typeName = typeid(decltype(ClassName##::FieldName)).name(); \
-			fieldInfo.typeHash = typeid(decltype(ClassName##::FieldName)).hash_code(); \
-			\
-			fieldInfo.getter = [](void* obj) -> Any { \
-				auto* instance = static_cast<ClassName*>(obj); \
-				return instance->FieldName; \
-			};\
-			\
-			fieldInfo.setter = [](void* obj, const Any& value) { \
-                    auto* instance = static_cast<ClassName*>(obj); \
-                    using FieldType = decltype(instance->FieldName); \
-                    instance->FieldName = std::any_cast<FieldType>(value); \
-                }; \
-                \
-            classInfo.fields[#FieldName] = std::move(fieldInfo); \
-		}
+			String func = __FUNCTION__; \
+			usize index = func.find(':'); \
+			return func.substr(0, index); \
+		} \
+	private:
 
-#define END_REFLECT_CLASS(ClassName) \
-            ReflectionRegistry::DefineClass(#ClassName, std::move(classInfo)); \
-        } \
-    }; \
-    \
-    static ClassName##_ReflectionRegister ClassName##RegisterInstance;
+#define STRAND_CLASS(...)
+#define STRAND_ENUM(...)
+#define STRAND_FIELD(...)
+#define STRAND_METHOD(...)
+}

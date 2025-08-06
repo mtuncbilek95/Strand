@@ -4,7 +4,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/fmt/bundled/ostream.h>
 
-namespace Flax
+namespace Strand
 {
     LoggerWorker::LoggerWorker()
     {

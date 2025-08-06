@@ -1,7 +1,7 @@
 [EngineSettings.General]
 ApplicationType = 0
 EngineAuthor = 'Neuvex IT & Consultancy'
-EngineName = 'FlaxEngine'
+EngineName = 'StrandEngine'
 EngineVersion = '1.0.0'
 
 [EngineSettings.Graphics]

@@ -11,7 +11,7 @@
 #include <Runtime/Logger/Logger.h>
 #include <Editor/Data/Controller/ControllerBase.h>
 
-namespace Flax
+namespace Strand
 {
 	class ControllerManager
 	{

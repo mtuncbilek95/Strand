@@ -11,7 +11,7 @@
 #include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Data/Delegate/Connection.h>
 
-namespace Flax
+namespace Strand
 {
 	template<typename... Args>
 	class Signal

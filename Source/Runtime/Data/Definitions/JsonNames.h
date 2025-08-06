@@ -9,7 +9,7 @@
 
 #include <nlohmann/json.hpp>
 
-namespace Flax
+namespace Strand
 {
 	using Json = nlohmann::json;
 	using OrderedJson = nlohmann::ordered_json;

@@ -11,7 +11,7 @@
 #include <Runtime/Data/Containers/IObject.h>
 #include <Runtime/Input/InputQueue.h>
 
-namespace Flax
+namespace Strand
 {
     enum class WindowMode
     {
@@ -22,7 +22,7 @@ namespace Flax
 
     struct WindowProps final
     {
-        String windowName = "Flax";
+        String windowName = "Strand";
         Math::Vec2u windowSize = { 1920, 1080 };
         WindowMode windowMode = WindowMode::Windowed;
 

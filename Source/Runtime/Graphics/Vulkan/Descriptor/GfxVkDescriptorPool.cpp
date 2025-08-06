@@ -4,7 +4,7 @@
 #include <Runtime/Graphics/Vulkan/Device/GfxVkDevice.h>
 #include <Runtime/Graphics/Vulkan/Util/VkDescriptorUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkDescriptorPool::GfxVkDescriptorPool(const GfxDescriptorPoolDesc& desc, GfxDevice* pDevice) : GfxDescriptorPool(desc, pDevice)
 	{

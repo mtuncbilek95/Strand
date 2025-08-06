@@ -1,6 +1,6 @@
 #include "GfxPipeline.h"
 
-namespace Flax
+namespace Strand
 {
 	GfxPipeline::GfxPipeline(const GfxGraphicsPipelineDesc& desc, GfxDevice* pDevice) : GfxObject(pDevice),
 		m_gDesc(desc), m_type(PipelineType::Graphics)

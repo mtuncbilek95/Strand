@@ -1,6 +1,6 @@
 #include "DomainPathView.h"
 
-namespace Flax
+namespace Strand
 {
 	DomainPathView::DomainPathView(QWidget* pParent) : QWidget(pParent)
 	{

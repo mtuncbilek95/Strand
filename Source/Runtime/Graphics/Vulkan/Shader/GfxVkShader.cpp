@@ -3,7 +3,7 @@
 #include <Runtime/Graphics/Vulkan/Debug/VDebug.h>
 #include <Runtime/Graphics/Vulkan/Device/GfxVkDevice.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkShader::GfxVkShader(const GfxShaderDesc& desc, GfxDevice* pDevice) : GfxShader(desc, pDevice)
 	{

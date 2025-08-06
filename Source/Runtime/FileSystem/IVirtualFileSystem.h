@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/FileSystem/FileMode.h>
 
-namespace Flax
+namespace Strand
 {
 	class IVirtualFileNode;
 	class IFileStream;

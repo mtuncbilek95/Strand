@@ -26,6 +26,10 @@
 #include <Runtime/Data/Definitions/GlmNames.h>
 #include <Runtime/Data/Definitions/JsonNames.h>
 
+#include <Runtime/Platform/PlatformPath.h>
+
+#include <Runtime/Reflection/Reflection.h>
+
 #define RUNTIME_NOT_IMPLEMENTED_YET(returnType) \
 	{ \
 		Log::Error(LogType::Engine, "'{}' This function is not implemented yet!", __FUNCTION__); \

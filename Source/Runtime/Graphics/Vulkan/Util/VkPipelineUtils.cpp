@@ -2,7 +2,7 @@
 
 #include <magic_enum/magic_enum.hpp>
 
-namespace Flax
+namespace Strand
 {
 	VkCompareOp VkPipelineUtils::GetVkCompareOp(CompareOp op)
 	{

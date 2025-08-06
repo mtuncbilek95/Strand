@@ -1,6 +1,6 @@
 #include "SceneGraphController.h"
 
-namespace Flax
+namespace Strand
 {
 	void SceneGraphController::InitializeController()
 	{

@@ -1,6 +1,6 @@
 #include "GfxImageView.h"
 
-namespace Flax
+namespace Strand
 {
 	GfxImageView::GfxImageView(const GfxImageViewDesc& desc, GfxDevice* pDevice) : GfxObject(pDevice), 
 		m_desc(desc)

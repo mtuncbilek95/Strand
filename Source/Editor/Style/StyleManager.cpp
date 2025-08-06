@@ -1,6 +1,6 @@
 #include "StyleManager.h"
 
-namespace Flax
+namespace Strand
 {
 	StyleManager::StyleManager()
 	{

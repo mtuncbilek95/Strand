@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
 
 # ----------------------- PROJECT NAME -----------------------
-project("Flax")
+project("Strand")
 # ------------------------------------------------------------
 
 # ----------------------- CXX FLAGS --------------------------
@@ -45,5 +45,5 @@ add_subdirectory("External")
 add_subdirectory("Source/Runtime")
 add_subdirectory("Source/Editor")
 
-add_subdirectory("Flaxbox")
+add_subdirectory("Strandbox")
 # ------------------------------------------------------------

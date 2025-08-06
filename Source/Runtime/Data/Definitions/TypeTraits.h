@@ -9,7 +9,7 @@
 
 #include <Runtime/Data/Definitions/StdNames.h>
 
-namespace Flax
+namespace Strand
 {
 	static Atomic<i32> uniqueTypeID = {};
 

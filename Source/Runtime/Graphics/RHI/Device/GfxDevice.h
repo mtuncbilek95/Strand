@@ -28,7 +28,7 @@
 #include <Runtime/Graphics/RHI/Framebuffer/GfxFramebufferDesc.h>
 #include <Runtime/Graphics/RHI/RenderPass/GfxRenderPassDesc.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxInstance;
 	class GfxQueue;

@@ -11,7 +11,7 @@
 
 #include <magic_enum/magic_enum.hpp>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkDescriptorSet::GfxVkDescriptorSet(const GfxDescriptorSetDesc& desc, GfxDevice* pDevice) : GfxDescriptorSet(desc, pDevice)
 	{

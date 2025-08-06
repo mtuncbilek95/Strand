@@ -12,7 +12,7 @@
 #include <Runtime/Logger/Logger.h>
 #include <Runtime/Service/Service.h>
 
-namespace Flax
+namespace Strand
 {
 	class ServiceLocator
 	{
@@ -39,6 +39,7 @@ namespace Flax
 				return service;
 			}
 
+			it = Services().find(typeId);
 			return std::static_pointer_cast<T>(it->second);
 		}
 

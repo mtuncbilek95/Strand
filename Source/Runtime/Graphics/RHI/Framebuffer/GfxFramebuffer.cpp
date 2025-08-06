@@ -1,6 +1,6 @@
 #include "GfxFramebuffer.h"
 
-namespace Flax
+namespace Strand
 {
 	GfxFramebuffer::GfxFramebuffer(const GfxFramebufferDesc& desc, GfxDevice* pDevice) : GfxObject(pDevice), 
 		m_desc(desc)

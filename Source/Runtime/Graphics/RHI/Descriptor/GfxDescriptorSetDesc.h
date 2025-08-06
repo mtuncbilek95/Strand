@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Graphics/RHI/Util/DescriptorFormat.h>
 
-namespace Flax
+namespace Strand
 {
     class GfxObject;
     class GfxDescriptorLayout;

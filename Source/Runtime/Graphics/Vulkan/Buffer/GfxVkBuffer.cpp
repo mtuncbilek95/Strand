@@ -5,7 +5,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkMemoryUtils.h>
 #include <Runtime/Graphics/Vulkan/Util/VkBufferUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkBuffer::GfxVkBuffer(const GfxBufferDesc& desc, GfxDevice* pDevice) : GfxBuffer(desc, pDevice)
 	{

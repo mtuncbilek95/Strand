@@ -10,7 +10,7 @@
 #include <Runtime/Core/CoreMinimal.h>
 #include <Runtime/Window/BasicWindow.h>
 
-namespace Flax
+namespace Strand
 {
 	class WindowContext : public Singleton<WindowContext>
 	{

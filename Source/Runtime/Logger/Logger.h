@@ -13,7 +13,7 @@
 
 #include <spdlog/spdlog.h>
 
-namespace Flax
+namespace Strand
 {
     enum class LogType
     {

@@ -12,7 +12,7 @@
 
 #include <spdlog/sinks/base_sink.h>
 
-namespace Flax
+namespace Strand
 {
 	template<typename T, typename = std::enable_if_t<std::is_same_v<T, Mutex>>>
 	class LogSinkModel : public spdlog::sinks::base_sink<T>

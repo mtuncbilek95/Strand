@@ -11,7 +11,7 @@
 #include <Runtime/Graphics/RHI/Util/PresentMode.h>
 #include <Runtime/Graphics/RHI/Util/ImageFormat.h>
 
-namespace Flax
+namespace Strand
 {
 	class GfxQueue;
 

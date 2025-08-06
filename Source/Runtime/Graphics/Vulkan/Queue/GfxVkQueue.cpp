@@ -7,7 +7,7 @@
 #include <Runtime/Graphics/Vulkan/Sync/GfxVkSemaphore.h>
 #include <Runtime/Graphics/Vulkan/Util/VkPipelineUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkQueue::GfxVkQueue(const GfxQueueDesc& desc, GfxDevice* pDevice) : GfxQueue(desc, pDevice), m_queue(VK_NULL_HANDLE)
 	{

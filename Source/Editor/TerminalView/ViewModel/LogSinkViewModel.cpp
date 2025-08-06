@@ -1,6 +1,6 @@
 #include "LogSinkViewModel.h"
 
-namespace Flax
+namespace Strand
 {
 	LogSinkViewModel::LogSinkViewModel(QObject* pParent) : ViewModelBase(pParent)
 	{

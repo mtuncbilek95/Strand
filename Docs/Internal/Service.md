@@ -11,7 +11,7 @@ need to register it to service registry within the source file as below.
 
 #include <Runtime/Core/CoreMinimal.h>
 
-namespace Flax
+namespace Strand
 {
 	class ExampleService : public Service
 	{
@@ -30,7 +30,7 @@ namespace Flax
 
 #include "ExampleService.h"
 
-namespace Flax
+namespace Strand
 {
 	void ExampleService::DoSomething() const
 	{
@@ -55,7 +55,7 @@ namespace Flax
 
 #include <Scripts/Example/Service/ExampleService.h>
 
-using namespace Flax;
+using namespace Strand;
 
 int main(i32 argC, c8** argV)
 {

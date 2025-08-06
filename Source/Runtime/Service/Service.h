@@ -11,7 +11,7 @@
 #include <Runtime/Data/Definitions/StdNames.h>
 #include <Runtime/Logger/Logger.h>
 
-namespace Flax
+namespace Strand
 {
 	class Service
 	{

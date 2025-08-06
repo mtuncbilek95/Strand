@@ -9,7 +9,7 @@
 #include <Runtime/Graphics/Vulkan/Buffer/GfxVkBuffer.h>
 #include <Runtime/Graphics/Vulkan/Util/VkCommandUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkCommandBuffer::GfxVkCommandBuffer(const GfxCommandBufferDesc& desc, GfxDevice* pDevice) : GfxCommandBuffer(desc, pDevice)
 	{

@@ -7,159 +7,217 @@
  */
 #pragma once
 
-#include <Runtime/Core/CoreMinimal.h>
-#include <Runtime/Reflection/ReflectionInfo.h>
+#include <Runtime/Data/Definitions/Definitions.h>
+#include <Runtime/Data/Definitions/StdNames.h>
+#include <Runtime/Data/Containers/Singleton.h>
+#include <Runtime/Logger/Logger.h>
+#include <Runtime/Reflection/TypeInfo.h>
+#include <Runtime/Reflection/FieldInfo.h>
+#include <Runtime/Reflection/ClassInfo.h>
 
-namespace Flax
+namespace Strand
 {
-	class ReflectionRegistry
+	class ReflectionRegistry : public Singleton<ReflectionRegistry>
 	{
 	public:
-		static void DefineClass(const String& className, const ClassInfo& classInfo)
+		template<typename T, typename U = void>
+		void RegisterClassInfo()
 		{
-			auto& classes = ReflectedClasses();
-			if (classes.contains(className))
-				Log::Warn(LogType::Engine, "Class '{}' is already registered. Overwriting existing class info.", className);
+			ClassInfo classInfo = {};
 
-			classes[className] = classInfo;
+			classInfo.className = T::StaticClassName();
+			classInfo.classHash = typeid(T).hash_code();
+			classInfo.classSize = sizeof(T);
+			classInfo.classAlignment = alignof(T);
+
+			classInfo.constructors.clear();
+			classInfo.constructorLookup.clear();
+			classInfo.superClassNames.clear();
+			classInfo.fields.clear();
+
+			if constexpr (!std::is_void<U>::value)
+				classInfo.firstSuperClass = U::StaticClassName();
+
+			m_classRegistry[classInfo.classHash] = classInfo;
 		}
 
-		static void UndefineClass(const String& className, const String& fieldName, const FieldInfo& fieldInfo)
+		template<typename T, typename... Args>
+		void RegisterConstructor()
 		{
-			auto& classes = ReflectedClasses();
-			if (!classes.contains(className))
+			u32 classHash = typeid(T).hash_code();
+			ClassInfo& classInfo = m_classRegistry[classHash];
+
+			ConstructorInfo ctorInfo = {};
+			ctorInfo.parameterTypes = GetTypeInfos<Args...>(std::index_sequence_for<Args...>{});
+			ctorInfo.parameterHash = GenerateParameterHash<Args...>();
+			if constexpr (sizeof...(Args) == 0) {
+				ctorInfo.constructorPtr = [](const void* const*) -> void* {
+					return new T();
+					};
+			}
+			else {
+				ctorInfo.constructorPtr = [&](const void* const* args) -> void* {
+					return GenerateConstructFunc<T, Args...>(args, std::index_sequence_for<Args...>{});
+					};
+			}
+
+			usize index = classInfo.constructors.size();
+			classInfo.constructors.push_back(ctorInfo);
+			classInfo.constructorLookup[ctorInfo.parameterHash] = index;
+		}
+
+		template<typename T>
+		void RegisterInheritanceInfo()
+		{
+			u32 classHash = typeid(T).hash_code();
+			ClassInfo& classInfo = m_classRegistry[classHash];
+		}
+
+		template<typename T, typename... Args>
+		void RegisterMethodInfo()
+		{
+			u32 classHash = typeid(T).hash_code();
+			ClassInfo& classInfo = m_classRegistry[classHash];
+		}
+
+		template<typename T>
+		void RegisterFieldInfo(const String& fieldName, usize offset, const TypeInfo& typeInfo)
+		{
+			u32 classHash = typeid(T).hash_code();
+			ClassInfo& classInfo = m_classRegistry[classHash];
+
+			FieldInfo fieldInfo = {};
+			fieldInfo.fieldName = fieldName;
+			fieldInfo.fieldTypeInfo = typeInfo;
+			fieldInfo.offset = offset;
+
+			classInfo.fields[fieldName] = std::move(fieldInfo);
+		}
+
+		template<typename T>
+		void RegisterTypeInfo()
+		{
+			auto& typeID = typeid(T);
+			auto it = m_typeRegistry.find(typeID.hash_code());
+			if (it != m_typeRegistry.end())
 			{
-				Log::Error(LogType::Engine, "Class '{}' is not registered. Cannot register field '{}'.", className, fieldName);
+				Log::Warn(LogType::Reflection, "'{}' has been registered already!", typeID.name());
 				return;
 			}
 
-			auto& classInfo = classes[className];
-			if (classInfo.fields.contains(fieldName))
-				Log::Warn(LogType::Engine, "Field '{}' in class '{}' is already registered. Overwriting existing field info.", fieldName, className);
-			classInfo.fields[fieldName] = fieldInfo;
+			TypeInfo info = {};
+			info.typeName = typeID.name();
+			info.typeHash = typeID.hash_code();
+			info.typeSize = sizeof(T);
+			info.category = FindCategory<T>();
+
+			m_typeRegistry[typeID.hash_code()] = std::move(info);
 		}
 
-		static b8 HasClass(const String& className)
+		template<typename T>
+		b8 IsTypeRegistered()
 		{
-			return ReflectedClasses().contains(className);
+			auto& typeID = typeid(T);
+			auto it = m_typeRegistry.find(typeID.hash_code());
+			if (it != m_typeRegistry.end())
+				return true;
+
+			return false;
 		}
 
-		static const ClassInfo* GetClass(const String& className)
+		template<typename T>
+		b8 IsClassRegistered()
 		{
-			auto& classes = ReflectedClasses();
+			auto it = m_classRegistry.find(typeid(T).hash_code());
+			if (it != m_classRegistry.end())
+				return true;
 
-			auto it = classes.find(className);
-			if (it == classes.end()) [[unlikely]]
+			return false;
+		}
+
+		template<typename T>
+		ClassInfo* GetClassInfo()
+		{
+			auto it = m_classRegistry.find(typeid(T).hash_code());
+			if (it != m_classRegistry.end())
+				return &it->second;
+
+			return nullptr;
+		}
+
+		template<typename T>
+		TypeInfo GetTypeInfo()
+		{
+			auto it = m_typeRegistry.find(typeid(T).hash_code());
+			if (it == m_typeRegistry.end())
+				RegisterTypeInfo<T>();
+
+			it = m_typeRegistry.find(typeid(T).hash_code());
+			if (it == m_typeRegistry.end())
 			{
-				Log::Error(LogType::Engine, "Class '{}' is not registered.", className);
-				return nullptr;
+				Log::Critical(LogType::Reflection, "Something unexpected is happening in the reflection system for type '{}' when getting.", typeid(T).name());
+				return TypeInfo();
 			}
 
-			return &it->second;
-		}
-
-		static const FieldInfo* GetField(const String& className, const String& fieldName)
-		{
-			auto classInfo = GetClass(className);
-			if (!classInfo)
-				return nullptr;
-
-			auto it = classInfo->fields.find(fieldName);
-			if (it == classInfo->fields.end()) [[unlikely]]
-			{
-				Log::Error(LogType::Engine, "Field '{}' in class '{}' is not registered.", fieldName, className);
-				return nullptr;
-			}
-			return &it->second;
-		}
-
-		static Vector<String> GetAllClassNames()
-		{
-			Vector<String> returnVec;
-
-			for (const auto& [className, _] : ReflectedClasses())
-				returnVec.emplace_back(className);
-
-			return returnVec;
+			return it->second;
 		}
 
 	private:
-		static HashMap<String, ClassInfo>& ReflectedClasses()
+		template<typename T, typename... Args, usize... Is>
+		void* GenerateConstructFunc(const void* const* args, std::index_sequence<Is...>)
 		{
-			static HashMap<String, ClassInfo> classes;
-			return classes;
-		}
-	};
-
-	struct ReflectionUtils
-	{
-		static String AnyToString(const Any& value, const String& typeName)
-		{
-			try
-			{
-				if (typeName == typeid(i8).name())
-					return std::to_string(std::any_cast<i8>(value));
-				else if(typeName == typeid(i16).name())
-					return std::to_string(std::any_cast<i16>(value));
-				else if (typeName == typeid(i32).name())
-					return std::to_string(std::any_cast<i32>(value));
-				else if (typeName == typeid(i64).name())
-					return std::to_string(std::any_cast<i64>(value));
-				else if (typeName == typeid(u8).name())
-					return std::to_string(std::any_cast<u8>(value));
-				else if (typeName == typeid(u16).name())
-					return std::to_string(std::any_cast<u16>(value));
-				else if (typeName == typeid(u32).name())
-					return std::to_string(std::any_cast<u32>(value));
-				else if (typeName == typeid(u64).name())
-					return std::to_string(std::any_cast<u64>(value));
-				else if (typeName == typeid(f32).name())
-					return std::to_string(std::any_cast<f32>(value));
-				else if (typeName == typeid(f64).name())
-					return std::to_string(std::any_cast<f64>(value));
-				else if (typeName == typeid(b8).name())
-					return std::any_cast<b8>(value) ? "true" : "false";
-				else if (typeName == typeid(String).name())
-					return std::any_cast<String>(value);
-
-				return "<unknown_type>";
-			}
-			catch (const std::bad_any_cast& e)
-			{
-				return "<bad_cast>";
-			}
+			return new T(*static_cast<const std::remove_reference_t<Args>*>(args[Is])...);
 		}
 
-		static Any StringToAny(const String& str, const String& typeName)
+		template<typename... Args>
+		u32 GenerateParameterHash()
 		{
-			if (typeName == typeid(i32).name())
-				return std::stoi(str);
-			else if (typeName == typeid(f32).name())
-				return std::stof(str);
-			else if (typeName == typeid(f64).name())
-				return std::stod(str);
-			else if (typeName == typeid(b8).name())
-				return str == "true" || str == "1";
-			else if (typeName == typeid(String).name())
-				return str;
-			return Any();
+			u32 hash = 0;
+			((hash ^= Hash<std::type_index>{}(TypeIndex(typeid(Args))) + 0x9e3779b9 + (hash << 6) + (hash >> 2)), ...);
+			return hash;
 		}
 
-		static usize GetTypeSize(const String& typeName)
+		template<typename... Args, usize... Is>
+		Vector<TypeInfo> GetTypeInfos(std::index_sequence<Is...>)
 		{
-			if (typeName == typeid(i8).name()) return sizeof(i8);
-			if (typeName == typeid(i16).name()) return sizeof(i16);
-			if (typeName == typeid(i32).name()) return sizeof(i32);
-			if (typeName == typeid(i64).name()) return sizeof(i64);
-			if (typeName == typeid(u8).name()) return sizeof(u8);
-			if (typeName == typeid(u16).name()) return sizeof(u16);
-			if (typeName == typeid(u32).name()) return sizeof(u32);
-			if (typeName == typeid(u64).name()) return sizeof(u64);
-			if (typeName == typeid(f32).name()) return sizeof(f32);
-			if (typeName == typeid(f64).name()) return sizeof(f64);
-			if (typeName == typeid(b8).name()) return sizeof(b8);
-			if (typeName == typeid(String).name()) return sizeof(String);
-			return 0;
+			Vector<TypeInfo> result;
+			result.reserve(sizeof...(Args));
+
+			auto processType = [this, &result](auto index)
+				{
+					using Type = std::tuple_element_t<index, std::tuple<Args...>>;
+					result.push_back(GetTypeInfo<Type>());
+				};
+
+			(processType(std::integral_constant<usize, Is>{}), ...);
+			return result;
 		}
+
+		template<typename T>
+		TypeCategory FindCategory()
+		{
+			if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<b8>>::value) return TypeCategory::Boolean;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<c8>>::value) return TypeCategory::Char;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<i8>>::value) return TypeCategory::Signed8;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<i16>>::value) return TypeCategory::Signed16;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<i32>>::value) return TypeCategory::Signed32;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<i64>>::value) return TypeCategory::Signed64;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<u8>>::value) return TypeCategory::Unsigned8;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<u16>>::value) return TypeCategory::Unsigned16;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<u32>>::value) return TypeCategory::Unsigned32;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<u64>>::value) return TypeCategory::Unsigned64;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<f32>>::value) return TypeCategory::Float32;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<f64>>::value) return TypeCategory::Float64;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<String>>::value) return TypeCategory::String;
+			else if constexpr (std::is_same<RemoveCVRef<T>, RemoveCVRef<Path>>::value) return TypeCategory::String;
+			else if constexpr (std::is_enum<RemoveCVRef<T>>::value) return TypeCategory::Enum;
+			else if constexpr (std::is_class<RemoveCVRef<T>>::value) return TypeCategory::Class;
+			else return TypeCategory::Struct;
+		}
+
+	private:
+		HashMap<u32, TypeInfo> m_typeRegistry;
+		HashMap<u32, ClassInfo> m_classRegistry;
+		HashMap<String, u32> m_classNameToHash;
 	};
 }

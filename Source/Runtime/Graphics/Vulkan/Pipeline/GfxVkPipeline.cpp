@@ -8,7 +8,7 @@
 #include <Runtime/Graphics/Vulkan/Util/VkPipelineUtils.h>
 #include <Runtime/Graphics/Vulkan/Util/VkImageUtils.h>
 
-namespace Flax
+namespace Strand
 {
 	GfxVkPipeline::GfxVkPipeline(const GfxGraphicsPipelineDesc& desc, GfxDevice* pDevice) : GfxPipeline(desc, pDevice)
 	{
