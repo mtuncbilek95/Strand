@@ -19,10 +19,10 @@ namespace Strand
 		Q_OBJECT
 	public:
 		SceneGraphWidget(QWidget* pParent = nullptr);
-		~SceneGraphWidget();
+		~SceneGraphWidget() = default;
 
 	private:
-		SceneGraphTreeView* m_treeView;
-		SceneGraphModel* m_sgModel;
+		SceneGraphTreeView* m_treeView = nullptr;
+		SceneGraphModel* m_sgModel = nullptr;
 	};
 }

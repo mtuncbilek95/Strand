@@ -19,7 +19,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		SceneRendererWidget(QWidget* pParent = nullptr);
-		~SceneRendererWidget();
+		~SceneRendererWidget() override = default;
 
 	private slots:
 		void onClickedPlay();
@@ -30,7 +30,7 @@ namespace Strand
 		void setupSignals();
 
 	private:
-		SceneRendererView* m_renderView;
-		SceneToolView* m_toolView;
+		SceneRendererView* m_renderView = nullptr;
+		SceneToolView* m_toolView = nullptr;
 	};
 }

@@ -16,7 +16,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		ModelImportView(QWidget* pParent = nullptr);
-		~ModelImportView();
+		~ModelImportView() override = default;
 
 	private:
 	};

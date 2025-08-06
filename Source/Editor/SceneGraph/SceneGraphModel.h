@@ -19,7 +19,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		SceneGraphModel(QObject* pParent = nullptr);
-		~SceneGraphModel();
+		~SceneGraphModel() = default;
 
 		void addEntity(const QModelIndex& parent);
 		void renameEntity(const QModelIndex& index, const QString& newName);

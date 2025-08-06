@@ -5,8 +5,4 @@ namespace Strand
 	ModelImportView::ModelImportView(QWidget* pParent) : QDialog(pParent)
 	{
 	}
-
-	ModelImportView::~ModelImportView()
-	{
-	}
 }

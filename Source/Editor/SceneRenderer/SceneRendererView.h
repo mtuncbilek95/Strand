@@ -16,7 +16,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		SceneRendererView(QWidget* pParent = nullptr);
-		~SceneRendererView();
+		~SceneRendererView() override = default;
 
 
 	protected:

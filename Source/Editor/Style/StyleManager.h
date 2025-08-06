@@ -15,13 +15,12 @@ namespace Strand
 	class StyleManager final : public Singleton<StyleManager>
 	{
 	public:
-		StyleManager();
-		~StyleManager();
+		StyleManager() = default;
 
 		QString LoadStyle();
 		QStringList LoadFontFamilies() const;
 
 	private:
-		QList<QFile> m_styles;
+		QList<QFile> m_styles = {};
 	};
 }

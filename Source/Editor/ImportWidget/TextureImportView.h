@@ -16,7 +16,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		TextureImportView(QWidget* pParent = nullptr);
-		~TextureImportView();
+		~TextureImportView() override = default;
 
 		void showImportDialog(const QString& srcPath, const QString& dstPath);
 

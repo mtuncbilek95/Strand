@@ -16,7 +16,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		SceneToolView(QWidget* pParent = nullptr);
-		~SceneToolView();
+		~SceneToolView() override = default;
 
 	signals:
 		void onPlaySignaled();
@@ -27,8 +27,8 @@ namespace Strand
 		void setupSignals();
 
 	private:
-		QPushButton* m_playButton;
-		QPushButton* m_pauseButton;
-		QPushButton* m_stopButton;
+		QPushButton* m_playButton = nullptr;
+		QPushButton* m_pauseButton = nullptr;
+		QPushButton* m_stopButton = nullptr;
 	};
 }

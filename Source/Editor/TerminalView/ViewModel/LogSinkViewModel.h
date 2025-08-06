@@ -16,7 +16,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		LogSinkViewModel(QObject* pParent = nullptr);
-		~LogSinkViewModel();
+		~LogSinkViewModel() override = default;
 
 	signals:
 		void LogMessageReceived(const QString& msg, const QString& category, int level);
