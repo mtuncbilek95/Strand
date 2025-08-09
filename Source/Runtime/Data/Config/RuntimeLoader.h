@@ -1,8 +1,6 @@
 /*
-/*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Licensed under the terms specified in the LICENSE.md file
+ * located in the root directory of this source tree.
  *
  * Copyright (c) 2024 Metehan Tuncbilek
  */
