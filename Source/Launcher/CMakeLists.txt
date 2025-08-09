@@ -41,7 +41,6 @@ target_link_libraries(Launcher
 )
 
 target_link_libraries(Launcher PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,Runtime>")
-target_precompile_headers(Launcher PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Core/PCH.h")
 # ------------------------------------------------------------
 
 # ---------------------- FILE ADDITION -----------------------
