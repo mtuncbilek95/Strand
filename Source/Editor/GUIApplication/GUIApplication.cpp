@@ -13,7 +13,7 @@ namespace Strand
 	{
 		if (argC <= 1)
 		{
-			Log::Warn(LogType::Application, "Editor Application has no project to run! Closing the app...");
+			Log::Critical(LogType::Application, "Editor Application has no project to run! Closing the app...");
 			//std::exit(-1);
 		}
 
@@ -53,9 +53,5 @@ namespace Strand
 			5 - There won't be a layout/QSettings for a long time. But QSettings will be used
 			for importing the configFiles.
 		*/
-	}
-
-	GUIApplication::~GUIApplication()
-	{
 	}
 }

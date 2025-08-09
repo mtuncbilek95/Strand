@@ -20,11 +20,12 @@ namespace Strand
 		friend struct UuidHash;
 		friend struct UuidHelper;
 	public:
-		Uuid();
+		Uuid() = default;
+		~Uuid() = default;
+
 		Uuid(u32 a, u16 b, u16 c, u64 d);
 		Uuid(const Uuid& other);
 		Uuid(const String& str);
-		~Uuid();
 
 		u32 GetA() const { return m_a; }
 		u16 GetB() const { return m_b; }
@@ -37,10 +38,10 @@ namespace Strand
 		b8 operator!=(const Uuid& other) const;
 
 	private:
-		u32 m_a;
-		u16 m_b;
-		u16 m_c;
-		u64 m_d;
+		u32 m_a = {};
+		u16 m_b = {};
+		u16 m_c = {};
+		u64 m_d = {};
 	};
 
 	struct UuidHash
@@ -50,6 +51,7 @@ namespace Strand
 
 	struct UuidHelper
 	{
+		UuidHelper() = delete; // Makes a static class
 		static Uuid GenerateID();
 	};
 }

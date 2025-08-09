@@ -12,30 +12,30 @@ namespace Strand
 {
 	struct GeneralSettings
 	{
-		String engineName;
-		String engineVersion;
-		u32 applicationType;
+		String engineName = {};
+		String engineVersion = {};
+		u32 applicationType = {};
 
-		GeneralSettings& setName(const String& name) { engineName = name; return *this; }
-		GeneralSettings& setVersion(const String& version) { engineVersion = version; return *this; }
-		GeneralSettings& setApplicationType(u32 type) { applicationType = type; return *this; }
+		GeneralSettings& setName(const String& name) noexcept { engineName = name; return *this; }
+		GeneralSettings& setVersion(const String& version) noexcept { engineVersion = version; return *this; }
+		GeneralSettings& setApplicationType(u32 type) noexcept { applicationType = type; return *this; }
 	};
 
 	struct GraphicsSettings
 	{
-		u32 graphicsAPI;
-		u32 presentMode;
-		u32 imageCount;
-		u32 swapFormat;
-		u32 depthFormat;
-		u32 renderThreadCount;
+		u32 graphicsAPI = {};
+		u32 presentMode = {};
+		u32 imageCount = {};
+		u32 swapFormat = {};
+		u32 depthFormat = {};
+		u32 renderThreadCount = {};
 
-		GraphicsSettings& setGraphicsAPI(u32 api) { graphicsAPI = api; return *this; }
-		GraphicsSettings& setPresentMode(u32 mode) { presentMode = mode; return *this; }
-		GraphicsSettings& setImageCount(u32 count) { imageCount = count; return *this; }
-		GraphicsSettings& setSwapFormat(u32 format) { swapFormat = format; return *this; }
-		GraphicsSettings& setDepthFormat(u32 format) { depthFormat = format; return *this; }
-		GraphicsSettings& setRenderThreadCount(u32 count) { renderThreadCount = count; return *this; }
+		GraphicsSettings& setGraphicsAPI(u32 api) noexcept { graphicsAPI = api; return *this; }
+		GraphicsSettings& setPresentMode(u32 mode) noexcept { presentMode = mode; return *this; }
+		GraphicsSettings& setImageCount(u32 count) noexcept { imageCount = count; return *this; }
+		GraphicsSettings& setSwapFormat(u32 format) noexcept { swapFormat = format; return *this; }
+		GraphicsSettings& setDepthFormat(u32 format) noexcept { depthFormat = format; return *this; }
+		GraphicsSettings& setRenderThreadCount(u32 count) noexcept { renderThreadCount = count; return *this; }
 	};
 
 	/**
@@ -44,25 +44,26 @@ namespace Strand
 	 */
 	struct EngineSettings
 	{
-		GeneralSettings general;
-		GraphicsSettings graphics;
+		GeneralSettings general = {};
+		GraphicsSettings graphics = {};
 
-		EngineSettings& setGeneral(const GeneralSettings& settings) { general = settings; return *this; }
-		EngineSettings& setGraphics(const GraphicsSettings& settings) { graphics = settings; return *this; }
+		EngineSettings& setGeneral(const GeneralSettings& settings) noexcept { general = settings; return *this; }
+		EngineSettings& setGraphics(const GraphicsSettings& settings) noexcept { graphics = settings; return *this; }
 
 		static EngineSettings DefaultSettings()
 		{
 			EngineSettings engineSettings;
 			engineSettings.setGeneral(
-				GeneralSettings().setName("StrandEngine").setVersion("1.0.0").setApplicationType(0))
+				GeneralSettings().setName("StrandEngine").setVersion("1.0.0").setApplicationType(0)) // #CLEAN(@mateusdigital): Remove magic numbers...
 				.setGraphics(
 					GraphicsSettings()
-					.setGraphicsAPI(1)
-					.setImageCount(2)
-					.setPresentMode(2)
-					.setSwapFormat(16)
-					.setDepthFormat(30)
-					.setRenderThreadCount(4));
+					.setGraphicsAPI(1)  // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setImageCount(2)   // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setPresentMode(2)  // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setSwapFormat(16)  // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setDepthFormat(30) // #CLEAN(@mateusdigital): Remove magic numbers...
+					.setRenderThreadCount(4)
+				);
 
 			return engineSettings;
 		}

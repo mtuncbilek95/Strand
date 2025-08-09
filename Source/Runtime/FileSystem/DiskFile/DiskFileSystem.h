@@ -39,9 +39,9 @@ namespace Strand
 		Path ToRealPath(const Path& virtPath) const;
 
 	private:
-		Path m_sourcePath;
-		Path m_mountPoint;
+		Path m_sourcePath = {};
+		Path m_mountPoint = {};
 
-		Ref<DiskFileNode> m_rootNode;
+		Ref<DiskFileNode> m_rootNode = {};
 	};
 }

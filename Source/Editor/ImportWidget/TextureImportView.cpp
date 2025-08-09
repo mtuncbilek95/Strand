@@ -17,9 +17,6 @@ namespace Strand
 		updateUI();
 	}
 
-	TextureImportView::~TextureImportView()
-	{
-	}
 
 	void TextureImportView::showImportDialog(const QString& srcPath, const QString& dstPath)
 	{

@@ -16,7 +16,5 @@ namespace Strand
 	public:
 		void InitializeController() override final;
 		void ShutdownController() override final;
-
-
 	};
 }

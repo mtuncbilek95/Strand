@@ -33,9 +33,9 @@ namespace Strand
 		SeekDir GetSeekDir(i32 origin) const;
 
 	private:
-		FileStream m_stream;
-		Path m_filePath;
-		FileMode m_mode;
-		usize m_size;
+		FileStream m_stream = {};
+		Path m_filePath = {};
+		FileMode m_mode = {};
+		usize m_size = {};
 	};
 }

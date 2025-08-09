@@ -7,10 +7,6 @@ namespace Strand
 		m_excluded << "tmp" << "bin" << "obj" << "meta" << "odt";
 	}
 
-	DomainFilterProxy::~DomainFilterProxy()
-	{
-	}
-
 	bool DomainFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 	{
 		QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);

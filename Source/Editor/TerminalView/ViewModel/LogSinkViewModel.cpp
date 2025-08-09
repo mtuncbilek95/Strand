@@ -7,9 +7,6 @@ namespace Strand
 		connect(this, &LogSinkViewModel::LogCommandExecuted, this, &LogSinkViewModel::OnLogCommandExecuted);
 	}
 
-	LogSinkViewModel::~LogSinkViewModel()
-	{
-	}
 
 	void LogSinkViewModel::OnLogCommandExecuted(const QString& command, const QString& value)
 	{

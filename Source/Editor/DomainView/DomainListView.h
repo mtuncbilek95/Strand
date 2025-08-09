@@ -15,7 +15,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		DomainListView(QWidget* pParent = nullptr);
-		~DomainListView();
+		~DomainListView() override = default;
 
 	protected:
 		void dragEnterEvent(QDragEnterEvent* pEvent) override;
@@ -34,6 +34,6 @@ namespace Strand
 		void onEditorClosed(QWidget* pEditor, QAbstractItemDelegate::EndEditHint hint);
 
 	private:
-		QString m_newItemPath; // Used for renaming
+		QString m_newItemPath = {}; // Used for renaming
 	};
 }

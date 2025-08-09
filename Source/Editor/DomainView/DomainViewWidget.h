@@ -20,7 +20,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		DomainViewWidget(QWidget* pParent = nullptr);
-		~DomainViewWidget();
+		~DomainViewWidget() override = default;
 
 	signals:
 		void onRefreshPathView(const QString& path);
@@ -37,10 +37,10 @@ namespace Strand
 		void setupSignals();
 		
 	private:
-		DomainListView* m_listView;
-		DomainMiscView* m_miscView;
-		DomainFilterProxy* m_proxy;
-		DomainIconProvider* m_provider;
+		DomainListView* m_listView = nullptr;
+		DomainMiscView* m_miscView = nullptr;
+		DomainFilterProxy* m_proxy = nullptr;
+		DomainIconProvider* m_provider = nullptr;
 
 		QFileSystemModel m_fsModel;
 	};

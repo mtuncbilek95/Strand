@@ -34,10 +34,6 @@ namespace Strand
 		layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 	}
 	
-	SceneToolView::~SceneToolView()
-	{
-	}
-
 	void SceneToolView::setupSignals()
 	{
 		connect(m_playButton, &QPushButton::clicked, this, &SceneToolView::onPlaySignaled);

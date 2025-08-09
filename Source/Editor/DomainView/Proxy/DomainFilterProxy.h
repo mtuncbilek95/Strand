@@ -16,7 +16,7 @@ namespace Strand
 		Q_OBJECT;
 	public:
 		DomainFilterProxy(QObject* pParent = nullptr);
-		~DomainFilterProxy();
+		~DomainFilterProxy() override = default;
 
 	protected:
 		bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override final;

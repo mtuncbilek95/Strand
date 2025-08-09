@@ -50,10 +50,6 @@ namespace Strand
 		setCentralWidget(ctrW);
 	}
 
-	EditorWindow::~EditorWindow()
-	{
-	}
-
 	void EditorWindow::addTabTo(TabDirection dir, QWidget* widget, const QString& titleName)
 	{
 		if (m_tabWidgets.contains(dir))

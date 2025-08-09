@@ -15,7 +15,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		TerminalView(QWidget* pParent = nullptr);
-		~TerminalView();
+		~TerminalView() override = default;
 
 	private slots:
 		void OnLogMessageReceived(const QString& msg, const QString& category, int level);
@@ -25,7 +25,7 @@ namespace Strand
 		void connectSignals();
 
 	private:
-		QTextEdit* m_textEdit;
-		QLineEdit* m_lineEdit;
+		QTextEdit* m_textEdit = nullptr;
+		QLineEdit* m_lineEdit = nullptr;
 	};
 }

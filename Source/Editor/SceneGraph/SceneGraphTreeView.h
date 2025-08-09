@@ -15,7 +15,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		SceneGraphTreeView(QWidget* pParent = nullptr);
-		~SceneGraphTreeView();
+		~SceneGraphTreeView() = default;
 
 	protected:
 		void dragEnterEvent(QDragEnterEvent* pEvent) override;

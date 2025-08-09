@@ -2,14 +2,6 @@
 
 namespace Strand
 {
-	StyleManager::StyleManager()
-	{
-	}
-
-	StyleManager::~StyleManager()
-	{
-	}
-
 	QString StyleManager::LoadStyle()
 	{
 		QString style;

@@ -15,7 +15,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		DomainTreeView(QWidget* pParent = nullptr);
-		~DomainTreeView();
+		~DomainTreeView() override = default;
 
 	signals:
 		void onLeftClickItem(const QModelIndex& index);
@@ -37,6 +37,6 @@ namespace Strand
 		void onEditorClosed(QWidget* pEditor, QAbstractItemDelegate::EndEditHint hint);
 
 	private:
-		QString m_newItemPath; // Used for renaming
+		QString m_newItemPath = {}; // Used for renaming
 	};
 }

@@ -18,11 +18,8 @@ namespace Strand
 		setLayout(mainLayout);
 	}
 
-	SceneRendererView::~SceneRendererView()
-	{
-	}
-
 	void SceneRendererView::resizeEvent(QResizeEvent* event)
 	{
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 }

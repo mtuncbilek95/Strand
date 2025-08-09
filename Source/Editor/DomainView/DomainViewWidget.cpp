@@ -37,16 +37,14 @@ namespace Strand
 		setupSignals();
 	}
 
-	DomainViewWidget::~DomainViewWidget()
-	{
-	}
-
 	void DomainViewWidget::onAddDomainClicked()
 	{
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void DomainViewWidget::onImportDomainClicked()
 	{
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void DomainViewWidget::onBackDomainClicked()

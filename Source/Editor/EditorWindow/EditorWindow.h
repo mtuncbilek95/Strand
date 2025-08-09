@@ -22,12 +22,11 @@ namespace Strand
 	{
 	public:
 		EditorWindow(QWidget* pParent = nullptr);
-		~EditorWindow();
+		~EditorWindow() override = default;
 
 		void addTabTo(TabDirection dir, QWidget* widget, const QString& titleName);
 	private:
-		QHash<TabDirection, QTabWidget*> m_tabWidgets;
-
-		QMenuBar* m_topMenuBar;
+		QHash<TabDirection, QTabWidget*> m_tabWidgets = {};
+		QMenuBar* m_topMenuBar = nullptr;
 	};
 }

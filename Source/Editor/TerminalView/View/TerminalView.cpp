@@ -34,9 +34,6 @@ namespace Strand
 		connectSignals();
 	}
 
-	TerminalView::~TerminalView()
-	{
-	}
 
 	void TerminalView::OnCommandEntered()
 	{
@@ -73,6 +70,7 @@ namespace Strand
 	{
 		QColor color;
 
+		// !TODO(@mateusdigital): Move colors to a config so user can change them easily
 		switch (spdlog::level::level_enum(level))
 		{
 		case spdlog::level::trace: color = QColor("#7f8c8d");  break;

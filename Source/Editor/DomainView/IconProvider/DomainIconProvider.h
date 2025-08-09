@@ -14,8 +14,8 @@ namespace Strand
 	class DomainIconProvider : public QFileIconProvider
 	{
 	public:
-		DomainIconProvider();
-		~DomainIconProvider();
+		DomainIconProvider() = default;
+		~DomainIconProvider() override = default;
 
 		void setIcons();
 		QIcon icon(const QFileInfo& info) const override final;

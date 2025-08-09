@@ -15,7 +15,7 @@ namespace Strand
 		Q_OBJECT
 	public:
 		FileMenu(QWidget* pParent = nullptr);
-		~FileMenu();
+		~FileMenu() override = default;
 
 		void registerAction(const QString& actionName);
 		void unregisterAction(const QString& actionName);
@@ -27,6 +27,6 @@ namespace Strand
 		void onActionTriggered(QAction* pAction);
 
 	private:
-		QHash<QString, QAction*> m_actions;
+		QHash<QString, QAction*> m_actions = {};
 	};
 }

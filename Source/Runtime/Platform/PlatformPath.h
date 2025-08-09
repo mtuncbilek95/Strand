@@ -12,6 +12,7 @@ namespace Strand
 {
 	struct PlatformPath
 	{
+		PlatformPath() = delete; // Makes a static class
 		static Path AppDataPath();
 	};
 }

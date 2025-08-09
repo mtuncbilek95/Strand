@@ -17,16 +17,14 @@ namespace Strand
 		connect(this, &QMenu::triggered, this, &FileMenu::onActionTriggered);
 	}
 	
-	FileMenu::~FileMenu()
-	{
-	}
-	
 	void FileMenu::registerAction(const QString& actionName)
 	{
+		EDITOR_NOT_IMPLEMENTED_YET();
 	}
 
 	void FileMenu::unregisterAction(const QString& actionName)
 	{
+		EDITOR_NOT_IMPLEMENTED_YET();
 	}
 
 	void FileMenu::onActionTriggered(QAction* pAction)
