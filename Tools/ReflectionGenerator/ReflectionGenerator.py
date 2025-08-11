@@ -1,86 +1,28 @@
 #
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# Licensed under the terms specified in the LICENSE.md file 
+# located in the root directory of this source tree.
 #
 # Copyright (c) 2024 Metehan Tuncbilek
 #
-
 import sys
 import os
 import re
 
-# This path has been excluded, since this path is here to generate the 
-# macros and function for the reflection system.
-excludedPaths = [
-    "/External",
-    "/Resources",
-	"/Intermediate"
-    "/Shaders",
-    "/Build",
-    "/Tools",
-    "/.git",
-    "/.vs",
-    "/.idea"
-]
+from typing import List, Dict, NamedTuple, Optional
+import Informations as parserInfo
+import ScanFiles as scanner
 
-# This generator will look for those items below and use those to generate
-# reflection code automatically.
-includedItems = [
-    "STRAND_CLASS()",
-    "STRAND_METHOD()",
-    "STRAND_FIELD()",
-    "STRAND_ENUM()",
-]
-
-# Global list to collect matched files.
-matchedFiles = []
-requestedFiles = []
-
-# Checks if the path is in the excludedPaths list.
-def checkExcluded(path):
-    for ex in excludedPaths:
-        if os.path.normpath(ex) in os.path.normpath(path):
-            return True
-    return False
-
-# Checks if the file contains any of the reflection macros.
-def containsReflection(filePath):
-    try:
-        with open(filePath, 'r', encoding='utf-8') as f:
-            content = f.read()
-            for macro in includedItems:
-                if macro in content:
-                    return True
-    except Exception as e:
-        print(f"Error reading {filePath}: {e}")
-    return False
-
-# main definition
-def main():
-    if len(sys.argv) < 2:
-        print("Reflection Generator Path: There is no path!")
-        sys.exit(-1)
-
-    argPath = sys.argv[1]
-    print("Reflection Generator Path:", argPath)
-
-    for root, dirs, files in os.walk(argPath):
-        dirs[:] = [d for d in dirs if not checkExcluded(os.path.join(root, d))]
-
-        for file in files:
-            fullPath = os.path.join(root, file)
-            if not checkExcluded(fullPath) and containsReflection(fullPath):
-                matchedFiles.append(fullPath)
-
-    for fPath in matchedFiles:
-        if fPath.endswith(".h"):
-            cppPath = os.path.splitext(fPath)[0] + ".cpp"
-            if os.path.exists(cppPath):
-                requestedFiles.append(cppPath)
-
-    for cpp in requestedFiles:
-        print(cpp)
+allClassInfos: List[parserInfo.ClassInfo] = []
 
 if __name__ == "__main__":
-    main()
+   if len(sys.argv) != 2:
+       print("Usage: python script.py <source_path>")
+       sys.exit(1)
+   
+   sourcePath = sys.argv[1]
+   
+   if not os.path.exists(sourcePath):
+       print(f"Error: Path '{sourcePath}' does not exist")
+       sys.exit(1)
+   
+   allClassInfos = scanner.scanSourceFolder(sourcePath)

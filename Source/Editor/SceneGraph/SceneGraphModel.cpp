@@ -132,7 +132,7 @@ namespace Strand
 		if (!m_scene)
 			return QModelIndex();
 
-		if (!hasIndex(row, column, parent))
+		if (row < 0)
 			return QModelIndex();
 
 		Entity* mainNode = nullptr;

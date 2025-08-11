@@ -38,6 +38,9 @@ namespace Strand
 				classInfo.firstSuperClass = U::StaticClassName();
 
 			m_classRegistry[classInfo.classHash] = classInfo;
+			m_classNameToHash[classInfo.className] = classInfo.classHash;
+
+			Log::Info(LogType::Reflection, "Registered class '{}'.", classInfo.className);
 		}
 
 		template<typename T, typename... Args>
@@ -144,8 +147,25 @@ namespace Strand
 			return nullptr;
 		}
 
+		ClassInfo* GetClassInfo(const String& className)
+		{
+			auto it = m_classNameToHash.find(className);
+			if (it == m_classNameToHash.end())
+			{
+				Log::Critical(LogType::Reflection, "Class '{}' is not registered in the reflection system.", className);
+				return nullptr;
+			}
+			auto classIt = m_classRegistry.find(it->second);
+			if (classIt == m_classRegistry.end())
+			{
+				Log::Critical(LogType::Reflection, "Class '{}' is not found in the registry.", className);
+				return nullptr;
+			}
+			return &classIt->second;
+		}
+
 		template<typename T>
-		TypeInfo GetTypeInfo()
+		TypeInfo* GetTypeInfo()
 		{
 			auto it = m_typeRegistry.find(typeid(T).hash_code());
 			if (it == m_typeRegistry.end())
@@ -155,10 +175,30 @@ namespace Strand
 			if (it == m_typeRegistry.end())
 			{
 				Log::Critical(LogType::Reflection, "Something unexpected is happening in the reflection system for type '{}' when getting.", typeid(T).name());
-				return TypeInfo();
+				return nullptr;
 			}
 
-			return it->second;
+			return &it->second;
+		}
+
+		template<typename T>
+		FieldInfo* GetFieldInfo(const String& fieldName)
+		{
+			auto classIt = m_classRegistry.find(typeid(T).hash_code());
+			if (classIt == m_classRegistry.end())
+			{
+				Log::Critical(LogType::Reflection, "Class '{}' is not registered in the reflection system.", typeid(T).name());
+				return nullptr;
+			}
+
+			auto fieldIt = classIt->second.fields.find(fieldName);
+			if (fieldIt == classIt->second.fields.end())
+			{
+				Log::Critical(LogType::Reflection, "Field '{}' is not found in class '{}'.", fieldName, typeid(T).name());
+				return nullptr;
+			}
+
+			return &fieldIt->second;
 		}
 
 	private:
@@ -185,7 +225,7 @@ namespace Strand
 			auto processType = [this, &result](auto index)
 				{
 					using Type = std::tuple_element_t<index, std::tuple<Args...>>;
-					result.push_back(GetTypeInfo<Type>());
+					result.push_back(*GetTypeInfo<Type>());
 				};
 
 			(processType(std::integral_constant<usize, Is>{}), ...);

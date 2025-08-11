@@ -2,3 +2,4 @@ Build/*
 .vs/*
 .idea/*
 Intermediate/*
+Tools/ReflectionGenerator/__pycache__/*

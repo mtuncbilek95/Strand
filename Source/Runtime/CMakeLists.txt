@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 # ----------------------- INCLUDES ---------------------------
 include(SetupVulkan)
 include(SetupGLFW)
+include(ExecuteReflection)
 # ------------------------------------------------------------
 
 # ---------------------- FILE ADDITION -----------------------
@@ -29,4 +30,8 @@ if(WIN32)
     include(SetupWindows)
     SetupWin32(Runtime)
 endif()
+# ------------------------------------------------------------
+
+# -------------------- RUNTIME REFLECTION --------------------
+ExecuteReflection(Runtime "Source/Runtime" "Intermediate")
 # ------------------------------------------------------------

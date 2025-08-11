@@ -11,10 +11,10 @@
 
 namespace Strand
 {
-	STRAND_CLASS()
-		class ResourceBase
+	STRAND_CLASS();
+	class ResourceBase
 	{
-		STRAND_OBJECT(ResourceBase)
+		STRAND_OBJECT(ResourceBase);
 	public:
 		ResourceBase(const ResourceDesc& desc);
 		~ResourceBase();
@@ -23,11 +23,11 @@ namespace Strand
 		const Path& GetRelativePath() const { return m_relativePath; }
 
 	private:
-		STRAND_FIELD()
+		STRAND_FIELD();
 		Uuid m_resourceId;
-		STRAND_FIELD()
+		STRAND_FIELD();
 		String m_resourceName;
-		STRAND_FIELD()
+		STRAND_FIELD();
 		Path m_relativePath;
 	};
 }

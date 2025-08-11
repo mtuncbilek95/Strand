@@ -17,7 +17,7 @@ namespace Strand
 		else
 			newName = name;
 
-		m_children.push_back(NewRef<Entity>(newName, m_ownerScene));
+		m_children.push_back(NewRef<Entity>(newName, m_ownerScene, this));
 	}
 
 	void Entity::RemoveChild(i32 childId)
