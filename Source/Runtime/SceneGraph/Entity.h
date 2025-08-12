@@ -39,6 +39,38 @@ namespace Strand
 		const Vector<Ref<Entity>>& GetChildren() const { return m_children; }
 		usize GetCount() const { return m_children.size(); }
 
+		template<typename T, typename... Args>
+		void AddComponent(Args&&... args)
+		{
+			static_assert(std::is_base_of<IComponent, T>::value, "T must inherit from IComponent");
+			Ref<T> component = MakeRef<T>(std::forward<Args>(args)...);
+			component->SetEnabled(true);
+			component->m_componentName = typeid(T).name();
+			m_components.push_back(component);
+		}
+
+		template<typename T>
+		T* GetComponent()
+		{
+			static_assert(std::is_base_of<IComponent, T>::value, "T must inherit from IComponent");
+			for (const auto& component : m_components)
+			{
+				if (auto casted = dynamic_cast<T*>(component.get()))
+					return casted;
+			}
+			return nullptr;
+		}
+
+		IComponent* GetComponent(const String& compName)
+		{
+			for (const auto& component : m_components)
+			{
+				if (component->GetComponentName() == compName)
+					return component.get();
+			}
+			return nullptr;
+		}
+
 	private:
 		static i32 m_nextId;
 		i32 m_id;

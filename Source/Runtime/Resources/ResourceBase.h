@@ -12,7 +12,7 @@
 namespace Strand
 {
 	STRAND_CLASS();
-	class ResourceBase
+	class ResourceBase : public IReflectable
 	{
 		STRAND_OBJECT(ResourceBase);
 	public:

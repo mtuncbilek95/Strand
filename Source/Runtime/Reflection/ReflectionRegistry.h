@@ -1,5 +1,5 @@
 /*
- * Licensed under the terms specified in the LICENSE.md file 
+ * Licensed under the terms specified in the LICENSE.md file
  * located in the root directory of this source tree.
  *
  * Copyright (c) 2024 Metehan Tuncbilek
@@ -198,6 +198,23 @@ namespace Strand
 				return nullptr;
 			}
 
+			return &fieldIt->second;
+		}
+
+		FieldInfo* GetFieldInfo(ClassInfo* classInfo, const String& fieldName)
+		{
+			if (!classInfo)
+			{
+				Log::Critical(LogType::Reflection, "ClassInfo is null when getting field info for '{}'.", fieldName);
+				return nullptr;
+			}
+			auto fieldIt = classInfo->fields.find(fieldName);
+
+			if (fieldIt == classInfo->fields.end())
+			{
+				Log::Critical(LogType::Reflection, "Field '{}' is not found in class '{}'.", fieldName, classInfo->className);
+				return nullptr;
+			}
 			return &fieldIt->second;
 		}
 

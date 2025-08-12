@@ -12,6 +12,7 @@
 #include <Runtime/Logger/Logger.h>
 #include <Runtime/Reflection/TypeAccessor.h>
 #include <Runtime/Reflection/ReflectionRegistry.h>
+#include <Runtime/Reflection/IReflectable.h>
 
 namespace Strand
 {
@@ -22,6 +23,10 @@ namespace Strand
 		static String StaticClassName() \
 		{ \
 			return #ClassName; \
+		} \
+		virtual ClassInfo* GetClass() const override \
+		{ \
+			return ReflectionRegistry::Get().GetClassInfo<ClassName>(); \
 		} \
 	private:
 

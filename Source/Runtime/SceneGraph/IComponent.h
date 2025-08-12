@@ -11,7 +11,7 @@
 namespace Strand
 {
 	STRAND_CLASS()
-	class IComponent
+	class IComponent : public IReflectable
 	{
 		STRAND_OBJECT(IComponent)
 	public:
