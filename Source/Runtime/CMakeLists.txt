@@ -6,6 +6,10 @@ include(SetupGLFW)
 include(ExecuteReflection)
 # ------------------------------------------------------------
 
+# -------------------- RUNTIME REFLECTION --------------------
+ExecuteReflection("Source/Runtime" "Intermediate")
+# ------------------------------------------------------------
+
 # ---------------------- FILE ADDITION -----------------------
 file(GLOB_RECURSE SUBDIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SUBDIRECTORIES})
@@ -30,8 +34,4 @@ if(WIN32)
     include(SetupWindows)
     SetupWin32(Runtime)
 endif()
-# ------------------------------------------------------------
-
-# -------------------- RUNTIME REFLECTION --------------------
-ExecuteReflection(Runtime "Source/Runtime" "Intermediate")
 # ------------------------------------------------------------

@@ -1,6 +1,6 @@
 # InTarget: Where to read
 # OutTarget: Where to write
-function(ExecuteReflection TargetName InTarget OutTarget)
+function(ExecuteReflection InTarget OutTarget)
 	set(INPUT_PATH "${CMAKE_SOURCE_DIR}/${InTarget}")
 	set(OUTPUT_PATH "${CMAKE_SOURCE_DIR}/${OutTarget}")
    
