@@ -9,6 +9,7 @@ import sys
 import os
 import re
 
+from pathlib import Path
 from typing import List, Dict, NamedTuple, Optional
 import Informations as parserInfo
 
@@ -26,45 +27,35 @@ excludedPaths = [
 ]
 
 def scanSourceFolder(rootPath: str) -> List[parserInfo.ClassInfo]:
-   allClassInfos: List[parserInfo.ClassInfo] = []
+	allClassInfos: List[parserInfo.ClassInfo] = []
 
-   for root, dirs, files in os.walk(rootPath):
-   	skipFolder = False
-   	for excluded in excludedPaths:
-   		if excluded in root:
-   			skipFolder = True
-   			break
-   	
-   	if skipFolder:
-   		continue
-   	    
-   	for file in files:
-   		if file.endswith(('.h', '.hpp')):
-   			filePath = os.path.join(root, file)
-   	        
-   			try:
-   				with open(filePath, 'r', encoding='utf-8') as f:
-   					headerFile = f.readlines()
-   	            
-   				objectInfo = parserInfo.getObjectType(headerFile)
-   	            
-   				if objectInfo and objectInfo.objectType == "Class":
-   					print(f"\n=== Found Class in: {filePath} ===")
-   	                
-   					classInfo = parserInfo.getClassInfo(headerFile, objectInfo)
-   	                
-   					print(f"Class Name: {classInfo.className}")
-   					print(f"Fields ({len(classInfo.fields)}):")
-   					for field in classInfo.fields:
-   						print(f"  - {field.typePrimitive} {field.typeName}")
-   	                
-   					print(f"Constructors ({len(classInfo.constructors)}):")
-   					for i, constructor in enumerate(classInfo.constructors):
-   						paramsStr = ", ".join(constructor.params) if constructor.params else "no params"
-   						print(f"  - Constructor {i+1}: ({paramsStr})")
-
-   					allClassInfos.append(classInfo)
-   	                
-   			except Exception as e:
-   				print(f"Error reading {filePath}: {e}")
-   return allClassInfos
+	for root, dirs, files in os.walk(rootPath):
+		skipFolder = False
+		for excluded in excludedPaths:
+			if excluded in root:
+				skipFolder = True
+				break
+		
+		if skipFolder:
+			continue
+		    
+		for file in files:
+			if file.endswith(('.h', '.hpp')):
+				filePath = os.path.join(root, file)
+		        
+				try:
+					with open(filePath, 'r', encoding='utf-8') as f:
+						headerFile = f.readlines()
+		            
+					objectInfo = parserInfo.getObjectType(headerFile)
+		            
+					if objectInfo and objectInfo.objectType == "Class":
+						parentPath = Path(rootPath).parent
+						relativePath = os.path.relpath(filePath, parentPath)
+						classInfo = parserInfo.getClassInfo(headerFile, objectInfo, relativePath)
+		                
+						allClassInfos.append(classInfo)
+		                
+				except Exception as e:
+					print(f"Error reading {filePath}: {e}")
+	return allClassInfos

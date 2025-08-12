@@ -16,10 +16,7 @@ namespace Strand
 	{
 		STRAND_OBJECT(NameTagComponent)
 	public:
-		NameTagComponent(const String& entityName) : m_entityName(entityName) 
-		{
-			m_componentName = NameTagComponent::StaticClassName();
-		}
+		NameTagComponent(const String& entityName);
 		~NameTagComponent() = default;
 
 		void SetName(const String& newName) { m_entityName = newName; }

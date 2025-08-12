@@ -6,11 +6,17 @@ function(ExecuteReflection TargetName InTarget OutTarget)
    
 	set(PYTHON_SCRIPT "${CMAKE_SOURCE_DIR}/Tools/ReflectionGenerator/ReflectionGenerator.py")
    
-	add_custom_command(
-		TARGET ${TargetName}
-		PRE_BUILD
-		COMMAND ${CMAKE_COMMAND} -E echo "Generating reflection for ${INPUT_PATH}..."
-		COMMAND python "${PYTHON_SCRIPT}" "${INPUT_PATH}"
-		COMMENT "Running reflection generator: ${InTarget} -> ${OutTarget}"
-		VERBATIM)
+	execute_process(
+   		COMMAND python "${PYTHON_SCRIPT}" "${INPUT_PATH}" "${OUTPUT_PATH}"
+   		WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+   		RESULT_VARIABLE RESULT
+   		OUTPUT_VARIABLE OUTPUT
+   		ERROR_VARIABLE ERROR)
+   
+   if(NOT RESULT EQUAL 0)
+   	message(FATAL_ERROR "Reflection generation failed: ${ERROR}")
+   else()
+   	message(STATUS "Reflection generated successfully: ${InTarget} -> ${OutTarget}")
+   endif()
+
 endfunction()

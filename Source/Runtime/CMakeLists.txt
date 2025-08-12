@@ -10,8 +10,8 @@ include(ExecuteReflection)
 file(GLOB_RECURSE SUBDIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SUBDIRECTORIES})
 
-file(GLOB_RECURSE INTERMEDIATE "${CMAKE_SOURCE_DIR}/Intermediate/*.cpp")
-source_group(TREE "${CMAKE_SOURCE_DIR}/Intermediate" FILES ${INTERMEDIATE})
+file(GLOB_RECURSE INTERMEDIATE "${CMAKE_SOURCE_DIR}/Intermediate/Runtime/*.cpp")
+source_group(TREE "${CMAKE_SOURCE_DIR}/Intermediate/Runtime" FILES ${INTERMEDIATE})
 
 add_library(Runtime STATIC ${INTERMEDIATE} ${SUBDIRECTORIES})
 # ------------------------------------------------------------

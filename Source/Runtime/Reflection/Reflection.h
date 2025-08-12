@@ -21,9 +21,7 @@ namespace Strand
 	public: \
 		static String StaticClassName() \
 		{ \
-			String func = __FUNCTION__; \
-			usize index = func.rfind(':'); \
-			return func.substr(0, index - 1); \
+			return #ClassName; \
 		} \
 	private:
 
