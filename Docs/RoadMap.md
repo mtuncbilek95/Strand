@@ -4,6 +4,7 @@ The roadmap that has been written below, can be changed during the development p
 accepted as core version of the roadmap.
 
 - [x] Runtime Reflection System
+- [x] Runtime Reflection Parser Tool
 - [ ] Better Entity Component System W.I.P
 - [ ] Editor Entity Component Bindings
 - [ ] Base resource implementations such as Mesh, Texture, Shader
