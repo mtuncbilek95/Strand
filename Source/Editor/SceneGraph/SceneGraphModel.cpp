@@ -11,10 +11,6 @@ namespace Strand
 	{
 	}
 
-	SceneGraphModel::~SceneGraphModel()
-	{
-	}
-
 	void SceneGraphModel::addEntity(const QModelIndex& parent)
 	{
 		if (!parent.isValid())

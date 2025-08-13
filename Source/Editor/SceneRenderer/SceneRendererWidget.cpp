@@ -18,20 +18,19 @@ namespace Strand
 		mainLayout->addWidget(m_renderView);
 	}
 
-	SceneRendererWidget::~SceneRendererWidget()
-	{
-	}
-
 	void SceneRendererWidget::onClickedPlay()
 	{
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneRendererWidget::onClickedPause()
 	{
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneRendererWidget::onClickedStop()
 	{
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneRendererWidget::setupSignals()

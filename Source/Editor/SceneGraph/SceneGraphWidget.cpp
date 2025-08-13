@@ -23,8 +23,4 @@ namespace Strand
 
 		mainLayout->addWidget(m_treeView);
 	}
-
-	SceneGraphWidget::~SceneGraphWidget()
-	{
-	}
 }

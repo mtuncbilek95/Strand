@@ -11,7 +11,7 @@
 
 namespace Strand
 {
-	class Connection 
+	class Connection
 	{
 	public:
 		Connection() = default;
@@ -33,6 +33,6 @@ namespace Strand
 		b8 IsConnected() const { return m_disconnectFunc != nullptr; }
 
 	private:
-		voidFunc m_disconnectFunc;
+		voidFunc m_disconnectFunc = {};
 	};
 }

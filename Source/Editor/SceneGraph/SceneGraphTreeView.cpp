@@ -17,10 +17,6 @@ namespace Strand
 		setDefaultDropAction(Qt::MoveAction);
 	}
 
-	SceneGraphTreeView::~SceneGraphTreeView()
-	{
-	}
-
 	void SceneGraphTreeView::dragEnterEvent(QDragEnterEvent* pEvent)
 	{
 		for (const auto& url : pEvent->mimeData()->urls())
@@ -45,7 +41,7 @@ namespace Strand
 
 	void SceneGraphTreeView::dropEvent(QDropEvent* pEvent)
 	{
-
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneGraphTreeView::contextMenuEvent(QContextMenuEvent* pEvent)
@@ -124,7 +120,7 @@ namespace Strand
 
 	void SceneGraphTreeView::startRenameForEntity(const QString& folderPath)
 	{
-
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneGraphTreeView::onCreateEntity(const QModelIndex& index)
@@ -148,6 +144,7 @@ namespace Strand
 
 	void SceneGraphTreeView::onRenameEntity(const QModelIndex& index, const QString& newName)
 	{
+		EDITOR_NOT_IMPLEMENTED_YET(void());
 	}
 
 	void SceneGraphTreeView::onEditorCommitted(QWidget* pEditor)

@@ -39,6 +39,6 @@ namespace Strand
 		}
 
 	private:
-		QMap<QString, Ref<ViewModelBase>> m_registry;
+		QMap<QString, Ref<ViewModelBase>> m_registry = {};
 	};
 }

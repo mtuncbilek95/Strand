@@ -16,8 +16,10 @@ namespace Strand
 		std::istringstream ss(dateAsString);
 		ss >> std::get_time(&t, "%d.%m.%Y %H:%M:%S");
 
-		if (ss.fail())
+		if (ss.fail()) {
 			*this = GetCurrentDateTime();
+			return;
+		}
 
 		m_day = static_cast<u8>(t.tm_mday);
 		m_month = static_cast<u8>(t.tm_mon + 1);
@@ -134,14 +136,14 @@ namespace Strand
 
 	String DateTime::ToString() const
 	{
-		String s = "";
-		s += (m_day < 10 ? "0" : "") + std::to_string(m_day) + ".";
-		s += (m_month < 10 ? "0" : "") + std::to_string(m_month) + ".";
-		s += std::to_string(m_year) + " ";
-		s += (m_hour < 10 ? "0" : "") + std::to_string(m_hour) + ":";
-		s += (m_min < 10 ? "0" : "") + std::to_string(m_min) + ":";
-		s += (m_sec < 10 ? "0" : "") + std::to_string(m_sec);
-		return s;
+		std::ostringstream oss;
+		oss << std::setw(2) << std::setfill('0') << m_day << '.'
+			<< std::setw(2) << std::setfill('0') << m_month << '.'
+			<< m_year << ' '
+			<< std::setw(2) << std::setfill('0') << m_hour << ':'
+			<< std::setw(2) << std::setfill('0') << m_min << ':'
+			<< std::setw(2) << std::setfill('0') << m_sec;
+		return oss.str();
 	}
 
 	b8 DateTime::operator==(const DateTime& other) const
@@ -167,7 +169,7 @@ namespace Strand
 	DateTime DateTime::GetCurrentDateTime()
 	{
 		std::time_t now = std::time(nullptr);
-		std::tm* ltm = std::localtime(&now);
+		std::tm* ltm = std::localtime(&now); // @XXX: not thread-safe -- @mateusdigital
 
 		if (!ltm)
 			throw std::runtime_error("Failed to get current local time.");

@@ -71,7 +71,7 @@ namespace Strand
 		Path ClearMountPath(const Path& path) const;
 
 	private:
-		HashMap<String, Ref<IVirtualFileSystem>> m_fileSystems;
-		Path m_sourcePath;
+		HashMap<String, Ref<IVirtualFileSystem>> m_fileSystems = {};
+		Path m_sourcePath = {};
 	};
 }

@@ -15,6 +15,6 @@ namespace Strand
 		Q_OBJECT
 	public:
 		GUIApplication(i32 argC, c8** argV);
-		~GUIApplication();
+		~GUIApplication() override = default;
 	};
 }

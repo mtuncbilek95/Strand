@@ -16,6 +16,7 @@ namespace Strand
 	 */
     struct DataReader
     {
+		DataReader() = delete; // Makes a static class
         static ReadArray<c8> ReadData(const String& filePath, b8 emptyOnMissing = false, b8 nullTerminateString = false);
     };
 }
