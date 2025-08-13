@@ -45,6 +45,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QDirIterator>
+#include <QSpinbox>
 
 #include <QMouseEvent>
 #include <QKeyEvent>

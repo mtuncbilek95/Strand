@@ -1,8 +1,8 @@
-#include "Vector3Widget.h"
+#include "Vector4Widget.h"
 
 namespace Strand
 {
-	Vector3Widget::Vector3Widget(const QString& name, QWidget* pParent) : QWidget(pParent)
+	Vector4Widget::Vector4Widget(const QString& name, QWidget* pParent) : QWidget(pParent)
 	{
 		QHBoxLayout* mainLayout = new QHBoxLayout(this);
 		mainLayout->setContentsMargins(8, 4, 8, 4);
@@ -16,13 +16,15 @@ namespace Strand
 		m_xSlider = new ValueWidget("X", NumberValueType::FloatingPoint, this);
 		m_ySlider = new ValueWidget("Y", NumberValueType::FloatingPoint, this);
 		m_zSlider = new ValueWidget("Z", NumberValueType::FloatingPoint, this);
-	
+		m_wSlider = new ValueWidget("W", NumberValueType::FloatingPoint, this);
+
 		QHBoxLayout* sliderLayout = new QHBoxLayout();
 		sliderLayout->setContentsMargins(0, 0, 0, 0);
 		sliderLayout->setSpacing(4);
 		sliderLayout->addWidget(m_xSlider);
 		sliderLayout->addWidget(m_ySlider);
 		sliderLayout->addWidget(m_zSlider);
+		sliderLayout->addWidget(m_wSlider);
 		sliderLayout->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
 		mainLayout->addWidget(m_nameLabel);

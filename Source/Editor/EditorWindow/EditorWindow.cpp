@@ -24,21 +24,21 @@ namespace Strand
 		QDockWidget* leftDock = new QDockWidget(this);
 		m_tabWidgets[TabDirection::Left] = new QTabWidget(leftDock);
 		leftDock->setTitleBarWidget(new QWidget());
-		leftDock->setMinimumWidth(256);
+		leftDock->setMinimumWidth(272);
 		leftDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		leftDock->setWidget(m_tabWidgets[TabDirection::Left]);
 
 		QDockWidget* rightDock = new QDockWidget(this);
 		m_tabWidgets[TabDirection::Right] = new QTabWidget(rightDock);
 		rightDock->setTitleBarWidget(new QWidget());
-		rightDock->setMinimumWidth(256);
+		rightDock->setMinimumWidth(272);
 		rightDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		rightDock->setWidget(m_tabWidgets[TabDirection::Right]);
 
 		QDockWidget* bottomDock = new QDockWidget(this);
 		m_tabWidgets[TabDirection::Bottom] = new QTabWidget(bottomDock);
 		bottomDock->setTitleBarWidget(new QWidget());
-		bottomDock->setMinimumHeight(256);
+		bottomDock->setMinimumHeight(272);
 		bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		bottomDock->setWidget(m_tabWidgets[TabDirection::Bottom]);
 

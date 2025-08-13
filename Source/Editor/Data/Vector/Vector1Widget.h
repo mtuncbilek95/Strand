@@ -11,17 +11,15 @@
 
 namespace Strand
 {
-	class Vector3Widget : public QWidget
+	class Vector1Widget : public QWidget
 	{
 		Q_OBJECT
 	public:
-		Vector3Widget(const QString& name, QWidget* pParent = nullptr);
-		~Vector3Widget() override = default;
+		Vector1Widget(const QString& name, QWidget* pParent = nullptr);
+		~Vector1Widget() override = default;
 
 	private:
 		QLabel* m_nameLabel;
 		ValueWidget* m_xSlider;
-		ValueWidget* m_ySlider;
-		ValueWidget* m_zSlider;
 	};
 }

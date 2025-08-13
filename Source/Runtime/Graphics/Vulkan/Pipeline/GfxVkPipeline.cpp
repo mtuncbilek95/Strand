@@ -65,7 +65,7 @@ namespace Strand
 				attr.offset = offset;
 				attributes.push_back(attr);
 
-				offset += 0; VkImageUtils::GetVkImgSize(element.attributes[attIndex]);
+				offset += VkImageUtils::GetVkImgSize(element.attributes[attIndex]);
 			}
 			binding.stride = offset;
 			bindings.push_back(binding);

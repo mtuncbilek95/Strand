@@ -1,8 +1,8 @@
-#include "Vector3Widget.h"
+#include "Vector1Widget.h"
 
 namespace Strand
 {
-	Vector3Widget::Vector3Widget(const QString& name, QWidget* pParent) : QWidget(pParent)
+	Vector1Widget::Vector1Widget(const QString& name, QWidget* pParent) : QWidget(pParent)
 	{
 		QHBoxLayout* mainLayout = new QHBoxLayout(this);
 		mainLayout->setContentsMargins(8, 4, 8, 4);
@@ -13,16 +13,12 @@ namespace Strand
 		m_nameLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 		m_nameLabel->setStyleSheet("font-weight: bold; font-size: 12px; padding: 2px;");
 
-		m_xSlider = new ValueWidget("X", NumberValueType::FloatingPoint, this);
-		m_ySlider = new ValueWidget("Y", NumberValueType::FloatingPoint, this);
-		m_zSlider = new ValueWidget("Z", NumberValueType::FloatingPoint, this);
-	
+		m_xSlider = new ValueWidget("", NumberValueType::FloatingPoint, this);
+
 		QHBoxLayout* sliderLayout = new QHBoxLayout();
 		sliderLayout->setContentsMargins(0, 0, 0, 0);
 		sliderLayout->setSpacing(4);
 		sliderLayout->addWidget(m_xSlider);
-		sliderLayout->addWidget(m_ySlider);
-		sliderLayout->addWidget(m_zSlider);
 		sliderLayout->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
 		mainLayout->addWidget(m_nameLabel);

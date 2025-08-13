@@ -17,8 +17,7 @@ namespace Strand
 	class SceneController : public Service
 	{
 	public:
-		void CreateNewScene(const String& sceneName);
-
+		void CreateNewScene(const String& sceneName) {}
 
 		void InitializeServiceField() override final {}
 		void ResetServiceField() override final {}

@@ -7,21 +7,24 @@
 #pragma once
 
 #include <Editor/Core/CoreMinimal.h>
-#include <Editor/Data/Vector/ValueWidget.h>
 
 namespace Strand
 {
-	class Vector3Widget : public QWidget
+	class ComponentTabWidget : public QWidget
 	{
 		Q_OBJECT
 	public:
-		Vector3Widget(const QString& name, QWidget* pParent = nullptr);
-		~Vector3Widget() override = default;
+		ComponentTabWidget(const QString& name, QWidget* pParent = nullptr);
+		~ComponentTabWidget() override = default;
+
+	signals:
+		void onComponentChecked(b8 state);
+
+	private slots:
+		void onComponentStateChanged(i32 state);
 
 	private:
 		QLabel* m_nameLabel;
-		ValueWidget* m_xSlider;
-		ValueWidget* m_ySlider;
-		ValueWidget* m_zSlider;
+		QCheckBox* m_enableCheckbox;
 	};
 }
