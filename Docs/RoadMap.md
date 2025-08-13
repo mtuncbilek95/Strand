@@ -6,7 +6,7 @@ accepted as core version of the roadmap.
 - [x] Runtime Reflection System
 - [x] Runtime Reflection Parser Tool
 - [ ] Better Entity Component System W.I.P
-- [ ] Editor Entity Component Bindings
+- [x] Editor Entity Component Bindings
 - [ ] Base resource implementations such as Mesh, Texture, Shader
 - [ ] Slang shader support
 - [ ] Shader reflection and Material Graph
@@ -19,8 +19,8 @@ accepted as core version of the roadmap.
 - [ ] Audio Engine (FMod)
 - [ ] Physics Abstraction Layer (For multiple physics integration support)
 - [ ] Physics Engine (Jolt)
-- [ ] Scripting System (C++)
-- [ ] Skinned Mesh, 3DTexture etc.
+- [ ] Scripting System (C++ & Lua)
+- [ ] Skinned Mesh, Animation, Animation Graph
 - [ ] Editor Animation Tools (Animation Sequence, Animation Blending, EventTrigger)
 - [ ] VFX Graph Node Editor
 - [ ] NeosisGUI implementation
@@ -33,5 +33,4 @@ accepted as core version of the roadmap.
 - [ ] DX12 Support
 - [ ] Metal Support
 - [ ] Linux Support
-- [ ] 2D Rendering Engine
 - [ ] Tooling and new features
