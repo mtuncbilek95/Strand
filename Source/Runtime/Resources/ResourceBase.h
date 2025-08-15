@@ -17,7 +17,7 @@ namespace Strand
 		STRAND_OBJECT(ResourceBase);
 	public:
 		ResourceBase(const ResourceDesc& desc);
-		~ResourceBase();
+		virtual ~ResourceBase();
 
 		const String& GetResourceName() const { return m_resourceName; }
 		const Path& GetRelativePath() const { return m_relativePath; }
