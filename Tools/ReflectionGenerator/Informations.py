@@ -67,7 +67,8 @@ def getClassInfo(headerFile : List[str], objectInfo : ObjectType, cleanPath : st
 	constructors = []
 	fields = []
 	for i, line in enumerate(headerFile):
-		if f"{className}(" in line and not line.strip().startswith(f"~{className}"):
+		prefixes_to_skip = (f"~{className}", f"virtual ~{className}")
+		if f"{className}(" in line and not line.strip().startswith(prefixes_to_skip):
 			endParenthesis = line.rfind(")")
 			startParenthesis = line.rfind("(", 0, endParenthesis)
 			paramsStr = line[startParenthesis+1:endParenthesis]

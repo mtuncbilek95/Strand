@@ -6,9 +6,4 @@ namespace Strand
 		m_resourceName(desc.resourceName), m_relativePath(desc.relativePath)
 	{
 	}
-
-	ResourceBase::~ResourceBase()
-	{
-	}
-
 }
